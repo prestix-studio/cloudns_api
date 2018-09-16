@@ -28,6 +28,14 @@ Installing cloudns_api
 
     $ pip install cloudns_api
 
+In order to authenticate correctly, create the following environment variables
+(using your own credentials):
+
+.. code:: bash
+
+    export CLOUDNS_AUTH_USER=my_user
+    export CLOUDNS_AUTH_PASSWORD=my_password
+
 
 Running Tests
 -------------
