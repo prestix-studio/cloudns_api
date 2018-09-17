@@ -177,3 +177,17 @@ def test_api_decorator_responds_to_validation_error():
     assert result['error'] == 'Validation error.'
     assert result['validation_error']['field'] == 'the_field_name'
     assert result['validation_error']['message'] == 'The field should be in this format.'
+
+
+def test_api_decorator_responds_to_authentication_error():
+    """API decorator responds appropriately to authentication error."""
+
+    @api.api
+    def test_api_call(*args, **kwargs):
+        return MockResponse(json_data = {'status': 'Failed',
+                                         'statusDescription':
+                                         'Invalid authentication, incorrect auth-id or auth-password.'})
+
+    result = test_api_call(json_object = True)
+    assert result['success'] is False
+    assert result['error'] == 'Invalid authentication, incorrect auth-id or auth-password.'
