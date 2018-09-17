@@ -76,7 +76,7 @@ def api(api_call):
                 result['error'] = 'HTTP response ' + response.status_code
 
             # Check for API error responses
-            elif 'status' in result['data'] and result['data']['status'] is 'Failed':
+            elif 'status' in result['data'] and result['data']['status'] == 'Failed':
                 result['success'] = False
                 result['error'] = result['data']['statusDescription']
 
