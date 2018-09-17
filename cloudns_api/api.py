@@ -16,9 +16,12 @@ This module contains API utilities and preliminary parameters data structure.
 
 from __future__ import absolute_import
 
-from json import loads as load_as_json
+from json import dumps as to_json_string
 from os import environ
 from requests import codes as code, get, post
+from requests.exceptions import ContentDecodingError, ConnectionError
+from requests.exceptions import HTTPError, SSLError, TooManyRedirects
+from requests.exceptions import ConnectTimeout, Timeout, ReadTimeout
 
 
 API_AUTH_ID = environ.get('CLOUDNS_AUTH_ID')
@@ -41,6 +44,11 @@ def get_auth_params():
 
 class ValidationError(Exception):
     """Exception thrown when a validation error has occured."""
+    def __init__(self, field, message, *args, **kwargs):
+        """Initialize ValidationError with `fieldname` and `message` values."""
+        self.field = field
+        self.message = message
+        super(ValidationError, self).__init__(*args, **kwargs)
 
 
 def api(api_call):
@@ -55,38 +63,60 @@ def api(api_call):
         :param json_object: bool, return an object if true, otherwise return
             the json string
         """
+        result = {}
+
         try:
-            result = api_call(*args, **kwargs)
-            data_object = load_as_json(result.text)
+            response = api_call(*args, **kwargs)
+            result['data'] = response.json()
 
             # Check for HTTP error codes
-            if result.status_code is not code.OK:
-                json_string = '{"success":false, "status_code":' + status_code \
-                    + ', data":' + result.text + '}'
+            if response.status_code is not code.OK:
+                result['success'] = False
+                result['status_code'] = response.status_code
+                result['error'] = 'HTTP response ' + response.status_code
 
-            # Check for API error codes
-            elif 'status' in data_object and data_object['status'] == 'Failed':
-                json_string = '{"success":false, "error":"' + \
-                    data_object['statusDescription'] + '", "data":' + result.text \
-                    + '}'
+            # Check for API error responses
+            elif 'status' in result['data'] and result['data']['status'] is 'Failed':
+                result['success'] = False
+                result['error'] = result['data']['statusDescription']
 
-            # Otherwise, just format using our json
+            # Otherwise, we're good
             else:
-                json_string = '{"success":true, "data":' + result.text + '}'
+                result['success'] = True
+
+        # Catch Timeout errors
+        except (ConnectTimeout, Timeout, ReadTimeout) as e:
+            result['success'] = False
+            result['error'] = 'API Connection timed out.'
+
+        # Catch Connection errors
+        except (ContentDecodingError, ConnectionError, HTTPError, SSLError,
+                TooManyRedirects) as e:
+            result['success'] = False
+            result['error'] = 'API Network Connection error.'
 
         # Catch Validation errors
         except ValidationError as e:
-            json_string = '{"success":false, "error":"Validation error."}'
-            pass
+            result['success'] = False
+            result['error'] = 'Validation error.'
+            result['validation_error'] = {'field': e.field,
+                                          'message': e.message}
 
         # Catch Other Python errors
         except TypeError as e:
-            print(e)
-            json_string = '{"success":false, "error":"Missing argument."}'
+            result['success'] = False
+            result['error'] = 'Missing a required argument.'
 
+        # Catch all other python errors
+        except Exception as e:
+            result['success'] = False
+            result['error'] = 'Something went wrong.'
+
+
+        # Whew! Made it past the errors, so return the result
         if 'json_object' in kwargs and kwargs['json_object']:
-            return load_as_json(json_string)
+            return result
 
-        return json_string
+        return to_json_string(result)
 
     return api_wrapper
