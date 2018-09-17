@@ -120,3 +120,21 @@ def api(api_call):
         return to_json_string(result)
 
     return api_wrapper
+
+
+@api
+def get_login():
+    """Returns the login status using available credentials."""
+    params = get_auth_params()
+    params['auth-id'] = '12'
+    return get('https://api.cloudns.net/dns/login.json',
+               params=params)
+    return get('https://api.cloudns.net/dns/login.json',
+               params=get_auth_params())
+
+
+@api
+def get_nameservers():
+    """Returns the available nameservers."""
+    return get('https://api.cloudns.net/dns/available-name-servers.json',
+               params=get_auth_params())
