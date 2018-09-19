@@ -44,11 +44,11 @@ def get_auth_params():
 
 class ValidationError(Exception):
     """Exception thrown when a validation error has occured."""
-    def __init__(self, field, message, *args, **kwargs):
+    def __init__(self, fieldname, message, *args, **kwargs):
         """Initialize ValidationError with `fieldname` and `message` values."""
-        self.field = field
+        self.fieldname = fieldname
         self.message = message
-        super(ValidationError, self).__init__(*args, **kwargs)
+        super(ValidationError, self).__init__(message, *args, **kwargs)
 
 
 def api(api_call):
@@ -99,7 +99,7 @@ def api(api_call):
         except ValidationError as e:
             result['success'] = False
             result['error'] = 'Validation error.'
-            result['validation_error'] = {'field': e.field,
+            result['validation_error'] = {'field': e.fieldname,
                                           'message': e.message}
 
         # Catch Other Python errors
