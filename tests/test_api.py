@@ -25,6 +25,7 @@ orig_clouds_auth_password = environ.get('CLOUDNS_AUTH_PASSWORD')
 
 # Import only after changing environment variables to test vars
 from cloudns_api import api
+from cloudns_api.validation import ValidationError
 
 # Reset environment variables to original state
 environ['CLOUDNS_AUTH_ID'] = orig_clouds_auth_id
@@ -169,7 +170,7 @@ def test_api_decorator_responds_to_validation_error():
 
     @api.api
     def test_api_call(*args, **kwargs):
-        raise api.ValidationError('the_field_name',
+        raise ValidationError('the_field_name',
                                   'The field should be in this format.')
 
     result = test_api_call(json_object = True)

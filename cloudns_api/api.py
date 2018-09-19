@@ -16,6 +16,7 @@ This module contains API utilities and preliminary parameters data structure.
 
 from __future__ import absolute_import
 
+from .validation import ValidationError
 from json import dumps as to_json_string
 from os import environ
 from requests import codes as code, get, post
@@ -40,15 +41,6 @@ def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
     return {'auth-id': API_AUTH_ID,
             'auth-password': API_AUTH_PASSWORD}
-
-
-class ValidationError(Exception):
-    """Exception thrown when a validation error has occured."""
-    def __init__(self, fieldname, message, *args, **kwargs):
-        """Initialize ValidationError with `fieldname` and `message` values."""
-        self.fieldname = fieldname
-        self.message = message
-        super(ValidationError, self).__init__(message, *args, **kwargs)
 
 
 def api(api_call):

@@ -16,8 +16,16 @@ This module contains functions to validate fields passed into the API.
 
 from __future__ import absolute_import
 
-from .api import ValidationError
 import re
+
+
+class ValidationError(Exception):
+    """Exception thrown when a validation error has occured."""
+    def __init__(self, fieldname, message, *args, **kwargs):
+        """Initialize ValidationError with `fieldname` and `message` values."""
+        self.fieldname = fieldname
+        self.message = message
+        super(ValidationError, self).__init__(message, *args, **kwargs)
 
 
 def validate(value, fieldname, *args, **kwargs):
