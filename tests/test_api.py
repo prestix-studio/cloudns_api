@@ -56,6 +56,8 @@ def test_get_auth_params_returns_different_dict_every_time():
 ##
 # API Decorator Tests
 
+# Utilities
+
 class MockResponse:
     """Mocks a response from the requests library."""
     def __init__(self, json_data = None, status_code = 200):
@@ -70,6 +72,8 @@ def mock_response(*args, **kwargs):
     """Mocks requests.get or requests.post for tests."""
     return MockResponse({"key1": "value1"}, 200)
 
+
+# Tests
 
 def test_api_decorator_returns_string_by_default():
     """Decorator 'api' returns the result as a string by default."""
