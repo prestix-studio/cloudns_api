@@ -54,6 +54,8 @@ class ValidationError(Exception):
 def api(api_call):
     """ Decorates an api call in order to consistently handle errors and maintain a
     consistent json format.
+
+    :param api_call: function, the function to be decorated
     """
 
     def api_wrapper(*args, **kwargs):
