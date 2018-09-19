@@ -29,7 +29,7 @@ class ValidationError(Exception):
         }
         super(ValidationError, self).__init__(message, *args, **kwargs)
 
-    def get_errors(self):
+    def get_details(self):
         """Returns a list of error details."""
         return [self.details]
 

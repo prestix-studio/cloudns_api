@@ -93,7 +93,7 @@ def api(api_call):
         except ValidationError as e:
             result['success'] = False
             result['error'] = 'Validation error.'
-            result['validation_errors'] = e.get_errors()
+            result['validation_errors'] = e.get_details()
 
         # Catch Other Python errors
         except TypeError as e:
