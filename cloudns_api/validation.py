@@ -23,9 +23,15 @@ class ValidationError(Exception):
     """Exception thrown when a validation error has occured."""
     def __init__(self, fieldname, message, *args, **kwargs):
         """Initialize ValidationError with `fieldname` and `message` values."""
-        self.fieldname = fieldname
-        self.message = message
+        self.details = {
+            'fieldname': fieldname,
+            'message':   message,
+        }
         super(ValidationError, self).__init__(message, *args, **kwargs)
+
+    def get_errors(self):
+        """Returns a list of error details."""
+        return [self.details]
 
 
 def validate(value, fieldname, *args, **kwargs):
@@ -79,7 +85,6 @@ def is_email(value, fieldname):
         raise ValidationError(fieldname,
                             'Value must be a valid email.')
     return value
-
 
 
 # Set up validation functions dict

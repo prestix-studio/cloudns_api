@@ -12,8 +12,8 @@ Functional tests for cloudns-api's validation module.
 """
 
 
-from cloudns_api.api import ValidationError
-from cloudns_api.validation import is_domain_name, is_int, is_email
+from cloudns_api.validation import is_domain_name, is_int, is_email, validate
+from cloudns_api.validation import ValidationError
 from pytest import raises
 
 
@@ -28,12 +28,11 @@ def test_is_int_validates_integer_values():
     with raises(ValidationError) as exception:
         is_int(not_integer, 'test_field')
 
-    assert exception.value.fieldname == 'test_field'
-    assert exception.value.message == 'Value must be an integer.'
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == 'Value must be an integer.'
 
     with raises(ValidationError):
         is_int(also_not_integer, 'test_field')
-
 
 
 def test_is_int_validates_max_range():
@@ -47,8 +46,8 @@ def test_is_int_validates_max_range():
     with raises(ValidationError) as exception:
         is_int(too_big, 'test_field', max_value = 20)
 
-    assert exception.value.fieldname == 'test_field'
-    assert exception.value.message == 'Value must be less than 20.'
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == 'Value must be less than 20.'
 
 
 def test_is_int_validates_min_range():
@@ -61,8 +60,8 @@ def test_is_int_validates_min_range():
     with raises(ValidationError) as exception:
         is_int(too_small, 'test_field', min_value = 10)
 
-    assert exception.value.fieldname == 'test_field'
-    assert exception.value.message == 'Value must be greater than 10.'
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == 'Value must be greater than 10.'
 
 
 def test_is_domain_name_validates_domain_names():
@@ -80,8 +79,8 @@ def test_is_domain_name_validates_domain_names():
     with raises(ValidationError) as exception:
         is_domain_name(not_a_domain_name, 'test_domain_field')
 
-    assert exception.value.fieldname == 'test_domain_field'
-    assert exception.value.message == 'Value must be a valid domain name.'
+    assert exception.value.details['fieldname'] == 'test_domain_field'
+    assert exception.value.details['message'] == 'Value must be a valid domain name.'
 
     with raises(ValidationError) as exception:
         is_domain_name(also_not_a_domain_name, 'test_domain_field')

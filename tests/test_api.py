@@ -176,8 +176,8 @@ def test_api_decorator_responds_to_validation_error():
     result = test_api_call(json_object = True)
     assert result['success'] is False
     assert result['error'] == 'Validation error.'
-    assert result['validation_error']['field'] == 'the_field_name'
-    assert result['validation_error']['message'] == 'The field should be in this format.'
+    assert result['validation_errors'][0]['fieldname'] == 'the_field_name'
+    assert result['validation_errors'][0]['message'] == 'The field should be in this format.'
 
 
 def test_api_decorator_responds_to_authentication_error():
