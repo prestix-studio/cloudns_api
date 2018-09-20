@@ -51,7 +51,7 @@ def test_is_int_validates_integer_values():
     not_integer = '1'
     also_not_integer = 'abc'
 
-    assert is_int(integer, 'test_field') == integer
+    assert is_int(integer, 'test_field')
 
     with raises(ValidationError) as exception:
         is_int(not_integer, 'test_field')
@@ -69,7 +69,7 @@ def test_is_int_validates_max_range():
     just_right = 15
     too_big = 25
 
-    assert is_int(just_right, 'test_field', max_value = 20) == just_right
+    assert is_int(just_right, 'test_field', max_value = 20)
 
     with raises(ValidationError) as exception:
         is_int(too_big, 'test_field', max_value = 20)
@@ -83,7 +83,7 @@ def test_is_int_validates_min_range():
     just_right = 15
     too_small = 1
 
-    assert is_int(just_right, 'test_field', min_value = 10) == just_right
+    assert is_int(just_right, 'test_field', min_value = 10)
 
     with raises(ValidationError) as exception:
         is_int(too_small, 'test_field', min_value = 10)
@@ -101,8 +101,8 @@ def test_is_domain_name_validates_domain_names():
     not_a_domain_name = 'example@gmail.com'
     also_not_a_domain_name = 'http://example.com/'
 
-    assert is_domain_name(domain_name, 'test_domain_field') == domain_name
-    assert is_domain_name(also_a_domain_name, 'test_domain_field') == also_a_domain_name
+    assert is_domain_name(domain_name, 'test_domain_field')
+    assert is_domain_name(also_a_domain_name, 'test_domain_field')
 
     with raises(ValidationError) as exception:
         is_domain_name(not_a_domain_name, 'test_domain_field')
@@ -122,8 +122,8 @@ def test_is_email_validates_emails():
     not_an_email = 'example@@com'
     also_not_an_email = 'http://example.com/'
 
-    assert is_email(email, 'test_email') == email
-    assert is_email(also_an_email, 'test_email') == also_an_email
+    assert is_email(email, 'test_email')
+    assert is_email(also_an_email, 'test_email')
 
     with raises(ValidationError) as exception:
         is_email(not_an_email, 'test_email')
@@ -144,8 +144,8 @@ def test_is_record_type_validates_types():
     not_type = 'XM'
     also_not_type = 123
 
-    assert is_record_type(is_type, 'test_type') == is_type
-    assert is_record_type(also_type, 'test_type') == also_type
+    assert is_record_type(is_type, 'test_type')
+    assert is_record_type(also_type, 'test_type')
 
     with raises(ValidationError) as exception:
         is_record_type(not_type, 'test_type')
@@ -165,8 +165,8 @@ def test_is_ttl_validates_cloudns_ttls():
     not_ttl = 8701
     also_not_ttl = '14 Hours'
 
-    assert is_ttl(ttl, 'test_ttl') == ttl
-    assert is_ttl(also_ttl, 'test_ttl') == also_ttl
+    assert is_ttl(ttl, 'test_ttl')
+    assert is_ttl(also_ttl, 'test_ttl')
 
     with raises(ValidationError) as exception:
         is_ttl(not_ttl, 'test_ttl')
@@ -180,7 +180,7 @@ def test_is_required_validates_correctly():
     value = 'the value'
     no_value = ''
 
-    assert is_required(value, 'required') == value
+    assert is_required(value, 'required')
 
     with raises(ValidationError) as exception:
         is_required(no_value, 'required')
@@ -194,8 +194,8 @@ def test_is_api_bool_validates_correctly():
     not_bool = 8701
     also_not_bool = 'true'
 
-    assert is_api_bool(is_bool, 'test_bool') == 0
-    assert is_api_bool(also_bool, 'test_bool') == 1
+    assert is_api_bool(is_bool, 'test_bool')
+    assert is_api_bool(also_bool, 'test_bool')
 
     with raises(ValidationError) as exception:
         is_api_bool(not_bool, 'test_bool')
