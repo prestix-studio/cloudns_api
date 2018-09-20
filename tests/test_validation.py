@@ -14,7 +14,7 @@ Functional tests for cloudns-api's validation module.
 
 from cloudns_api.validation import batch_validate, check_for_validation_errors
 from cloudns_api.validation import is_domain_name, is_int, is_email
-from cloudns_api.validation import is_record_type, is_required, validate
+from cloudns_api.validation import is_record_type, is_required, is_ttl, validate
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
 
@@ -155,6 +155,24 @@ def test_is_record_type_validates_types():
 
     with raises(ValidationError) as exception:
         is_record_type(also_not_type, 'test_type')
+
+
+def test_is_ttl_validates_cloudns_ttls():
+    """Function is_ttl() validates if a value is a valid ClouDNS ttl."""
+    ttl = 86400
+    also_ttl = '12 Hours'
+
+    not_ttl = 8701
+    also_not_ttl = '14 Hours'
+
+    assert is_ttl(ttl, 'test_ttl')
+    assert is_ttl(also_ttl, 'test_ttl')
+
+    with raises(ValidationError) as exception:
+        is_ttl(not_ttl, 'test_ttl')
+
+    with raises(ValidationError) as exception:
+        is_ttl(also_not_ttl, 'test_ttl')
 
 
 def test_is_required_validates_correctly():

@@ -140,6 +140,40 @@ def is_record_type(value, fieldname, **kwargs):
     return value
 
 
+RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
+                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR' ]
+
+
+def is_ttl(value, fieldname, **kwargs):
+    """Returns true if value is a valid ClouDNS ttl. Otherwise, throws a
+    validation error."""
+    try:
+        if value.lower() not in TTL_STRINGS:
+            raise ValidationError(fieldname,
+                                'This field must be a valid ttl. ' + \
+                                '(1 minute, 5 minutes, 15 minutes, ' + \
+                                '30 minutes, 1 hour, 6 hours, 12 hours, ' + \
+                                '1 day, 2 days, 3 days, 1 week, 2 weeks, ' + \
+                                'or 1 month)')
+    # If value isn't a string, upper() throws AttributeError
+    except AttributeError:
+        if value not in TTLS:
+            raise ValidationError(fieldname,
+                                'This field must be a valid ttl. ' + \
+                                '(60, 300, 900, 1800, 3600, 21600, ' + \
+                                '43200, 86400, 172800, 259200, 604800, ' + \
+                                '1209600, or 2592000)')
+    return value
+
+
+TTL_STRINGS = ['1 minute', '5 minutes', '15 minutes', '30 minutes', '1 hour',
+               '6 hours', '12 hours', '1 day', '2 days', '3 days', '1 week',
+               '2 weeks', '1 month']
+
+TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
+        1209600, 2592000]
+
+
 def is_required(value, fieldname, **kwargs):
     """Returns true if there is some value provided. Otherwise, throws a
     validation error."""
@@ -147,10 +181,6 @@ def is_required(value, fieldname, **kwargs):
         raise ValidationError(fieldname,
                             'This field is required.')
     return value
-
-
-RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
-                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR' ]
 
 
 # Set up validation functions dict
@@ -165,5 +195,5 @@ validation_functions = {
     'refresh':       is_int,
     'required':      is_required,
     'type':          is_record_type,
-    'ttl':           is_int,
+    'ttl':           is_ttl,
 }
