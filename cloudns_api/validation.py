@@ -133,7 +133,7 @@ validation_functions = {
     'int':           is_int,
     'email':         is_email,
     'domain-name':   is_domain_name,
-    'admin-email':   is_email,
+    'admin-mail':    is_email,
     'primary-ns':    is_domain_name,
     'refresh':       is_int,
     'ttl':           is_int,
