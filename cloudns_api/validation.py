@@ -130,10 +130,10 @@ def is_email(value, fieldname, **kwargs):
 
 # Set up validation functions dict
 validation_functions = {
-    'int':           is_int,
-    'email':         is_email,
-    'domain-name':   is_domain_name,
     'admin-mail':    is_email,
+    'domain-name':   is_domain_name,
+    'email':         is_email,
+    'int':           is_int,
     'primary-ns':    is_domain_name,
     'refresh':       is_int,
     'ttl':           is_int,
