@@ -14,8 +14,6 @@ clouddns.api
 This module contains API utilities and preliminary parameters data structure.
 """
 
-from __future__ import absolute_import
-
 from .validation import ValidationError
 from json import dumps as to_json_string
 from os import environ

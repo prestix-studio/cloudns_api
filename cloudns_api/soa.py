@@ -15,8 +15,6 @@ This module contains API wrapper functions for listing and updating SOA
 records.
 """
 
-from __future__ import absolute_import
-
 from .api import api, get_auth_params
 from .validation import batch_validate, validate, ValidationError
 from requests import get, post

@@ -14,8 +14,6 @@ cloudns_api
 This package contains interface functions to make calls to the ClouDNS.net API.
 """
 
-from __future__ import absolute_import
-
 from . import api
 from . import soa
 

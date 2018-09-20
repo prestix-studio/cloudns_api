@@ -14,8 +14,6 @@ clouddns.validation
 This module contains functions to validate fields passed into the API.
 """
 
-from __future__ import absolute_import
-
 import re
 
 
