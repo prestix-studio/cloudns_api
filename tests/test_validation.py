@@ -167,10 +167,10 @@ def test_is_required_validates_correctly():
 def test_validate_function_uses_validation_functions_dict():
     """Function validate() uses validation_functions dict to validate
     values."""
-    ttl = 1234
+    integer = 1234
     domain = 'example.com'
 
-    assert validate(ttl, 'ttl')
+    assert validate(integer, 'integer')
     assert validate(domain, 'domain')
 
     with raises(ValidationError) as exception:

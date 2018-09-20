@@ -159,7 +159,7 @@ validation_functions = {
     'domain-name':   is_domain_name,
     'default-ttl':   is_int,
     'email':         is_email,
-    'int':           is_int,
+    'integer':       is_int,
     'primary-ns':    is_domain_name,
     'record':        is_required,
     'refresh':       is_int,
