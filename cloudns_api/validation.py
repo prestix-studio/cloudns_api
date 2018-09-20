@@ -72,7 +72,7 @@ def validate(value, fieldname, *args, **kwargs):
         if kwargs.get('optional', False) and not value:
             return value
         elif not value:
-            raise ValidationError(fieldname, 'Value is required.')
+            raise ValidationError(fieldname, 'This field is required.')
 
         if fieldname in validation_functions:
             return validation_functions[fieldname](value, fieldname, *args, **kwargs)
@@ -97,14 +97,14 @@ def is_int(value, fieldname, min_value = None, max_value = None, **kwargs):
     try:
         value += 0  # Try it to see if it is an integer
     except TypeError:
-        raise ValidationError(fieldname, 'Value must be an integer.')
+        raise ValidationError(fieldname, 'This field must be an integer.')
 
     if min_value and value < min_value:
         raise ValidationError(fieldname,
-                            'Value must be greater than ' + str(min_value) + '.')
+                            'This field must be greater than ' + str(min_value) + '.')
     if max_value and value > max_value:
         raise ValidationError(fieldname,
-                            'Value must be less than ' + str(max_value) + '.')
+                            'This field must be less than ' + str(max_value) + '.')
     return value
 
 
@@ -114,7 +114,7 @@ def is_domain_name(value, fieldname, **kwargs):
     if not re.match('^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
                     value):
         raise ValidationError(fieldname,
-                            'Value must be a valid domain name.')
+                            'This field must be a valid domain name.')
     return value
 
 
@@ -124,7 +124,7 @@ def is_email(value, fieldname, **kwargs):
     if not re.match('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
                     value):
         raise ValidationError(fieldname,
-                            'Value must be a valid email.')
+                            'This field must be a valid email.')
     return value
 
 

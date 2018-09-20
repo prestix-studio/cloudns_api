@@ -55,7 +55,7 @@ def test_is_int_validates_integer_values():
         is_int(not_integer, 'test_field')
 
     assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == 'Value must be an integer.'
+    assert exception.value.details['message'] == 'This field must be an integer.'
 
     with raises(ValidationError):
         is_int(also_not_integer, 'test_field')
@@ -73,7 +73,7 @@ def test_is_int_validates_max_range():
         is_int(too_big, 'test_field', max_value = 20)
 
     assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == 'Value must be less than 20.'
+    assert exception.value.details['message'] == 'This field must be less than 20.'
 
 
 def test_is_int_validates_min_range():
@@ -87,7 +87,7 @@ def test_is_int_validates_min_range():
         is_int(too_small, 'test_field', min_value = 10)
 
     assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == 'Value must be greater than 10.'
+    assert exception.value.details['message'] == 'This field must be greater than 10.'
 
 
 def test_is_domain_name_validates_domain_names():
@@ -106,7 +106,7 @@ def test_is_domain_name_validates_domain_names():
         is_domain_name(not_a_domain_name, 'test_domain_field')
 
     assert exception.value.details['fieldname'] == 'test_domain_field'
-    assert exception.value.details['message'] == 'Value must be a valid domain name.'
+    assert exception.value.details['message'] == 'This field must be a valid domain name.'
 
     with raises(ValidationError) as exception:
         is_domain_name(also_not_a_domain_name, 'test_domain_field')
@@ -127,7 +127,7 @@ def test_is_email_validates_emails():
         is_email(not_an_email, 'test_email')
 
     assert exception.value.details['fieldname'] == 'test_email'
-    assert exception.value.details['message'] == 'Value must be a valid email.'
+    assert exception.value.details['message'] == 'This field must be a valid email.'
 
     with raises(ValidationError) as exception:
         is_email(also_not_an_email, 'test_email')
