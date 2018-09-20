@@ -145,7 +145,6 @@ def is_record_type(value, fieldname, **kwargs):
                               'This field must be a valid domain record type.')
     return True
 
-
 RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
                 'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR' ]
 
@@ -161,7 +160,7 @@ def is_ttl(value, fieldname, **kwargs):
                                 '30 minutes, 1 hour, 6 hours, 12 hours, ' + \
                                 '1 day, 2 days, 3 days, 1 week, 2 weeks, ' + \
                                 'or 1 month)')
-    # If value isn't a string, upper() raises AttributeError
+    # If value isn't a string, lower() raises AttributeError
     except AttributeError:
         if value not in TTLS:
             raise ValidationError(fieldname,
@@ -170,7 +169,6 @@ def is_ttl(value, fieldname, **kwargs):
                                 '43200, 86400, 172800, 259200, 604800, ' + \
                                 '1209600, or 2592000)')
     return True
-
 
 TTL_STRINGS = ['1 minute', '5 minutes', '15 minutes', '30 minutes', '1 hour',
                '6 hours', '12 hours', '1 day', '2 days', '3 days', '1 week',
@@ -189,6 +187,40 @@ def is_redirect_type(value, fieldname, **kwargs):
     return True
 
 
+def is_algorithm(value, fieldname, **kwargs):
+    """Returns the value if it is a proper algorithm. Otherwise, raises a
+    validation error."""
+    try:
+        if value.upper() not in ALGORITHMS:
+            raise ValidationError(fieldname,
+                                  'This field must be RSA, DSA, ECDSA, or Ed25519.')
+    # If value isn't a string, upper() raises AttributeError
+    except AttributeError:
+        if value not in [1, 2, 3, 4]:
+            raise ValidationError(fieldname,
+                                  'This field must be RSA, DSA, ECDSA, or Ed25519.')
+    return True
+
+ALGORITHMS = ['RSA', 'DSA', 'ECDSA', 'ED25519']
+
+
+def is_fptype(value, fieldname, **kwargs):
+    """Returns the value if it is a proper fingerprint type. Otherwise, raises
+    a validation error."""
+    try:
+        if value.upper() not in FP_TYPES:
+            raise ValidationError(fieldname,
+                                'This field must be one of SHA-1 or SHA-256.')
+    # If value isn't a string, upper() raises AttributeError
+    except AttributeError:
+        if value not in [1, 2]:
+            raise ValidationError(fieldname,
+                                  'This field must be one of SHA-1 or SHA-256.')
+    return True
+
+FP_TYPES = ['SHA-1', 'SHA-256']
+
+
 def is_caa_flag(value, fieldname, **kwargs):
     """Returns the value if it is 0 or 128. Otherwise, raises a validation
     error."""
@@ -205,7 +237,7 @@ def is_caa_type(value, fieldname, **kwargs):
         if value.lower() not in CAA_TYPES:
             raise ValidationError(fieldname,
                                 'This field must be one of issue, issuewild, iodef.')
-    # If value isn't a string, upper() raises AttributeError
+    # If value isn't a string, lower() raises AttributeError
     except AttributeError:
         raise ValidationError(fieldname,
                               'This field must be one of issue, issuewild, iodef.')
@@ -240,6 +272,7 @@ def is_valid(value, fieldname, **kwargs):
 # Set up validation functions dict
 validation_functions = {
     'admin-mail':       is_email,
+    'algorithm':        is_algorithm,
     'bool':             is_api_bool,
     'caa_flag':         is_caa_flag,
     'caa_type':         is_caa_type,
@@ -247,6 +280,7 @@ validation_functions = {
     'default-ttl':      is_int,
     'domain-name':      is_domain_name,
     'email':            is_email,
+    'fptype':           is_fptype,
     'frame':            is_api_bool,
     'frame-title':      is_valid,
     'geodns-location':  is_int,

@@ -13,6 +13,7 @@ Functional tests for cloudns-api's validation module.
 
 
 from cloudns_api.validation import batch_validate, check_for_validation_errors
+from cloudns_api.validation import is_algorithm, is_fptype
 from cloudns_api.validation import is_caa_flag, is_caa_type, is_domain_name
 from cloudns_api.validation import is_int, is_email, is_api_bool, is_redirect_type
 from cloudns_api.validation import is_record_type, is_required, is_ttl, validate
@@ -187,6 +188,40 @@ def test_is_redirect_type_validates_correctly():
 
     with raises(ValidationError) as exception:
         is_redirect_type(not_redirect, 'redirect')
+
+
+def test_is_algorithm_validates_correctly():
+    """Function is_algorithm() validates appropriately."""
+    is_an_algorithm = 1
+    also_is_an_algoritm = 'rsa'
+    not_algorithm = 'vcr'
+    also_not_algorithm = 10
+
+    assert is_algorithm(is_an_algorithm, 'algorithm')
+    assert is_algorithm(also_is_an_algoritm, 'algorithm')
+
+    with raises(ValidationError) as exception:
+        is_algorithm(not_algorithm, 'algorithm')
+
+    with raises(ValidationError) as exception:
+        is_algorithm(also_not_algorithm, 'algorithm')
+
+
+def test_is_fptype_validates_correctly():
+    """Function is_fptype() validates appropriately."""
+    is_an_fptype = 2
+    also_an_fptype = 'Sha-256'
+    not_an_fptype = 100
+    also_not_an_fptype = 'sha-3'
+
+    assert is_fptype(is_an_fptype, 'fptype')
+    assert is_fptype(also_an_fptype, 'fptype')
+
+    with raises(ValidationError) as exception:
+        is_fptype(not_an_fptype, 'fptype')
+
+    with raises(ValidationError) as exception:
+        is_fptype(also_not_an_fptype, 'fptype')
 
 
 def test_is_caa_flag_validates_correctly():
