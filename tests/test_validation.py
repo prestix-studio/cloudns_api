@@ -17,6 +17,14 @@ from cloudns_api.validation import ValidationError
 from pytest import raises
 
 
+def test_validation_error_exception_can_return_error_details():
+    validation_error = ValidationError('name-of-field', 'The error message.')
+
+    details = validation_error.get_details()
+    assert details[0]['fieldname'] == 'name-of-field'
+    assert details[0]['message'] == 'The error message.'
+
+
 def test_is_int_validates_integer_values():
     """Function is_int() validates if a value is an integer or not."""
     integer = 1
