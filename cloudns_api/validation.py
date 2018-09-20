@@ -140,6 +140,15 @@ def is_record_type(value, fieldname, **kwargs):
     return value
 
 
+def is_required(value, fieldname, **kwargs):
+    """Returns true if there is some value provided. Otherwise, throws a
+    validation error."""
+    if not value:
+        raise ValidationError(fieldname,
+                            'This field is required.')
+    return value
+
+
 RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
                 'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR' ]
 
@@ -152,7 +161,9 @@ validation_functions = {
     'email':         is_email,
     'int':           is_int,
     'primary-ns':    is_domain_name,
+    'record':        is_required,
     'refresh':       is_int,
+    'required':      is_required,
     'type':          is_record_type,
     'ttl':           is_int,
 }
