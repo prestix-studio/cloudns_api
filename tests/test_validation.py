@@ -26,6 +26,7 @@ def test_validation_error_exception_can_return_error_details():
     assert details[0]['fieldname'] == 'name-of-field'
     assert details[0]['message'] == 'The error message.'
 
+
 def test_validation_errors_batch_returns_all_error_details():
     error_1 = ValidationError('first-field', 'The first error message.')
     error_2 = ValidationError('second-field', 'The second error message.')
