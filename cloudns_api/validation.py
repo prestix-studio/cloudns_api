@@ -90,8 +90,8 @@ def batch_validate(value, fieldname, *args, **kwargs):
 
 
 def is_int(value, fieldname, min_value = None, max_value = None, **kwargs):
-    """Returns true if value is an integer (within min_value/max_value
-    range); otherwise, throws a validation error."""
+    """Returns the value if value is an integer (within min_value/max_value
+    range); otherwise, raises a validation error."""
     try:
         value += 0  # Try it to see if it is an integer
     except TypeError:
@@ -107,7 +107,7 @@ def is_int(value, fieldname, min_value = None, max_value = None, **kwargs):
 
 
 def is_domain_name(value, fieldname, **kwargs):
-    """Returns true if value is a valid domain name. Otherwise, throws a
+    """Returns the value if value is a valid domain name. Otherwise, raises a
     validation error."""
     if not re.match('^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
                     value):
@@ -117,7 +117,7 @@ def is_domain_name(value, fieldname, **kwargs):
 
 
 def is_email(value, fieldname, **kwargs):
-    """Returns true if value is a valid domain name. Otherwise, throws a
+    """Returns the value if value is a valid domain name. Otherwise, raises a
     validation error."""
     if not re.match('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
                     value):
@@ -127,13 +127,13 @@ def is_email(value, fieldname, **kwargs):
 
 
 def is_record_type(value, fieldname, **kwargs):
-    """Returns true if value is a valid domain recordy type. Otherwise, throws
-    a validation error."""
+    """Returns the value if value is a valid domain recordy type. Otherwise,
+    raises a validation error."""
     try:
         if value.upper() not in RECORD_TYPES:
             raise ValidationError(fieldname,
                                 'This field must be a valid domain record type.')
-    # If value isn't a string, upper() throws AttributeError
+    # If value isn't a string, upper() raises AttributeError
     except AttributeError:
         raise ValidationError(fieldname,
                               'This field must be a valid domain record type.')
@@ -145,7 +145,7 @@ RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
 
 
 def is_ttl(value, fieldname, **kwargs):
-    """Returns true if value is a valid ClouDNS ttl. Otherwise, throws a
+    """Returns the value if value is a valid ClouDNS ttl. Otherwise, raises a
     validation error."""
     try:
         if value.lower() not in TTL_STRINGS:
@@ -155,7 +155,7 @@ def is_ttl(value, fieldname, **kwargs):
                                 '30 minutes, 1 hour, 6 hours, 12 hours, ' + \
                                 '1 day, 2 days, 3 days, 1 week, 2 weeks, ' + \
                                 'or 1 month)')
-    # If value isn't a string, upper() throws AttributeError
+    # If value isn't a string, upper() raises AttributeError
     except AttributeError:
         if value not in TTLS:
             raise ValidationError(fieldname,
@@ -175,7 +175,7 @@ TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
 
 
 def is_required(value, fieldname, **kwargs):
-    """Returns true if there is some value provided. Otherwise, throws a
+    """Returns the value if there is some value provided. Otherwise, raises a
     validation error."""
     if not value:
         raise ValidationError(fieldname,
@@ -184,7 +184,7 @@ def is_required(value, fieldname, **kwargs):
 
 
 def is_api_bool(value, fieldname, **kwargs):
-    """Returns true if value is a 0 or 1. Otherwise, throws a validation
+    """Returns the value if value is a 0 or 1. Otherwise, raises a validation
     error."""
     if value != 0 and value != 1:
         raise ValidationError(fieldname,
