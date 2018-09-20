@@ -132,6 +132,7 @@ def is_email(value, fieldname, **kwargs):
 validation_functions = {
     'admin-mail':    is_email,
     'domain-name':   is_domain_name,
+    'default-ttl':   is_int,
     'email':         is_email,
     'int':           is_int,
     'primary-ns':    is_domain_name,
