@@ -13,7 +13,7 @@ Functional tests for cloudns-api's validation module.
 
 
 from cloudns_api.validation import is_domain_name, is_int, is_email, validate
-from cloudns_api.validation import ValidationError
+from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
 
 
@@ -23,6 +23,23 @@ def test_validation_error_exception_can_return_error_details():
     details = validation_error.get_details()
     assert details[0]['fieldname'] == 'name-of-field'
     assert details[0]['message'] == 'The error message.'
+
+def test_validation_errors_batch_returns_all_error_details():
+    error_1 = ValidationError('first-field', 'The first error message.')
+    error_2 = ValidationError('second-field', 'The second error message.')
+    error_3 = ValidationError('third-field', 'The third error message.')
+
+    errors = [error_1, error_2, error_3]
+
+    validation_errors_batch = ValidationErrorsBatch(errors)
+    details = validation_errors_batch.get_details()
+
+    assert details[0]['fieldname'] == 'first-field'
+    assert details[0]['message'] == 'The first error message.'
+    assert details[1]['fieldname'] == 'second-field'
+    assert details[1]['message'] == 'The second error message.'
+    assert details[2]['fieldname'] == 'third-field'
+    assert details[2]['message'] == 'The third error message.'
 
 
 def test_is_int_validates_integer_values():

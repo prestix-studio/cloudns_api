@@ -34,6 +34,18 @@ class ValidationError(Exception):
         return [self.details]
 
 
+class ValidationErrorsBatch(ValidationError):
+    """Exception thrown when multiple validation errors have occured."""
+    def __init__(self, validation_errors, *args, **kwargs):
+        """Initialize ValidationError with `validation_errors` list."""
+        self.validation_errors = validation_errors
+        super(ValidationError, self).__init__('Validation errors occured.', *args, **kwargs)
+
+    def get_details(self):
+        """Returns a list of error details."""
+        return [error.details for error in self.validation_errors]
+
+
 def validate(value, fieldname, *args, **kwargs):
     """Validates a value for a particular fieldtype.
     Returns a value if it is valid; raises an error otherwise.
