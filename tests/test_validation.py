@@ -13,8 +13,8 @@ Functional tests for cloudns-api's validation module.
 
 
 from cloudns_api.validation import batch_validate, check_for_validation_errors
-from cloudns_api.validation import is_caa_flag, is_caa_type
-from cloudns_api.validation import is_domain_name, is_int, is_email, is_api_bool
+from cloudns_api.validation import is_caa_flag, is_caa_type, is_domain_name
+from cloudns_api.validation import is_int, is_email, is_api_bool, is_redirect_type
 from cloudns_api.validation import is_record_type, is_required, is_ttl, validate
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
@@ -174,6 +174,19 @@ def test_is_ttl_validates_cloudns_ttls():
 
     with raises(ValidationError) as exception:
         is_ttl(also_not_ttl, 'test_ttl')
+
+
+def test_is_redirect_type_validates_correctly():
+    """Function is_redirect_type() validates true for 301 and 302."""
+    is_redirect = 301
+    also_redirect = 302
+    not_redirect = 1
+
+    assert is_redirect_type(is_redirect, 'redirect')
+    assert is_redirect_type(also_redirect, 'redirect')
+
+    with raises(ValidationError) as exception:
+        is_redirect_type(not_redirect, 'redirect')
 
 
 def test_is_caa_flag_validates_correctly():

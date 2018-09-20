@@ -180,6 +180,15 @@ TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
         1209600, 2592000]
 
 
+def is_redirect_type(value, fieldname, **kwargs):
+    """Returns the value if it is 301 or 302. Otherwise, raises a validation
+    error."""
+    if value != 301 and value != 302:
+        raise ValidationError(fieldname,
+                            'This field must be 301 (permanent) or 302 (temporary).')
+    return True
+
+
 def is_caa_flag(value, fieldname, **kwargs):
     """Returns the value if it is 0 or 128. Otherwise, raises a validation
     error."""
@@ -247,6 +256,7 @@ validation_functions = {
     'primary-ns':       is_domain_name,
     'priority':         is_int,
     'record':           is_required,
+    'redirect-type':    is_redirect_type,
     'refresh':          is_int,
     'required':         is_required,
     'save-path':        is_api_bool,
