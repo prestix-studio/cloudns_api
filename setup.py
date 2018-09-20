@@ -43,7 +43,7 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     packages = find_packages(),
-    install_requires = [],
+    install_requires = ['requests'],
     test_requires = ['pytest>=2.8.0', 'mock'],
     package_data = { '' : ['LICENSE'], },
     entry_points = { },
