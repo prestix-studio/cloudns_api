@@ -46,6 +46,17 @@ class ValidationErrorsBatch(ValidationError):
         return [error.details for error in self.validation_errors]
 
 
+# Global value: Only use this in check_for_validation_errors and validate.
+_batched_validation_errors = {}
+
+
+def check_for_validation_errors():
+    """Checks for batched validation errors and raises a ValidationErrorsBatch
+    if any are found. Otherwise, does nothing."""
+    if len(_batched_validation_errors) > 0:
+        raise ValidationErrorsBatch(_batched_validation_errors)
+
+
 def validate(value, fieldname, *args, **kwargs):
     """Validates a value for a particular fieldtype.
     Returns a value if it is valid; raises an error otherwise.
@@ -54,12 +65,28 @@ def validate(value, fieldname, *args, **kwargs):
     :param fieldname: string, the fieldname to validate (determines the type of
         validation to use)
     :param optional: bool, (kwarg) if True, accept None as a valid value
+    :param batch: bool, (kwarg) if True, batches errors for later processing
     """
-    if optional and not value:
-        return None
-    if fieldname in validation_functions:
-        return validation_functions[fieldname](value, fieldname, *args, **kwargs)
-    return value
+    try:
+        if kwargs.get('optional', False) and not value:
+            return value
+        elif not value:
+            raise ValidationError(fieldname, 'Value is required.')
+
+        if fieldname in validation_functions:
+            return validation_functions[fieldname](value, fieldname, *args, **kwargs)
+        return value
+
+    except ValidationError as e:
+        if kwargs.get('batch', False):
+            _bached_validation_errors.append(e)
+        else:
+            raise e
+
+
+def batch_validate(value, fieldname, *args, **kwargs):
+    """Helpful wrapper around validate with batch flag set to True."""
+    return validate(value, fieldname, *args, batch = True, **kwargs)
 
 
 def is_int(value, fieldname, min_value = None, max_value = None):
