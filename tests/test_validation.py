@@ -178,8 +178,12 @@ def test_is_ttl_validates_cloudns_ttls():
 def test_is_required_validates_correctly():
     """Function is_required() validates if any value is provided."""
     value = 'the value'
+    no_value = ''
 
     assert is_required(value, 'required') == value
+
+    with raises(ValidationError) as exception:
+        is_required(no_value, 'required')
 
 
 def test_is_api_bool_validates_correctly():
