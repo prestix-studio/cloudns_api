@@ -72,9 +72,15 @@ def validate(value, fieldname, *args, **kwargs):
         elif not value:
             raise ValidationError(fieldname, 'This field is required.')
 
-        if fieldname in validation_functions:
-            return validation_functions[fieldname](value, fieldname, *args, **kwargs)
-        return value
+        if fieldname not in validation_functions:
+            return value
+
+        if validation_functions[fieldname](value, fieldname, *args, **kwargs):
+            return value
+
+        # If for some reason the validation fails, but no error was raised,
+        # raise one here. This should hopefully never happen
+        raise ValidationException('Unexpected validation error.')
 
     except ValidationError as e:
         if kwargs.get('batch', False):
@@ -103,7 +109,7 @@ def is_int(value, fieldname, min_value = None, max_value = None, **kwargs):
     if max_value and value > max_value:
         raise ValidationError(fieldname,
                             'This field must be less than ' + str(max_value) + '.')
-    return value
+    return True
 
 
 def is_domain_name(value, fieldname, **kwargs):
@@ -113,7 +119,7 @@ def is_domain_name(value, fieldname, **kwargs):
                     value):
         raise ValidationError(fieldname,
                             'This field must be a valid domain name.')
-    return value
+    return True
 
 
 def is_email(value, fieldname, **kwargs):
@@ -123,7 +129,7 @@ def is_email(value, fieldname, **kwargs):
                     value):
         raise ValidationError(fieldname,
                             'This field must be a valid email.')
-    return value
+    return True
 
 
 def is_record_type(value, fieldname, **kwargs):
@@ -137,7 +143,7 @@ def is_record_type(value, fieldname, **kwargs):
     except AttributeError:
         raise ValidationError(fieldname,
                               'This field must be a valid domain record type.')
-    return value
+    return True
 
 
 RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
@@ -163,7 +169,7 @@ def is_ttl(value, fieldname, **kwargs):
                                 '(60, 300, 900, 1800, 3600, 21600, ' + \
                                 '43200, 86400, 172800, 259200, 604800, ' + \
                                 '1209600, or 2592000)')
-    return value
+    return True
 
 
 TTL_STRINGS = ['1 minute', '5 minutes', '15 minutes', '30 minutes', '1 hour',
@@ -180,7 +186,7 @@ def is_required(value, fieldname, **kwargs):
     if not value:
         raise ValidationError(fieldname,
                             'This field is required.')
-    return value
+    return True
 
 
 def is_api_bool(value, fieldname, **kwargs):
@@ -189,12 +195,12 @@ def is_api_bool(value, fieldname, **kwargs):
     if value != 0 and value != 1:
         raise ValidationError(fieldname,
                             'This field must be 0 or 1.')
-    return value
+    return True
 
 
 def is_valid(value, fieldname, **kwargs):
     """Returns the value assuming it's valid."""
-    return value
+    return True
 
 
 # Set up validation functions dict
