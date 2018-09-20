@@ -180,6 +180,31 @@ TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
         1209600, 2592000]
 
 
+def is_caa_flag(value, fieldname, **kwargs):
+    """Returns the value if it is 0 or 128. Otherwise, raises a validation
+    error."""
+    if value != 0 and value != 128:
+        raise ValidationError(fieldname,
+                            'This field must be 0 (non-critical) or 128 (critical).')
+    return True
+
+
+def is_caa_type(value, fieldname, **kwargs):
+    """Returns the value if value is a caa type. Otherwise, raises a validation
+    error."""
+    try:
+        if value.lower() not in CAA_TYPES:
+            raise ValidationError(fieldname,
+                                'This field must be one of issue, issuewild, iodef.')
+    # If value isn't a string, upper() raises AttributeError
+    except AttributeError:
+        raise ValidationError(fieldname,
+                              'This field must be one of issue, issuewild, iodef.')
+    return True
+
+CAA_TYPES = ['issue', 'issuewild', 'iodef']
+
+
 def is_required(value, fieldname, **kwargs):
     """Returns the value if there is some value provided. Otherwise, raises a
     validation error."""
@@ -205,28 +230,29 @@ def is_valid(value, fieldname, **kwargs):
 
 # Set up validation functions dict
 validation_functions = {
-    'admin-mail':    is_email,
-    'bool':          is_api_bool,
-    'caa-flag':      is_caa_flag,
-    'caa-type':      is_caa_type,
-    'caa-value':     is_valid,
-    'default-ttl':   is_int,
-    'domain-name':   is_domain_name,
-    'email':         is_email,
-    'frame':         is_api_bool,
-    'frame_title':   is_valid,
-    'integer':       is_int,
-    'mail':          is_email,
-    'port':          is_int,
-    'primary-ns':    is_domain_name,
-    'priority':      is_int,
-    'record':        is_required,
-    'refresh':       is_int,
-    'required':      is_required,
-    'save-path':     is_api_bool,
-    'status':        is_api_bool,
-    'ttl':           is_ttl,
-    'txt':           is_domain_name,
-    'type':          is_record_type,
-    'weight':        is_int,
+    'admin-mail':       is_email,
+    'bool':             is_api_bool,
+    'caa-flag':         is_caa_flag,
+    'caa-type':         is_caa_type,
+    'caa-value':        is_valid,
+    'default-ttl':      is_int,
+    'domain-name':      is_domain_name,
+    'email':            is_email,
+    'frame':            is_api_bool,
+    'frame_title':      is_valid,
+    'geodns-location':  is_int,
+    'integer':          is_int,
+    'mail':             is_email,
+    'port':             is_int,
+    'primary-ns':       is_domain_name,
+    'priority':         is_int,
+    'record':           is_required,
+    'refresh':          is_int,
+    'required':         is_required,
+    'save-path':        is_api_bool,
+    'status':           is_api_bool,
+    'ttl':              is_ttl,
+    'txt':              is_domain_name,
+    'type':             is_record_type,
+    'weight':           is_int,
 }

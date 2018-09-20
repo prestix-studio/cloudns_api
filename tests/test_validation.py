@@ -13,6 +13,7 @@ Functional tests for cloudns-api's validation module.
 
 
 from cloudns_api.validation import batch_validate, check_for_validation_errors
+from cloudns_api.validation import is_caa_flag, is_caa_type
 from cloudns_api.validation import is_domain_name, is_int, is_email, is_api_bool
 from cloudns_api.validation import is_record_type, is_required, is_ttl, validate
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
@@ -173,6 +174,30 @@ def test_is_ttl_validates_cloudns_ttls():
 
     with raises(ValidationError) as exception:
         is_ttl(also_not_ttl, 'test_ttl')
+
+
+def test_is_caa_flag_validates_correctly():
+    """Function is_caa_flag() validates true for 0 and 128."""
+    is_flag = 0
+    also_flag = 128
+    not_flag = 1
+
+    assert is_caa_flag(is_flag, 'caa_flag')
+    assert is_caa_flag(also_flag, 'caa_flag')
+
+    with raises(ValidationError) as exception:
+        is_caa_flag(not_flag, 'caa_flag')
+
+
+def test_is_caa_type_validates_correctly():
+    """Function is_caa_type() validates true for 0 and 128."""
+    is_type = 'issuewild'
+    not_type = 'abc'
+
+    assert is_caa_type(is_type, 'caa_type')
+
+    with raises(ValidationError) as exception:
+        is_caa_type(not_type, 'caa_type')
 
 
 def test_is_required_validates_correctly():
