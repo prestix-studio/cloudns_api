@@ -23,7 +23,7 @@ setup(
     description = 'A python interface to the ClouDNS.net API',
     long_description = README,
     url = 'https://github.com/hbradleyiii/cloudns_api',
-    download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.1.tar.gz',
+    download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.2.tar.gz',
     author = 'Harold Bradley III',
     author_email = 'harold@bradleystudio.net',
     license = 'MIT License',
