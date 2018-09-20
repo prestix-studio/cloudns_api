@@ -19,11 +19,11 @@ HERE = path.abspath(path.dirname(__file__))
 
 setup(
     name = 'cloudns_api',
-    version = '0.2',
+    version = '0.3',
     description = 'A python interface to the ClouDNS.net API',
     long_description = README,
     url = 'https://github.com/hbradleyiii/cloudns_api',
-    download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.2.tar.gz',
+    download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.3.tar.gz',
     author = 'Harold Bradley III',
     author_email = 'harold@bradleystudio.net',
     license = 'MIT License',
