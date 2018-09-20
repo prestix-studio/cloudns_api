@@ -192,6 +192,11 @@ def is_api_bool(value, fieldname, **kwargs):
     return value
 
 
+def is_valid(value, fieldname, **kwargs):
+    """Returns the value assuming it's valid."""
+    return value
+
+
 # Set up validation functions dict
 validation_functions = {
     'admin-mail':    is_email,
