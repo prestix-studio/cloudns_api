@@ -125,8 +125,8 @@ def test_is_email_validates_emails():
     with raises(ValidationError) as exception:
         is_email(not_an_email, 'test_email')
 
-    assert exception.value.fieldname == 'test_email'
-    assert exception.value.message == 'Value must be a valid email.'
+    assert exception.value.details['fieldname'] == 'test_email'
+    assert exception.value.details['message'] == 'Value must be a valid email.'
 
     with raises(ValidationError) as exception:
         is_email(also_not_an_email, 'test_email')
