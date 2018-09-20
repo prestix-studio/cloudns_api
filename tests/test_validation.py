@@ -12,6 +12,7 @@ Functional tests for cloudns-api's validation module.
 """
 
 
+from cloudns_api.validation import batch_validate, check_for_validation_errors
 from cloudns_api.validation import is_domain_name, is_int, is_email, validate
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
@@ -130,3 +131,55 @@ def test_is_email_validates_emails():
 
     with raises(ValidationError) as exception:
         is_email(also_not_an_email, 'test_email')
+
+
+def test_validate_function_uses_validation_functions_dict():
+    """Function validate() uses validation_functions dict to validate
+    values."""
+    ttl = 1234
+    domain = 'example.com'
+
+    assert validate(ttl, 'ttl')
+    assert validate(domain, 'domain')
+
+    with raises(ValidationError) as exception:
+        validate(domain, 'ttl')
+
+
+def test_validate_function_allows_for_optional_fields():
+    """Function validate() allows for optional fields."""
+    optional = None
+
+    # validate domain none, empty string, is optional a kwarg?
+    assert None == validate(optional, 'domain', optional = True)
+
+    with raises(ValidationError) as exception:
+        validate(optional, 'domain')
+
+
+def test_validate_function_still_checks_given_optional_fields():
+    """Function is_email() validates if a value is a valid email."""
+    optional_int = 'abcd'
+
+    with raises(ValidationError) as exception:
+        validate(optional_int, 'ttl')
+
+
+def test_batch_validate_batches_validation_errors():
+    """Function batch_validate() batches (holds) validation errors until
+    check_for_validation_errors() is called."""
+
+    not_an_email = 'example@@com'
+    not_an_int = 'abcd'
+    not_a_domain = '/domain/'
+
+    batch_validate(not_an_email, 'email')
+    batch_validate(not_an_int, 'int')
+    batch_validate(not_a_domain, 'domain-name')
+
+    with raises(ValidationError) as exception:
+        check_for_validation_errors()
+
+    # It can be caught by both exception handlers
+    with raises(ValidationErrorsBatch) as exception:
+        check_for_validation_errors()

@@ -47,12 +47,13 @@ class ValidationErrorsBatch(ValidationError):
 
 
 # Global value: Only use this in check_for_validation_errors and validate.
-_batched_validation_errors = {}
+_batched_validation_errors = []
 
 
 def check_for_validation_errors():
     """Checks for batched validation errors and raises a ValidationErrorsBatch
     if any are found. Otherwise, does nothing."""
+    global _batched_validation_errors
     if len(_batched_validation_errors) > 0:
         raise ValidationErrorsBatch(_batched_validation_errors)
 
@@ -79,7 +80,8 @@ def validate(value, fieldname, *args, **kwargs):
 
     except ValidationError as e:
         if kwargs.get('batch', False):
-            _bached_validation_errors.append(e)
+            global _batched_validation_errors
+            _batched_validation_errors.append(e)
         else:
             raise e
 
@@ -89,7 +91,7 @@ def batch_validate(value, fieldname, *args, **kwargs):
     return validate(value, fieldname, *args, batch = True, **kwargs)
 
 
-def is_int(value, fieldname, min_value = None, max_value = None):
+def is_int(value, fieldname, min_value = None, max_value = None, **kwargs):
     """Returns true if value is an integer (within min_value/max_value
     range); otherwise, throws a validation error."""
     try:
@@ -106,7 +108,7 @@ def is_int(value, fieldname, min_value = None, max_value = None):
     return value
 
 
-def is_domain_name(value, fieldname):
+def is_domain_name(value, fieldname, **kwargs):
     """Returns true if value is a valid domain name. Otherwise, throws a
     validation error."""
     if not re.match('^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
@@ -116,7 +118,7 @@ def is_domain_name(value, fieldname):
     return value
 
 
-def is_email(value, fieldname):
+def is_email(value, fieldname, **kwargs):
     """Returns true if value is a valid domain name. Otherwise, throws a
     validation error."""
     if not re.match('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
