@@ -183,6 +183,15 @@ def is_required(value, fieldname, **kwargs):
     return value
 
 
+def is_api_bool(value, fieldname, **kwargs):
+    """Returns true if value is a 0 or 1. Otherwise, throws a validation
+    error."""
+    if value != 0 and value != 1:
+        raise ValidationError(fieldname,
+                            'This field must be 0 or 1.')
+    return value
+
+
 # Set up validation functions dict
 validation_functions = {
     'admin-mail':    is_email,

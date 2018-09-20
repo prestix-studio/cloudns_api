@@ -13,7 +13,7 @@ Functional tests for cloudns-api's validation module.
 
 
 from cloudns_api.validation import batch_validate, check_for_validation_errors
-from cloudns_api.validation import is_domain_name, is_int, is_email
+from cloudns_api.validation import is_domain_name, is_int, is_email, is_api_bool
 from cloudns_api.validation import is_record_type, is_required, is_ttl, validate
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
@@ -180,6 +180,24 @@ def test_is_required_validates_correctly():
     value = 'the value'
 
     assert is_required(value, 'required')
+
+
+def test_is_api_bool_validates_correctly():
+    """Function is_required() validates if any value is provided."""
+    is_bool = 0
+    also_bool = 1
+
+    not_bool = 8701
+    also_not_bool = 'true'
+
+    assert is_api_bool(is_bool, 'test_bool') == 0
+    assert is_api_bool(also_bool, 'test_bool') == 1
+
+    with raises(ValidationError) as exception:
+        is_api_bool(not_bool, 'test_bool')
+
+    with raises(ValidationError) as exception:
+        is_api_bool(also_not_bool, 'test_bool')
 
 
 def test_validate_function_uses_validation_functions_dict():
