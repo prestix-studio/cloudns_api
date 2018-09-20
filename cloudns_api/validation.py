@@ -126,6 +126,24 @@ def is_email(value, fieldname, **kwargs):
     return value
 
 
+def is_record_type(value, fieldname, **kwargs):
+    """Returns true if value is a valid domain recordy type. Otherwise, throws
+    a validation error."""
+    try:
+        if value.upper() not in RECORD_TYPES:
+            raise ValidationError(fieldname,
+                                'This field must be a valid domain record type.')
+    # If value isn't a string, upper() throws AttributeError
+    except AttributeError:
+        raise ValidationError(fieldname,
+                              'This field must be a valid domain record type.')
+    return value
+
+
+RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
+                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR' ]
+
+
 # Set up validation functions dict
 validation_functions = {
     'admin-mail':    is_email,
@@ -135,5 +153,6 @@ validation_functions = {
     'int':           is_int,
     'primary-ns':    is_domain_name,
     'refresh':       is_int,
+    'type':          is_record_type,
     'ttl':           is_int,
 }

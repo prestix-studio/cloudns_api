@@ -13,7 +13,8 @@ Functional tests for cloudns-api's validation module.
 
 
 from cloudns_api.validation import batch_validate, check_for_validation_errors
-from cloudns_api.validation import is_domain_name, is_int, is_email, validate
+from cloudns_api.validation import is_domain_name, is_int, is_email
+from cloudns_api.validation import is_record_type, validate
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
 
@@ -131,6 +132,28 @@ def test_is_email_validates_emails():
 
     with raises(ValidationError) as exception:
         is_email(also_not_an_email, 'test_email')
+
+
+def test_is_record_type_validates_types():
+    """Function is_record_type() validates if a value is a valid domain record
+    type."""
+    is_type = 'Mx'
+    also_type = 'aaaa'
+
+    not_type = 'XM'
+    also_not_type = 123
+
+    assert is_record_type(is_type, 'test_type')
+    assert is_record_type(also_type, 'test_type')
+
+    with raises(ValidationError) as exception:
+        is_record_type(not_type, 'test_type')
+
+    assert exception.value.details['fieldname'] == 'test_type'
+    assert exception.value.details['message'] == 'This field must be a valid domain record type.'
+
+    with raises(ValidationError) as exception:
+        is_record_type(also_not_type, 'test_type')
 
 
 def test_validate_function_uses_validation_functions_dict():

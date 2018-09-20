@@ -31,9 +31,6 @@ API_AUTH_PASSWORD = environ.get('CLOUDNS_AUTH_PASSWORD')
 if not API_AUTH_PASSWORD:
     raise EnvironmentError('Environment variable "CLOUDNS_AUTH_PASSWORD" not set.')
 
-RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
-                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR' ]
-
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
