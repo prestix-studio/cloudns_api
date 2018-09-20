@@ -70,4 +70,6 @@ def update(domain_name, primary_ns, admin_mail, refresh, retry, expire,
     params['default-ttl'] = batch_validate(default_ttl, 'default-ttl',
                                            min_value = 60, max_value = 2419200)
 
+    check_for_validation_errors()
+
     return post(url, params=params)
