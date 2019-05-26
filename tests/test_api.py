@@ -17,11 +17,13 @@ from pytest import fixture
 from requests import exceptions as request_exceptions
 
 
+# Save original environment variables
+orig_clouds_auth_id = environ.get('CLOUDNS_AUTH_ID')
+orig_clouds_auth_password = environ.get('CLOUDNS_AUTH_PASSWORD')
+
 # Set environment vars to test vars
 environ['CLOUDNS_AUTH_ID'] = 'user_id_123'
 environ['CLOUDNS_AUTH_PASSWORD'] = 'user_password_123'
-orig_clouds_auth_id = environ.get('CLOUDNS_AUTH_ID')
-orig_clouds_auth_password = environ.get('CLOUDNS_AUTH_PASSWORD')
 
 # Import only after changing environment variables to test vars
 from cloudns_api import api
