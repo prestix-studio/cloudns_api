@@ -60,11 +60,11 @@ class Parameters(object):
         errors = []
 
         for fieldname, options in self._params_with_options.items():
-            value = options['value'] if 'value' in options else options
-            optional = options['optional'] if 'optional' in options else False
-
             try:
-                validate(fieldname, value, options)
+                if 'value' in options:
+                    validate(fieldname, options.pop('value'), **options)
+                else:
+                    validate(fieldname, options)
             except ValidationError as e:
                 errors.append(e)
 

@@ -81,7 +81,7 @@ def test_parameters_can_be_converted_to_dict():
     }
 
 
-def test_parameters_can_be_validated():
+def test_parameters_can_be_validated_with_validation_options():
     """Parameters object can be validated."""
     params = Parameters({
         'domain-name' : {
@@ -89,6 +89,13 @@ def test_parameters_can_be_validated():
             'optional' : False,
         },
     }, validate=False)
+
+    with raises(ValidationError) as exception:
+        params.validate()
+
+def test_parameters_can_be_validated_without_validation_options():
+    """Parameters object can be validated without validation options."""
+    params = Parameters({'domain-name' : ''}, validate=False)
 
     with raises(ValidationError) as exception:
         params.validate()
