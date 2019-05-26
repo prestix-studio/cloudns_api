@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # name:             test_validation.py
@@ -8,7 +7,7 @@
 #
 
 """
-Functional tests for cloudns-api's validation module.
+Functional tests for cloudns_api's validation module.
 """
 
 

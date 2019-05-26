@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # name:             api.py
@@ -8,8 +7,8 @@
 #
 
 """
-clouddns.api
-~~~~~~~~~~~~
+cloudns_api.api
+~~~~~~~~~~~~~~~
 
 This module contains API utilities and preliminary parameters data structure.
 """

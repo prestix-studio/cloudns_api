@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # name:             validation.py
@@ -8,8 +7,8 @@
 #
 
 """
-clouddns.validation
-~~~~~~~~~~~~~~~~~~~
+cloudns_api.validation
+~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains functions to validate fields passed into the API.
 """

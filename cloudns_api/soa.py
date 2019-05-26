@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # name:             soa.py
@@ -8,8 +7,8 @@
 #
 
 """
-clouddns.soa
-~~~~~~~~~~~~
+cloudns_api.soa
+~~~~~~~~~~~~~~~
 
 This module contains API wrapper functions for listing and updating SOA
 records.

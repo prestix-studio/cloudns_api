@@ -8,7 +8,7 @@
 #
 
 """
-Functional tests for cloudns-api's api utilities module.
+Functional tests for cloudns_api's api utilities module.
 """
 
 
