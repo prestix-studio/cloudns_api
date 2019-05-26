@@ -71,7 +71,7 @@ def update(domain_name=None, primary_ns=None, admin_mail=None, refresh=None,
                 'max_value': 2419200,
             },
             'default-ttl': {
-                'value': expire,
+                'value': default_ttl,
                 'min_value': 60,
                 'max_value': 2419200,
             },
