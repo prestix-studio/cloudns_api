@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # name:             test_api.py
-# author:           Harold Bradley III
-# email:            harold@bradleystudio.net
+# author:           Harold Bradley III | Prestix Studio, LLC.
+# email:            harold@prestix.studio
 # created on:       09/16/2018
 #
 
