@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
 # name:             validation.py
-# author:           Harold Bradley III
-# email:            harold@bradleystudio.net
+# author:           Harold Bradley III | Prestix Studio, LLC.
+# email:            harold@prestix.studio
 # created on:       09/16/2018
 #
 
