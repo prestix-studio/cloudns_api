@@ -11,10 +11,11 @@
 Functional tests for cloudns_api's api utilities module.
 """
 
-
 from os import environ
 from pytest import fixture
 from requests import exceptions as request_exceptions
+
+from cloudns_api.validation import ValidationError
 
 
 # Save original environment variables
@@ -27,7 +28,6 @@ environ['CLOUDNS_AUTH_PASSWORD'] = 'user_password_123'
 
 # Import only after changing environment variables to test vars
 from cloudns_api import api
-from cloudns_api.validation import ValidationError
 
 # Reset environment variables to original state
 environ['CLOUDNS_AUTH_ID'] = orig_clouds_auth_id
