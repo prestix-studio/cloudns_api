@@ -113,10 +113,6 @@ def api(api_call):
 @api
 def get_login():
     """Returns the login status using available credentials."""
-    params = get_auth_params()
-    params['auth-id'] = '12'
-    return get('https://api.cloudns.net/dns/login.json',
-               params=params)
     return get('https://api.cloudns.net/dns/login.json',
                params=get_auth_params())
 
