@@ -11,13 +11,25 @@ Functional tests for cloudns_api's validation module.
 """
 
 
-from cloudns_api.validation import batch_validate, check_for_validation_errors
-from cloudns_api.validation import is_algorithm, is_fptype
-from cloudns_api.validation import is_caa_flag, is_caa_type, is_domain_name
-from cloudns_api.validation import is_int, is_email, is_api_bool, is_redirect_type
-from cloudns_api.validation import is_record_type, is_required, is_ttl, validate
-from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 from pytest import raises
+
+from cloudns_api.validation import (
+    is_algorithm,
+    is_api_bool,
+    is_caa_flag,
+    is_caa_type,
+    is_domain_name,
+    is_email,
+    is_fptype,
+    is_int,
+    is_record_type,
+    is_redirect_type,
+    is_required,
+    is_ttl,
+    validate,
+    ValidationError,
+    ValidationErrorsBatch,
+)
 
 
 def test_validation_error_exception_can_return_error_details():
