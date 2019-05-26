@@ -150,7 +150,8 @@ def test_api_decorator_responds_to_bad_python_code():
 
     @api.api
     def test_api_call(*args, **kwargs):
-        return bad_python_code
+        # Bad python code:
+        return uninitialized_variable
 
     result = test_api_call(json_object = True)
     assert result['success'] is False
