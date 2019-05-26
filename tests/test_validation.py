@@ -294,11 +294,11 @@ def test_validate_function_uses_validation_functions_dict():
     integer = 1234
     domain = 'example.com'
 
-    assert validate(integer, 'integer') == integer
-    assert validate(domain, 'domain') == domain
+    assert validate('integer', integer) == integer
+    assert validate('domain', domain) == domain
 
     with raises(ValidationError) as exception:
-        validate(domain, 'ttl')
+        validate('ttl', domain)
 
 
 def test_validate_function_allows_for_optional_fields():
@@ -306,10 +306,10 @@ def test_validate_function_allows_for_optional_fields():
     optional = None
 
     # validate domain none, empty string, is optional a kwarg?
-    assert validate(optional, 'domain', optional = True) == None
+    assert validate('domain', optional, optional = True) == None
 
     with raises(ValidationError) as exception:
-        validate(optional, 'domain')
+        validate('domain', optional)
 
 
 def test_validate_function_still_checks_given_optional_fields():
@@ -317,7 +317,7 @@ def test_validate_function_still_checks_given_optional_fields():
     optional_int = 'abcd'
 
     with raises(ValidationError) as exception:
-        validate(optional_int, 'ttl')
+        validate('ttl', optional_int)
 
 
 def test_batch_validate_batches_validation_errors():
@@ -328,9 +328,9 @@ def test_batch_validate_batches_validation_errors():
     not_an_int = 'abcd'
     not_a_domain = '/domain/'
 
-    batch_validate(not_an_email, 'email')
-    batch_validate(not_an_int, 'int')
-    batch_validate(not_a_domain, 'domain-name')
+    batch_validate('email', not_an_email)
+    batch_validate('int', not_an_int)
+    batch_validate('domain_name', not_a_domain)
 
     with raises(ValidationError) as exception:
         check_for_validation_errors()
