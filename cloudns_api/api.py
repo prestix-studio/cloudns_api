@@ -10,7 +10,7 @@
 cloudns_api.api
 ~~~~~~~~~~~~~~~
 
-This module contains API utilities and preliminary parameters data structure.
+This module contains basic API utilities and the api decorator function.
 """
 
 from .validation import ValidationError
