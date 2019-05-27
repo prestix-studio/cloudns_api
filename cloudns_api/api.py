@@ -24,11 +24,15 @@ from requests.exceptions import ConnectTimeout, Timeout, ReadTimeout
 
 CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
 if not CLOUDNS_API_AUTH_ID:
-    raise EnvironmentError('Environment variable "CLOUDNS_API_AUTH_ID" not set.')
+    raise EnvironmentError(
+        'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
+    )
 
 CLOUDNS_API_AUTH_PASSWORD = environ.get('CLOUDNS_API_AUTH_PASSWORD')
 if not CLOUDNS_API_AUTH_PASSWORD:
-    raise EnvironmentError('Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.')
+    raise EnvironmentError(
+        'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
+    )
 
 
 def get_auth_params():
@@ -38,8 +42,8 @@ def get_auth_params():
 
 
 def api(api_call):
-    """ Decorates an api call in order to consistently handle errors and maintain a
-    consistent json format.
+    """ Decorates an api call in order to consistently handle errors and
+    maintain a consistent json format.
 
     :param api_call: function, the function to be decorated
     """
