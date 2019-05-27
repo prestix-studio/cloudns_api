@@ -76,11 +76,24 @@ class Result():
         }
 
 
+def get_mock(url, params=None):
+    """A mock get request to return the request-prepared url."""
+    return Result(url, params=params)
+
+
 def post_mock(url, params=None):
     """A mock post request to return the request-prepared url."""
     return Result(url, params=params)
 
 
-def get_mock(url, params=None):
-    """A mock get request to return the request-prepared url."""
-    return Result(url, params=params)
+def mock_get_request(test_fn):
+    @patch('cloudns_api.soa.get', new=get_mock)
+    def test_wrapper(*args, **kwargs):
+        test_fn(*args, **kwargs)
+    return test_wrapper
+
+def mock_post_request(test_fn):
+    @patch('cloudns_api.soa.post', new=get_mock)
+    def test_wrapper(*args, **kwargs):
+        test_fn(*args, **kwargs)
+    return test_wrapper
