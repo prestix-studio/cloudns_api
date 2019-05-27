@@ -11,53 +11,43 @@ Functional tests for cloudns_api's parameters utilities module.
 """
 
 from os import environ
-
 from pytest import raises
 
-
-# Save original environment variables
-orig_clouds_auth_id = environ.get('CLOUDNS_API_AUTH_ID')
-orig_clouds_auth_password = environ.get('CLOUDNS_API_AUTH_PASSWORD')
-
-# Set environment vars to test vars
-environ['CLOUDNS_API_AUTH_ID'] = 'user_id_123'
-environ['CLOUDNS_API_AUTH_PASSWORD'] = 'user_password_123'
-
-# Import only after changing environment variables to test vars
 from cloudns_api.parameters import Parameters
 from cloudns_api.validation import ValidationError, ValidationErrorsBatch
 
-# Reset environment variables to original state
-environ['CLOUDNS_API_AUTH_ID'] = orig_clouds_auth_id
-environ['CLOUDNS_API_AUTH_PASSWORD'] = orig_clouds_auth_password
+from .helpers import use_test_auth
 
 
 ##
 # Parameters object Tests
 
-def test_parameters_includes_authentication_variables():
+@use_test_auth
+def test_parameters_includes_authentication_variables(test_id, test_password):
     """Parameters object includes authentication variables by default."""
     params = Parameters({}, validate=False)
 
-    assert params._params_with_options['auth-id'] == 'user_id_123'
-    assert params._params_with_options['auth-password'] == 'user_password_123'
+    assert params._params_with_options['auth-id'] == test_id
+    assert params._params_with_options['auth-password'] == test_password
 
 
-def test_parameters_authentication_variables_can_be_overriden():
+@use_test_auth
+def test_parameters_authentication_variables_can_be_overriden(test_id, test_password):
     """Parameters object can override default authentication variables during
     initialization."""
     params_1 = Parameters({'auth-id': 'changed_id'}, validate=False)
 
     assert params_1._params_with_options['auth-id'] == 'changed_id'
-    assert params_1._params_with_options['auth-password'] == 'user_password_123'
+    assert params_1._params_with_options['auth-password'] == test_password
 
     params_2 = Parameters({'auth-password': 'changed_password'}, validate=False)
 
-    assert params_2._params_with_options['auth-id'] == 'user_id_123'
+    assert params_2._params_with_options['auth-id'] == test_id
     assert params_2._params_with_options['auth-password'] == 'changed_password'
 
 
-def test_parameters_can_be_converted_to_dict():
+@use_test_auth
+def test_parameters_can_be_converted_to_dict(test_id, test_password):
     """Parameters object can be converted to a dict of parameter name and
     paramater value."""
     params = Parameters({
@@ -73,8 +63,8 @@ def test_parameters_can_be_converted_to_dict():
     }, validate=False)
 
     assert params.to_dict() == {
-        'auth-id'       : 'user_id_123',
-        'auth-password' : 'user_password_123',
+        'auth-id'       : test_id,
+        'auth-password' : test_password,
         'domain-name'   : 'example.com',
         'host'          : '@',
         'type'          : 'TXT',

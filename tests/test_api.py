@@ -12,35 +12,22 @@ Functional tests for cloudns_api's api utilities module.
 """
 
 from os import environ
-from pytest import fixture
 from requests import exceptions as request_exceptions
 
-
-# Save original environment variables
-orig_clouds_auth_id = environ.get('CLOUDNS_API_AUTH_ID')
-orig_clouds_auth_password = environ.get('CLOUDNS_API_AUTH_PASSWORD')
-
-# Set environment vars to test vars
-environ['CLOUDNS_API_AUTH_ID'] = 'user_id_123'
-environ['CLOUDNS_API_AUTH_PASSWORD'] = 'user_password_123'
-
-# Import only after changing environment variables to test vars
 from cloudns_api import api
 from cloudns_api.validation import ValidationError
 
-# Reset environment variables to original state
-environ['CLOUDNS_API_AUTH_ID'] = orig_clouds_auth_id
-environ['CLOUDNS_API_AUTH_PASSWORD'] = orig_clouds_auth_password
+from .helpers import set_debug, use_test_auth
 
 
 ##
 # Authentication Tests
 
-def test_get_auth_params_returns_auth_params_from_environment():
-    """Function get_auth_params should return auth as set in environment."""
+@use_test_auth
+def test_get_auth_params_returns_auth_params(test_id, test_password):
     auth_params = api.get_auth_params()
-    assert auth_params['auth-id'] == 'user_id_123'
-    assert auth_params['auth-password'] == 'user_password_123'
+    assert auth_params['auth-id'] == test_id
+    assert auth_params['auth-password'] == test_password
 
 
 def test_get_auth_params_returns_different_dict_every_time():
