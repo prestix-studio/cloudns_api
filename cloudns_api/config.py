@@ -16,6 +16,12 @@ This module contains the API config constants.
 from os import environ
 
 
+def _is_true(env_var):
+    if env_var is None:
+        return False
+    return env_var.lower() in [1, 'true', 'yes']
+
+
 CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
 if not CLOUDNS_API_AUTH_ID:
     raise EnvironmentError(
@@ -28,4 +34,4 @@ if not CLOUDNS_API_AUTH_PASSWORD:
         'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
     )
 
-CLOUDNS_API_DEBUG = environ.get('CLOUDNS_DEBUG') or False
+CLOUDNS_API_DEBUG = _is_true(environ.get('CLOUDNS_DEBUG'))
