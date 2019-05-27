@@ -13,26 +13,18 @@ cloudns_api.api
 This module contains basic API utilities and the api decorator function.
 """
 
-from .validation import ValidationError
 from json import dumps as to_json_string
-from os import environ
 from requests import codes as code, get, post
 from requests.exceptions import ContentDecodingError, ConnectionError
 from requests.exceptions import HTTPError, SSLError, TooManyRedirects
 from requests.exceptions import ConnectTimeout, Timeout, ReadTimeout
 
-
-CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
-if not CLOUDNS_API_AUTH_ID:
-    raise EnvironmentError(
-        'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
-    )
-
-CLOUDNS_API_AUTH_PASSWORD = environ.get('CLOUDNS_API_AUTH_PASSWORD')
-if not CLOUDNS_API_AUTH_PASSWORD:
-    raise EnvironmentError(
-        'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
-    )
+from .config import (
+    CLOUDNS_API_AUTH_ID,
+    CLOUDNS_API_AUTH_PASSWORD,
+    CLOUDNS_API_DEBUG,
+)
+from .validation import ValidationError
 
 
 def get_auth_params():
