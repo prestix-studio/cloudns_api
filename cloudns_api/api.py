@@ -93,7 +93,15 @@ def api(api_call):
         # Catch all other python errors
         except Exception as e:
             result['success'] = False
-            result['error'] = 'Something went wrong.'
+
+            print('Set as:')
+            print(CLOUDNS_API_DEBUG)
+
+            if CLOUDNS_API_DEBUG:
+                print('soo.. debugging.')
+                result['error'] = e.__str__()
+            else:
+                result['error'] = 'Something went wrong.'
 
 
         # Whew! Made it past the errors, so return the result

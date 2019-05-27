@@ -17,7 +17,7 @@ from requests import exceptions as request_exceptions
 from cloudns_api import api
 from cloudns_api.validation import ValidationError
 
-from .helpers import set_debug, use_test_auth
+from .helpers import set_debug, set_no_debug, use_test_auth
 
 
 ##
@@ -133,6 +133,7 @@ def test_api_decorator_responds_to_500_errors():
     assert result['status_code'] == 500
 
 
+@set_no_debug
 def test_api_decorator_responds_to_bad_python_code():
     """API decorator responds appropriately to bad python code."""
 
@@ -144,6 +145,23 @@ def test_api_decorator_responds_to_bad_python_code():
     result = test_api_call(json_object = True)
     assert result['success'] is False
     assert result['error'] == 'Something went wrong.'
+
+
+@set_debug
+def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
+    """API decorator responds more specifically to bad python code when in
+    debug mode."""
+
+    @api.api
+    def test_api_call(*args, **kwargs):
+        # Bad python code:
+        return uninitialized_variable
+
+    ## NEED TO turn off debug for this.
+
+    result = test_api_call(json_object = True)
+    assert result['success'] is False
+    assert result['error'] == "name 'uninitialized_variable' is not defined"
 
 
 def test_api_decorator_responds_to_missing_required_args():
