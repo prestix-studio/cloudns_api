@@ -34,4 +34,4 @@ if not CLOUDNS_API_AUTH_PASSWORD:
         'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
     )
 
-CLOUDNS_API_DEBUG = _is_true(environ.get('CLOUDNS_DEBUG'))
+CLOUDNS_API_DEBUG = _is_true(environ.get('CLOUDNS_API_DEBUG'))
