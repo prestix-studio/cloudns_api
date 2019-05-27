@@ -17,20 +17,20 @@ from requests import exceptions as request_exceptions
 
 
 # Save original environment variables
-orig_clouds_auth_id = environ.get('CLOUDNS_AUTH_ID')
-orig_clouds_auth_password = environ.get('CLOUDNS_AUTH_PASSWORD')
+orig_clouds_auth_id = environ.get('CLOUDNS_API_AUTH_ID')
+orig_clouds_auth_password = environ.get('CLOUDNS_API_AUTH_PASSWORD')
 
 # Set environment vars to test vars
-environ['CLOUDNS_AUTH_ID'] = 'user_id_123'
-environ['CLOUDNS_AUTH_PASSWORD'] = 'user_password_123'
+environ['CLOUDNS_API_AUTH_ID'] = 'user_id_123'
+environ['CLOUDNS_API_AUTH_PASSWORD'] = 'user_password_123'
 
 # Import only after changing environment variables to test vars
 from cloudns_api import api
 from cloudns_api.validation import ValidationError
 
 # Reset environment variables to original state
-environ['CLOUDNS_AUTH_ID'] = orig_clouds_auth_id
-environ['CLOUDNS_AUTH_PASSWORD'] = orig_clouds_auth_password
+environ['CLOUDNS_API_AUTH_ID'] = orig_clouds_auth_id
+environ['CLOUDNS_API_AUTH_PASSWORD'] = orig_clouds_auth_password
 
 
 ##

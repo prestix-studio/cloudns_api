@@ -33,8 +33,8 @@ In order to authenticate correctly, create the following environment variables
 
 .. code:: bash
 
-    export CLOUDNS_AUTH_USER=my_user
-    export CLOUDNS_AUTH_PASSWORD=my_password
+    export CLOUDNS_API_AUTH_USER=my_user
+    export CLOUDNS_API_AUTH_PASSWORD=my_password
 
 
 Running Tests

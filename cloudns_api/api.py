@@ -22,19 +22,19 @@ from requests.exceptions import HTTPError, SSLError, TooManyRedirects
 from requests.exceptions import ConnectTimeout, Timeout, ReadTimeout
 
 
-API_AUTH_ID = environ.get('CLOUDNS_AUTH_ID')
-if not API_AUTH_ID:
-    raise EnvironmentError('Environment variable "CLOUDNS_AUTH_ID" not set.')
+CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
+if not CLOUDNS_API_AUTH_ID:
+    raise EnvironmentError('Environment variable "CLOUDNS_API_AUTH_ID" not set.')
 
-API_AUTH_PASSWORD = environ.get('CLOUDNS_AUTH_PASSWORD')
-if not API_AUTH_PASSWORD:
-    raise EnvironmentError('Environment variable "CLOUDNS_AUTH_PASSWORD" not set.')
+CLOUDNS_API_AUTH_PASSWORD = environ.get('CLOUDNS_API_AUTH_PASSWORD')
+if not CLOUDNS_API_AUTH_PASSWORD:
+    raise EnvironmentError('Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.')
 
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
-    return {'auth-id': API_AUTH_ID,
-            'auth-password': API_AUTH_PASSWORD}
+    return {'auth-id': CLOUDNS_API_AUTH_ID,
+            'auth-password': CLOUDNS_API_AUTH_PASSWORD}
 
 
 def api(api_call):
