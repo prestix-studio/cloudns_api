@@ -42,6 +42,13 @@ def set_debug(test_fn):
     return test_wrapper
 
 
+def set_no_debug(test_fn):
+    @patch('cloudns_api.api.CLOUDNS_API_DEBUG', new=False)
+    def test_wrapper(*args, **kwargs):
+        test_fn(*args, **kwargs)
+    return test_wrapper
+
+
 ##
 # Request Mock functions
 
