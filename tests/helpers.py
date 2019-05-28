@@ -12,7 +12,6 @@ Mock and fixture helpers for cloudns_api unit tests.
 
 from mock import patch
 from pytest import fixture
-from requests import Request
 
 from cloudns_api.config import (
     CLOUDNS_API_AUTH_ID,
