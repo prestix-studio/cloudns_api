@@ -62,6 +62,7 @@ class Parameters(object):
         for fieldname, options in self._params_with_options.items():
             try:
                 if 'value' in options:
+                    options = options.copy()
                     validate(fieldname, options.pop('value'), **options)
                 else:
                     validate(fieldname, options)
