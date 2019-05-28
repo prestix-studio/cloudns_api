@@ -16,12 +16,12 @@ records.
 
 from .api import api
 from .parameters import Parameters
-from requests import get, post
+import requests
 
 
 @api
-def list(domain_name=None, **kwargs):
-    """Lists the DNS SOA record for a particular domain.
+def get(domain_name=None, **kwargs):
+    """Retreives the DNS SOA record for a particular domain.
 
     :param domain_name: string, (required) the domain name for which to
         retrieve the SOA record
@@ -30,7 +30,7 @@ def list(domain_name=None, **kwargs):
 
     params = Parameters({'domain-name' : domain_name})
 
-    return get(url, params=params.to_dict())
+    return requests.get(url, params=params.to_dict())
 
 
 @api
@@ -77,4 +77,4 @@ def update(domain_name=None, primary_ns=None, admin_mail=None, refresh=None,
             },
         })
 
-    return post(url, params=params.to_dict())
+    return requests.post(url, params=params.to_dict())
