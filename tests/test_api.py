@@ -56,11 +56,6 @@ class MockResponse:
         return self.json_data
 
 
-def mock_response(*args, **kwargs):
-    """Mocks requests.get or requests.post for tests."""
-    return MockResponse({"key1": "value1"}, 200)
-
-
 # Tests
 
 def test_api_decorator_returns_string_by_default():
