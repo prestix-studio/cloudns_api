@@ -14,7 +14,7 @@ Functional tests for cloudns_api's api utilities module.
 from os import environ
 from requests import exceptions as request_exceptions
 
-from cloudns_api import api
+from cloudns_api.api import api, get_auth_params
 from cloudns_api.validation import ValidationError
 
 from .helpers import set_debug, set_no_debug, use_test_auth
@@ -25,7 +25,7 @@ from .helpers import set_debug, set_no_debug, use_test_auth
 
 @use_test_auth
 def test_get_auth_params_returns_auth_params(test_id, test_password):
-    auth_params = api.get_auth_params()
+    auth_params = get_auth_params()
     assert auth_params['auth-id'] == test_id
     assert auth_params['auth-password'] == test_password
 
@@ -33,11 +33,11 @@ def test_get_auth_params_returns_auth_params(test_id, test_password):
 def test_get_auth_params_returns_different_dict_every_time():
     """Function get_auth_params returns a different dict that is not modified
     from previous operations."""
-    auth_params = api.get_auth_params()
+    auth_params = get_auth_params()
     auth_params['a-param'] = 'a-value'
     assert 'a-param' in auth_params
 
-    new_params = api.get_auth_params()
+    new_params = get_auth_params()
     assert 'a-param' not in new_params
 
 
@@ -61,7 +61,7 @@ class MockResponse:
 def test_api_decorator_returns_string_by_default():
     """Decorator 'api' returns the result as a string by default."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         return MockResponse(json_data = {'response': 'Testing...'})
 
@@ -72,7 +72,7 @@ def test_api_decorator_returns_string_by_default():
 def test_api_decorator_can_return_object():
     """Decorator 'api' can return an object from JSON."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         return MockResponse(json_data = {'response': 'Testing...'})
 
@@ -83,7 +83,7 @@ def test_api_decorator_can_return_object():
 def test_api_decorator_responds_to_success():
     """API decorator responds appropriately to successful requests."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         return MockResponse(json_data = {'response': 'Testing...'})
 
@@ -94,7 +94,7 @@ def test_api_decorator_responds_to_success():
 def test_api_decorator_responds_to_network_errors():
     """API decorator responds appropriately to network errors."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         raise request_exceptions.ConnectionError()
 
@@ -106,7 +106,7 @@ def test_api_decorator_responds_to_network_errors():
 def test_api_decorator_responds_to_timeout_errors():
     """API decorator responds appropriately to network timeout errors."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         raise request_exceptions.ConnectTimeout()
 
@@ -118,7 +118,7 @@ def test_api_decorator_responds_to_timeout_errors():
 def test_api_decorator_responds_to_500_errors():
     """API decorator responds appropriately to non-200 status codes."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         return MockResponse(json_data = {'response': 'Testing...'},
                             status_code = 500)
@@ -132,7 +132,7 @@ def test_api_decorator_responds_to_500_errors():
 def test_api_decorator_responds_to_bad_python_code():
     """API decorator responds appropriately to bad python code."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
         return uninitialized_variable
@@ -147,7 +147,7 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
     """API decorator responds more specifically to bad python code when in
     debug mode."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
         return uninitialized_variable
@@ -162,7 +162,7 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
 def test_api_decorator_responds_to_missing_required_args():
     """API decorator responds appropriately to required missing args."""
 
-    @api.api
+    @api
     def test_api_call(required_arg, *args, **kwargs):
         return bad_python_code
 
@@ -174,7 +174,7 @@ def test_api_decorator_responds_to_missing_required_args():
 def test_api_decorator_responds_to_validation_error():
     """API decorator responds appropriately to validation error."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         raise ValidationError('the_field_name',
                                   'The field should be in this format.')
@@ -189,7 +189,7 @@ def test_api_decorator_responds_to_validation_error():
 def test_api_decorator_responds_to_authentication_error():
     """API decorator responds appropriately to authentication error."""
 
-    @api.api
+    @api
     def test_api_call(*args, **kwargs):
         return MockResponse(json_data = {'status': 'Failed',
                                          'statusDescription':
