@@ -36,7 +36,7 @@ def get(domain_name=None, **kwargs):
 @api
 def update(domain_name=None, primary_ns=None, admin_mail=None, refresh=None,
            retry=None, expire=None, default_ttl=None, **kwargs):
-    """Lists the DNS SOA record for a particular domain.
+    """Updates the DNS SOA record for a particular domain.
 
     :param domain_name: string, (required) the domain name whose SOA record you
         want to update
