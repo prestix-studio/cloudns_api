@@ -14,7 +14,7 @@ Functional tests for cloudns_api's api utilities module.
 from os import environ
 from requests import exceptions as request_exceptions
 
-from cloudns_api.api import api, get_auth_params
+from cloudns_api.api import api, get_auth_params, patch_update
 from cloudns_api.validation import ValidationError
 
 from .helpers import set_debug, set_no_debug, use_test_auth
@@ -198,3 +198,82 @@ def test_api_decorator_responds_to_authentication_error():
     result = test_api_call(json_object = True)
     assert result['success'] is False
     assert result['error'] == 'Invalid authentication, incorrect auth-id or auth-password.'
+
+
+def test_api_patch_update_decorator_gets_then_updates():
+    """API patch_update decorator gets before updating allowing patch updates
+    with only some of the arguments."""
+
+    @api
+    def test_api_get(*args, **kwargs):
+        assert len(kwargs) == 2
+        assert kwargs['json_object'] == True
+        assert kwargs['domain_name'] == 'my_example.com'
+        return MockResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
+                                         'key_3': 'CCC', 'key_4': 'DDD'})
+
+    @api
+    @patch_update(get=test_api_get, keys=['domain_name'])
+    def update(*args, **kwargs):
+        return MockResponse(json_data = kwargs)
+
+    result = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
+                    patch=True, json_object=True)
+
+    assert result['success'] is True
+    assert result['data']['key_1'] == 'AAA'
+    assert result['data']['key_2'] == 'BBB'
+    assert result['data']['key_3'] == 'ZZZ'
+    assert result['data']['key_4'] == 'YYY'
+
+
+def test_api_patch_update_decorator_works_with_2_get_keys():
+    """API patch_update decorator works with 2 get keys."""
+
+    @api
+    def test_api_get(*args, **kwargs):
+        assert len(kwargs) == 3
+        assert kwargs['json_object'] == True
+        assert kwargs['domain_name'] == 'my_example.com'
+        assert kwargs['id'] == 123
+        return MockResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
+                                         'key_3': 'CCC', 'key_4': 'DDD'})
+
+    @api
+    @patch_update(get=test_api_get, keys=['domain_name', 'id'])
+    def update(*args, **kwargs):
+        return MockResponse(json_data = kwargs)
+
+    result = update(domain_name='my_example.com', id=123, key_3='ZZZ',
+                    key_4='YYY', patch=True, json_object=True)
+
+    assert result['success'] is True
+    assert result['data']['key_1'] == 'AAA'
+    assert result['data']['key_2'] == 'BBB'
+    assert result['data']['key_3'] == 'ZZZ'
+    assert result['data']['key_4'] == 'YYY'
+
+
+def test_api_patch_update_decorator_works_with_json_string():
+    """API patch_update decorator works with json string."""
+
+    @api
+    def test_api_get(*args, **kwargs):
+        assert len(kwargs) == 2
+        assert kwargs['json_object'] == True
+        assert kwargs['domain_name'] == 'my_example.com'
+        return MockResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
+                                         'key_3': 'CCC', 'key_4': 'DDD'})
+
+    @api
+    @patch_update(get=test_api_get, keys=['domain_name'])
+    def update(*args, **kwargs):
+        return MockResponse(json_data = kwargs)
+
+    result = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
+                    patch=True, json_object=False)
+
+    assert '"key_1": "AAA"' in result
+    assert '"key_2": "BBB"' in result
+    assert '"key_3": "ZZZ"' in result
+    assert '"key_4": "YYY"' in result

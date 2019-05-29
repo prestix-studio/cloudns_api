@@ -109,6 +109,43 @@ def api(api_call):
     return api_wrapper
 
 
+def patch_update(get, keys):
+    """Decorates an api call to allow 'patch' updating with only parameters to
+    be updated.
+
+    :param api_call: function, the function to be decorated
+    """
+
+    def decorated_patch_update(api_call):
+        """Decorates an api call to allow 'patch' updating with only parameters to
+        be updated.
+
+        :param api_call: function, the function to be decorated
+        """
+
+        def api_wrapper(patch=False, *args, **kwargs):
+            """ Wraps an api call in order to allow 'patching'
+            maintain a consistent json format.
+
+            :param patch: bool, retrieve current parameter values to pass with the
+                parameters given. If False, does nothing. False by default.
+            """
+            if patch:
+                result = get(json_object=True, **{key:value for key,value in
+                                                  kwargs.items() if key in
+                                                  keys})
+                if not result['success']:
+                    raise Exception('fix this...')
+
+                kwargs = {**result['data'], **kwargs}
+
+            return api_call(*args, **kwargs)
+
+        return api_wrapper
+
+    return decorated_patch_update
+
+
 @api
 def get_login():
     """Returns the login status using available credentials."""
