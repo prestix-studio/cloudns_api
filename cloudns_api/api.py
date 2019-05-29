@@ -34,7 +34,7 @@ def get_auth_params():
 
 
 def api(api_call):
-    """ Decorates an api call in order to consistently handle errors and
+    """Decorates an api call in order to consistently handle errors and
     maintain a consistent json format.
 
     :param api_call: function, the function to be decorated
@@ -94,11 +94,7 @@ def api(api_call):
         except Exception as e:
             result['success'] = False
 
-            print('Set as:')
-            print(CLOUDNS_API_DEBUG)
-
             if CLOUDNS_API_DEBUG:
-                print('soo.. debugging.')
                 result['error'] = e.__str__()
             else:
                 result['error'] = 'Something went wrong.'
