@@ -40,7 +40,8 @@ class ApiResponse(object):
 
         :param response: requests.models.response, Requests response object.
         """
-        self.error = ''
+        self.error = None
+        self.validation_errors = None
 
         if response:
             self.create(response)
@@ -88,6 +89,9 @@ class ApiResponse(object):
 
         if self.error:
             json['error'] = self.error
+
+        if self.validation_errors:
+            json['validation_errors'] = self.validation_errors
 
         if CLOUDNS_API_DEBUG and not self.success and not self.error:
             json['error'] = 'Response has not yet been created with a requests.response.'
