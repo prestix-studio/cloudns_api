@@ -33,6 +33,72 @@ def get_auth_params():
             'auth-password': CLOUDNS_API_AUTH_PASSWORD}
 
 
+class ApiResponse(object):
+    def __init__(self, response=None):
+        """Wrapper object to add custom functionality and properties to a
+        request response object.
+
+        :param response: requests.models.response, Requests response object.
+        """
+        self.error = ''
+
+        if response:
+            self.create(response)
+        else:
+            self.response = None
+
+    def create(self, response):
+        """Creates the the response and checks for HTTP and API errors.
+
+        :param response: requests.models.response, Requests response object.
+        """
+        self.response = response
+
+        # Check for HTTP error codes
+        if self.status_code is not code.OK:
+            self.error = 'HTTP response ' + self.status_code
+
+        # Check for API error responses
+        elif 'status' in self.data and self.data['status'] is 'Failed':
+            self.error = self.data['statusDescription']
+
+    @property
+    def success(self):
+        """Returns the success status of the response. Successful when the
+        status_code is ok and there are no error messages."""
+        return self.status_code is code.OK and not self.error
+
+    @property
+    def status_code(self):
+        """Wraps the request response's status code."""
+        return self.response.status_code if self.response else None
+
+    @property
+    def data(self):
+        """Wraps the request response's json method."""
+        return self.response.json() if self.response else {}
+
+    def json(self):
+        """Returns the response as a json object."""
+        json = {
+            'status_code' : self.status_code,
+            'sucess'      : self.success,
+            'data'        : self.data,
+        }
+
+        if self.error:
+            json['error'] = self.error
+
+        if CLOUDNS_API_DEBUG and not self.success and not self.error:
+            json['error'] = 'Response has not yet been created with a requests.response.'
+
+        return json
+
+    def string(self):
+        """Returns the json response as a string."""
+        return to_json_string(self.json())
+
+
 def api(api_call):
     """Decorates an api call in order to consistently handle errors and
     maintain a consistent json format.
@@ -47,64 +113,43 @@ def api(api_call):
         :param json_object: bool, return an object if true, otherwise return
             the json string
         """
-        result = {}
+        response = ApiResponse()
 
         try:
-            response = api_call(*args, **kwargs)
-            result['data'] = response.json()
-
-            # Check for HTTP error codes
-            if response.status_code is not code.OK:
-                result['success'] = False
-                result['status_code'] = response.status_code
-                result['error'] = 'HTTP response ' + response.status_code
-
-            # Check for API error responses
-            elif 'status' in result['data'] and result['data']['status'] == 'Failed':
-                result['success'] = False
-                result['error'] = result['data']['statusDescription']
-
-            # Otherwise, we're good
-            else:
-                result['success'] = True
+            response.create(api_call(*args, **kwargs))
 
         # Catch Timeout errors
         except (ConnectTimeout, Timeout, ReadTimeout) as e:
-            result['success'] = False
-            result['error'] = 'API Connection timed out.'
+            response.error = 'API Connection timed out.'
 
         # Catch Connection errors
         except (ContentDecodingError, ConnectionError, HTTPError, SSLError,
                 TooManyRedirects) as e:
-            result['success'] = False
-            result['error'] = 'API Network Connection error.'
+            response.error = 'API Network Connection error.'
 
         # Catch Validation errors
         except ValidationError as e:
-            result['success'] = False
-            result['error'] = 'Validation error.'
-            result['validation_errors'] = e.get_details()
+            response.error = 'Validation error.'
+            response.validation_errors = e.get_details()
 
         # Catch Other Python errors
         except TypeError as e:
-            result['success'] = False
-            result['error'] = 'Missing a required argument.'
+            response.error = 'Missing a required argument.'
 
         # Catch all other python errors
         except Exception as e:
-            result['success'] = False
+            response.error = 'Something went wrong.'
 
             if CLOUDNS_API_DEBUG:
-                result['error'] = e.__str__()
-            else:
-                result['error'] = 'Something went wrong.'
+                response.error = e.__str__()
 
 
         # Whew! Made it past the errors, so return the result
         if 'json_object' in kwargs and kwargs['json_object']:
-            return result
+            return response.json()
 
-        return to_json_string(result)
+
+        return response.string()
 
     return api_wrapper
 
