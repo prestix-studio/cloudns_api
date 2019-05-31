@@ -88,7 +88,7 @@ class ApiResponse(object):
         data and massage it to our requirements."""
         json = {
             'status_code' : self.status_code,
-            'sucess'      : self.success,
+            'success'     : self.success,
             'data'        : self.data,
         }
 
