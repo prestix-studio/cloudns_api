@@ -119,7 +119,8 @@ def test_api_response_can_have_error_set_on_response_without_request_response():
 
 def test_api_response_can_be_created_with_request_response_after_init():
     request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
-    response = ApiResponse(request_response)
+    response = ApiResponse()
+    response.create(request_response)
 
     assert not response.error
     assert response.response == request_response
