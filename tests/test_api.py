@@ -151,38 +151,15 @@ def test_api_response_can_be_converted_to_string():
 ##
 # API Decorator Tests
 
-
-def test_api_decorator_returns_string_by_default():
-    """Decorator 'api' returns the result as a string by default."""
-
-    @api
-    def test_api_call(*args, **kwargs):
-        return MockRequestResponse(json_data = {'response': 'Testing...'})
-
-    result = test_api_call()
-    assert '{"response": "Testing..."}' in result
-
-
-def test_api_decorator_can_return_object():
-    """Decorator 'api' can return an object from JSON."""
-
-    @api
-    def test_api_call(*args, **kwargs):
-        return MockRequestResponse(json_data = {'response': 'Testing...'})
-
-    result = test_api_call(json_object = True)
-    assert result['data']['response'] == 'Testing...'
-
-
 def test_api_decorator_responds_to_success():
     """API decorator responds appropriately to successful requests."""
 
     @api
     def test_api_call(*args, **kwargs):
-        return MockRequestResponse(json_data = {'response': 'Testing...'})
+        return MockRequestResponse(json_data={'response': 'Testing...'})
 
-    result = test_api_call(json_object = True)
-    assert result['success']
+    response = test_api_call()
+    assert response.success
 
 
 def test_api_decorator_responds_to_network_errors():
@@ -192,9 +169,9 @@ def test_api_decorator_responds_to_network_errors():
     def test_api_call(*args, **kwargs):
         raise request_exceptions.ConnectionError()
 
-    result = test_api_call(json_object = True)
-    assert result['success'] is False
-    assert result['error'] == 'API Network Connection error.'
+    response = test_api_call()
+    assert response.success is False
+    assert response.error == 'API Network Connection error.'
 
 
 def test_api_decorator_responds_to_timeout_errors():
@@ -204,9 +181,9 @@ def test_api_decorator_responds_to_timeout_errors():
     def test_api_call(*args, **kwargs):
         raise request_exceptions.ConnectTimeout()
 
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['error'] == 'API Connection timed out.'
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'API Connection timed out.'
 
 
 def test_api_decorator_responds_to_500_errors():
@@ -214,12 +191,12 @@ def test_api_decorator_responds_to_500_errors():
 
     @api
     def test_api_call(*args, **kwargs):
-        return MockRequestResponse(json_data = {'response': 'Testing...'},
-                                   status_code = 500)
+        return MockRequestResponse(json_data={'response': 'Testing...'},
+                                   status_code=500)
 
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['status_code'] == 500
+    response = test_api_call()
+    assert not response.success
+    assert response.status_code == 500
 
 
 @set_no_debug
@@ -231,9 +208,9 @@ def test_api_decorator_responds_to_bad_python_code():
         # Bad python code:
         return uninitialized_variable
 
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['error'] == 'Something went wrong.'
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'Something went wrong.'
 
 
 @set_debug
@@ -246,11 +223,9 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
         # Bad python code:
         return uninitialized_variable
 
-    ## NEED TO turn off debug for this.
-
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['error'] == "name 'uninitialized_variable' is not defined"
+    response = test_api_call()
+    assert not response.success
+    assert response.error == "name 'uninitialized_variable' is not defined"
 
 
 def test_api_decorator_responds_to_missing_required_args():
@@ -260,9 +235,9 @@ def test_api_decorator_responds_to_missing_required_args():
     def test_api_call(required_arg, *args, **kwargs):
         return bad_python_code
 
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['error'] == 'Missing a required argument.'
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'Missing a required argument.'
 
 
 def test_api_decorator_responds_to_validation_error():
@@ -273,11 +248,11 @@ def test_api_decorator_responds_to_validation_error():
         raise ValidationError('the_field_name',
                                   'The field should be in this format.')
 
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['error'] == 'Validation error.'
-    assert result['validation_errors'][0]['fieldname'] == 'the_field_name'
-    assert result['validation_errors'][0]['message'] == 'The field should be in this format.'
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'Validation error.'
+    assert response.validation_errors[0]['fieldname'] == 'the_field_name'
+    assert response.validation_errors[0]['message'] == 'The field should be in this format.'
 
 
 def test_api_decorator_responds_to_authentication_error():
@@ -289,9 +264,9 @@ def test_api_decorator_responds_to_authentication_error():
                                                 'statusDescription':
                                                 'Invalid authentication, incorrect auth-id or auth-password.'})
 
-    result = test_api_call(json_object = True)
-    assert not result['success']
-    assert result['error'] == 'Invalid authentication, incorrect auth-id or auth-password.'
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'Invalid authentication, incorrect auth-id or auth-password.'
 
 
 def test_api_patch_update_decorator_gets_then_updates():
