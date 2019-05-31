@@ -134,6 +134,16 @@ def test_api_response_can_be_created_with_request_response_after_init():
         }
 
 
+def test_api_response_can_be_converted_to_string():
+    request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
+    response = ApiResponse(request_response)
+
+    expected_string = '{"status_code": 200, "success": true, "data": {"test": 123}}'
+
+    assert response.string() == expected_string
+    assert str(response) == expected_string
+
+
 ##
 # API Decorator Tests
 

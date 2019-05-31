@@ -48,6 +48,10 @@ class ApiResponse(object):
         else:
             self.response = None
 
+    def __str__(self):
+        """Returns the string value of the response."""
+        return self.string()
+
     def create(self, response):
         """Creates the the response and checks for HTTP and API errors.
 
@@ -80,7 +84,8 @@ class ApiResponse(object):
         return self.response.json() if self.response else {}
 
     def json(self):
-        """Returns the response as a json object."""
+        """Returns the response as a json object. This allows us to scrub the
+        data and massage it to our requirements."""
         json = {
             'status_code' : self.status_code,
             'sucess'      : self.success,
