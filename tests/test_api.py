@@ -100,6 +100,10 @@ def test_api_response_without_request_response_shows_error_in_json_when_debuggin
     object shows an error in the json when debugging."""
     response = ApiResponse()
 
+    # It's not yet initilized with an error
+    assert response.error == None
+
+    # But it will give an error converting to json (when debug mode is set)
     assert response.json()['error'] == 'Response has not yet been created with a requests.response.'
 
 
