@@ -21,7 +21,7 @@ from .parameters import Parameters
 
 
 @api
-def get(domain_name=None, **kwargs):
+def get(domain_name):
     """Retreives the DNS SOA record for a particular domain.
 
     :param domain_name: string, (required) the domain name for which to
@@ -36,8 +36,8 @@ def get(domain_name=None, **kwargs):
 
 @api
 @patch_update(get=get, keys=['domain_name'])
-def update(domain_name=None, primary_ns=None, admin_mail=None, refresh=None,
-           retry=None, expire=None, default_ttl=None, patch=False, **kwargs):
+def update(domain_name, primary_ns=None, admin_mail=None, refresh=None,
+           retry=None, expire=None, default_ttl=None, patch=False):
     """Updates the DNS SOA record for a particular domain.
 
     :param domain_name: string, (required) the domain name whose SOA record you
@@ -80,3 +80,8 @@ def update(domain_name=None, primary_ns=None, admin_mail=None, refresh=None,
         })
 
     return requests.post(url, params=params.to_dict())
+
+
+def patch(*args, **kwargs):
+    """A convenience function for patch updates."""
+    update(*args, patch=True, **kwargs)

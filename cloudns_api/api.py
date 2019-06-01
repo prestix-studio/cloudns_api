@@ -182,15 +182,15 @@ def patch_update(get, keys):
         :param api_call: function, the function to be decorated
         """
 
-        def api_wrapper(patch=False, *args, **kwargs):
+        def api_wrapper(*args, **kwargs):
             """ Wraps an api call in order to allow 'patching'
             maintain a consistent json format.
 
             :param patch: bool, retrieve current parameter values to pass with the
                 parameters given. If False, does nothing. False by default.
             """
-            if patch:
-                response = get(**{key:value for key,value in kwargs.items() if
+            if 'patch' in kwargs and kwargs['patch']:
+                response = get(**{key:value for key, value in kwargs.items() if
                                   key in keys})
                 if not response.success:
                     # Return the requests.response. The API decorator will
