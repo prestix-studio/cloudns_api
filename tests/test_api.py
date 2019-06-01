@@ -68,11 +68,11 @@ def test_api_response_can_be_initialized_with_request_response():
     assert response.response == request_response
     assert response.success
     assert response.status_code is 200
-    assert response.data == {'test' : 123}
+    assert response.payload == {'test' : 123}
     assert response.json() == {
             'status_code' : 200,
-            'success'      : True,
-            'data' : {'test' : 123}
+            'success'     : True,
+            'payload'     : {'test' : 123}
         }
 
 
@@ -86,11 +86,11 @@ def test_api_response_can_be_initialized_without_request_response():
     assert not response.response
     assert not response.success
     assert not response.status_code
-    assert response.data == {}
+    assert response.payload == {}
     assert response.json() == {
             'status_code' : None,
-            'success'      : False,
-            'data'        : {}
+            'success'     : False,
+            'payload'     : {}
         }
 
 
@@ -118,7 +118,7 @@ def test_api_response_can_have_error_set_on_response_without_request_response():
     assert response.response == None
     assert not response.success
     assert not response.status_code
-    assert response.data == {}
+    assert response.payload == {}
 
 
 def test_api_response_can_be_created_with_request_response_after_init():
@@ -130,11 +130,11 @@ def test_api_response_can_be_created_with_request_response_after_init():
     assert response.response == request_response
     assert response.success
     assert response.status_code == 200
-    assert response.data == {'test': 123}
+    assert response.payload == {'test': 123}
     assert response.json() == {
             'status_code' : 200,
-            'success'      : True,
-            'data'        : {'test': 123}
+            'success'     : True,
+            'payload'     : {'test': 123}
         }
 
 
@@ -142,7 +142,7 @@ def test_api_response_can_be_converted_to_string():
     request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
     response = ApiResponse(request_response)
 
-    expected_string = '{"status_code": 200, "success": true, "data": {"test": 123}}'
+    expected_string = '{"status_code": 200, "success": true, "payload": {"test": 123}}'
 
     assert response.string() == expected_string
     assert str(response) == expected_string
@@ -289,10 +289,10 @@ def test_api_patch_update_decorator_gets_then_updates():
                       patch=True)
 
     assert response.success
-    assert response.data['key_1'] == 'AAA'
-    assert response.data['key_2'] == 'BBB'
-    assert response.data['key_3'] == 'ZZZ'
-    assert response.data['key_4'] == 'YYY'
+    assert response.payload['key_1'] == 'AAA'
+    assert response.payload['key_2'] == 'BBB'
+    assert response.payload['key_3'] == 'ZZZ'
+    assert response.payload['key_4'] == 'YYY'
 
 
 def test_api_patch_update_decorator_works_with_2_get_keys():
@@ -315,10 +315,10 @@ def test_api_patch_update_decorator_works_with_2_get_keys():
                     key_4='YYY', patch=True)
 
     assert response.success
-    assert response.data['key_1'] == 'AAA'
-    assert response.data['key_2'] == 'BBB'
-    assert response.data['key_3'] == 'ZZZ'
-    assert response.data['key_4'] == 'YYY'
+    assert response.payload['key_1'] == 'AAA'
+    assert response.payload['key_2'] == 'BBB'
+    assert response.payload['key_3'] == 'ZZZ'
+    assert response.payload['key_4'] == 'YYY'
 
 
 def test_api_patch_update_fails_when_get_first_fails():

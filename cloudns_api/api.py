@@ -64,8 +64,8 @@ class ApiResponse(object):
             self.error = 'HTTP response ' + self.status_code
 
         # Check for API error responses
-        elif 'status' in self.data and self.data['status'] is 'Failed':
-            self.error = self.data['statusDescription']
+        elif 'status' in self.payload and self.payload['status'] is 'Failed':
+            self.error = self.payload['statusDescription']
 
     @property
     def success(self):
@@ -79,17 +79,17 @@ class ApiResponse(object):
         return self.response.status_code if self.response else None
 
     @property
-    def data(self):
+    def payload(self):
         """Wraps the request response's json method."""
         return self.response.json() if self.response else {}
 
     def json(self):
         """Returns the response as a json object. This allows us to scrub the
-        data and massage it to our requirements."""
+        payload and massage it to our requirements."""
         json = {
             'status_code' : self.status_code,
             'success'     : self.success,
-            'data'        : self.data,
+            'payload'     : self.payload,
         }
 
         if self.error:
@@ -184,7 +184,7 @@ def patch_update(get, keys):
                     # return the original response.
                     return response.response
 
-                kwargs = {**response.data, **kwargs}
+                kwargs = {**response.payload, **kwargs}
 
             return api_call(*args, **kwargs)
 
