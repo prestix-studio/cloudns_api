@@ -10,7 +10,6 @@
 Functional tests for cloudns_api's validation module.
 """
 
-
 from pytest import raises
 
 from cloudns_api.validation import (
@@ -82,10 +81,10 @@ def test_is_int_validates_max_range():
     just_right = 15
     too_big = 25
 
-    assert is_int(just_right, 'test_field', max_value = 20)
+    assert is_int(just_right, 'test_field', max_value=20)
 
     with raises(ValidationError) as exception:
-        is_int(too_big, 'test_field', max_value = 20)
+        is_int(too_big, 'test_field', max_value=20)
 
     assert exception.value.details['fieldname'] == 'test_field'
     assert exception.value.details['message'] == 'This field must be less than 20.'
@@ -96,10 +95,10 @@ def test_is_int_validates_min_range():
     just_right = 15
     too_small = 1
 
-    assert is_int(just_right, 'test_field', min_value = 10)
+    assert is_int(just_right, 'test_field', min_value=10)
 
     with raises(ValidationError) as exception:
-        is_int(too_small, 'test_field', min_value = 10)
+        is_int(too_small, 'test_field', min_value=10)
 
     assert exception.value.details['fieldname'] == 'test_field'
     assert exception.value.details['message'] == 'This field must be greater than 10.'
@@ -306,7 +305,7 @@ def test_validate_function_allows_for_optional_fields():
     optional = None
 
     # validate domain none, empty string, is optional a kwarg?
-    assert validate('domain', optional, optional = True) == None
+    assert validate('domain', optional, optional=True) == None
 
     with raises(ValidationError) as exception:
         validate('domain', optional)

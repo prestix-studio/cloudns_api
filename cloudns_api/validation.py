@@ -68,7 +68,7 @@ def validate(fieldname, value, *args, **kwargs):
     raise ValidationException('Unexpected validation error.')
 
 
-def is_int(value, fieldname, min_value = None, max_value = None, **kwargs):
+def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
     """Returns the value if value is an integer (within min_value/max_value
     range); otherwise, raises a validation error."""
     try:

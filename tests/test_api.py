@@ -27,7 +27,7 @@ from .helpers import set_debug, set_no_debug, use_test_auth
 
 class MockRequestResponse:
     """Mocks a response from the requests library."""
-    def __init__(self, json_data = None, status_code = 200):
+    def __init__(self, json_data=None, status_code=200):
         self.json_data = json_data
         self.status_code = status_code
 
@@ -260,9 +260,9 @@ def test_api_decorator_responds_to_authentication_error():
 
     @api
     def test_api_call(*args, **kwargs):
-        return MockRequestResponse(json_data = {'status': 'Failed',
-                                                'statusDescription':
-                                                'Invalid authentication, incorrect auth-id or auth-password.'})
+        return MockRequestResponse(json_data={'status': 'Failed',
+                                              'statusDescription':
+                                              'Invalid authentication, incorrect auth-id or auth-password.'})
 
     response = test_api_call()
     assert not response.success
@@ -277,13 +277,13 @@ def test_api_patch_update_decorator_gets_then_updates():
     def test_api_get(*args, **kwargs):
         assert len(kwargs) == 1
         assert kwargs['domain_name'] == 'my_example.com'
-        return MockRequestResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
-                                                'key_3': 'CCC', 'key_4': 'DDD'})
+        return MockRequestResponse(json_data={'key_1': 'AAA', 'key_2': 'BBB',
+                                              'key_3': 'CCC', 'key_4': 'DDD'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name'])
     def update(*args, **kwargs):
-        return MockRequestResponse(json_data = kwargs)
+        return MockRequestResponse(json_data=kwargs)
 
     response = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
                       patch=True)
@@ -303,13 +303,13 @@ def test_api_patch_update_decorator_works_with_2_get_keys():
         assert len(kwargs) == 2
         assert kwargs['domain_name'] == 'my_example.com'
         assert kwargs['id'] == 123
-        return MockRequestResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
-                                                'key_3': 'CCC', 'key_4': 'DDD'})
+        return MockRequestResponse(json_data={'key_1': 'AAA', 'key_2': 'BBB',
+                                              'key_3': 'CCC', 'key_4': 'DDD'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name', 'id'])
     def update(*args, **kwargs):
-        return MockRequestResponse(json_data = kwargs)
+        return MockRequestResponse(json_data=kwargs)
 
     response = update(domain_name='my_example.com', id=123, key_3='ZZZ',
                     key_4='YYY', patch=True)
@@ -327,9 +327,9 @@ def test_api_patch_update_fails_when_get_first_fails():
     @api
     def test_api_get(*args, **kwargs):
         print('getting')
-        return MockRequestResponse(json_data = {'status': 'Failed',
-                                                'statusDescription':
-                                                'Missing domain-name'})
+        return MockRequestResponse(json_data={'status': 'Failed',
+                                              'statusDescription':
+                                              'Missing domain-name'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name'])
