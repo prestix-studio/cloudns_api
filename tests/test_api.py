@@ -16,26 +16,16 @@ from requests import exceptions as request_exceptions
 from cloudns_api.api import ApiResponse, api, get_auth_params, patch_update
 from cloudns_api.validation import ValidationError
 
-from .helpers import set_debug, set_no_debug, use_test_auth
+from .helpers import (
+    MockRequestResponse,
+    set_debug,
+    set_no_debug,
+    use_test_auth
+)
 
 
 ##
 # Authentication Tests
-
-
-# Utilities
-
-class MockRequestResponse:
-    """Mocks a response from the requests library."""
-    def __init__(self, json_data=None, status_code=200):
-        self.json_data = json_data
-        self.status_code = status_code
-
-    def json(self):
-        return self.json_data
-
-
-# Tests
 
 @use_test_auth
 def test_get_auth_params_returns_auth_params(test_id, test_password):
@@ -56,7 +46,7 @@ def test_get_auth_params_returns_different_dict_every_time():
 
 
 ##
-#  Tests ApiResponse
+#  ApiResponse Tests
 
 def test_api_response_can_be_initialized_with_request_response():
     """An ApiResponse object can be initialized with a request response object.

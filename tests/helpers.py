@@ -51,6 +51,16 @@ def set_no_debug(test_fn):
 ##
 # Request Mock functions
 
+class MockRequestResponse:
+    """Mocks a response from the requests library."""
+    def __init__(self, json_data=None, status_code=200):
+        self.json_data = json_data
+        self.status_code = status_code
+
+    def json(self):
+        return self.json_data
+
+
 class Result():
     def __init__(self, url, params=None, status_code=200):
         """Mocks the requests Result object for testing.
