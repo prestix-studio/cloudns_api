@@ -152,12 +152,15 @@ def api(api_call):
         except TypeError as e:
             response.error = 'Missing a required argument.'
 
+            if CLOUDNS_API_DEBUG:
+                response.error = str(e)
+
         # Catch all other python errors
         except Exception as e:
             response.error = 'Something went wrong.'
 
             if CLOUDNS_API_DEBUG:
-                response.error = e.__str__()
+                response.error = str(e)
 
         # Whew! Made it past the errors, so return the response
         return response
