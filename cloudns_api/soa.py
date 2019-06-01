@@ -14,9 +14,10 @@ This module contains API wrapper functions for listing and updating SOA
 records.
 """
 
-from .api import api
-from .parameters import Parameters
 import requests
+
+from .api import api, patch_update
+from .parameters import Parameters
 
 
 @api
@@ -34,8 +35,9 @@ def get(domain_name=None, **kwargs):
 
 
 @api
+@patch_update(get=get, keys=['domain_name'])
 def update(domain_name=None, primary_ns=None, admin_mail=None, refresh=None,
-           retry=None, expire=None, default_ttl=None, **kwargs):
+           retry=None, expire=None, default_ttl=None, patch=False, **kwargs):
     """Updates the DNS SOA record for a particular domain.
 
     :param domain_name: string, (required) the domain name whose SOA record you
