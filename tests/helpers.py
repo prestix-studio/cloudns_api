@@ -97,7 +97,7 @@ def mock_get_request(test_fn):
 
 
 def mock_post_request(test_fn):
-    @patch('cloudns_api.soa.requests.post', new=get_mock)
+    @patch('cloudns_api.soa.requests.post', new=post_mock)
     def test_wrapper(*args, **kwargs):
         test_fn(*args, **kwargs)
     return test_wrapper
