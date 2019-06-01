@@ -14,10 +14,17 @@ This module contains basic API utilities and the api decorator function.
 """
 
 from json import dumps as to_json_string
-from requests import codes as code, get, post
-from requests.exceptions import ContentDecodingError, ConnectionError
-from requests.exceptions import HTTPError, SSLError, TooManyRedirects
-from requests.exceptions import ConnectTimeout, Timeout, ReadTimeout
+from requests import codes as code, get
+from requests.exceptions import (
+    ContentDecodingError,
+    ConnectionError,
+    HTTPError,
+    SSLError,
+    TooManyRedirects,
+    ConnectTimeout,
+    Timeout,
+    ReadTimeout,
+)
 
 from .config import (
     CLOUDNS_API_AUTH_ID,
