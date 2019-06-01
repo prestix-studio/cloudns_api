@@ -218,6 +218,7 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
     assert response.error == "name 'uninitialized_variable' is not defined"
 
 
+@set_no_debug
 def test_api_decorator_responds_to_missing_required_args():
     """API decorator responds appropriately to required missing args."""
 
