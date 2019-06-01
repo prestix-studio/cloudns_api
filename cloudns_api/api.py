@@ -119,6 +119,9 @@ def api(api_call):
     """Decorates an api call in order to consistently handle errors and
     maintain a consistent json format.
 
+    The decorated function should return a requests.response, and this will
+    cause the function to end up returning an ApiResponse.
+
     :param api_call: function, the function to be decorated
     """
 
@@ -166,7 +169,10 @@ def patch_update(get, keys):
     """Decorates an api call to allow 'patch' updating with only parameters to
     be updated.
 
-    :param api_call: function, the function to be decorated
+    :param get: function, the function that should be used to get the existing
+        parameters.
+    :param keys: list, the list of keys that will be passed in the kwargs that
+        should be used to get the existing data.
     """
 
     def decorated_patch_update(api_call):
