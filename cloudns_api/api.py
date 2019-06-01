@@ -118,9 +118,6 @@ def api(api_call):
     def api_wrapper(*args, **kwargs):
         """ Wraps an api call in order to consistently handle errors and
         maintain a consistent json format.
-
-        :param json_object: bool, return an object if true, otherwise return
-            the json string
         """
         response = ApiResponse()
 
@@ -152,13 +149,8 @@ def api(api_call):
             if CLOUDNS_API_DEBUG:
                 response.error = e.__str__()
 
-
-        # Whew! Made it past the errors, so return the result
-        if 'json_object' in kwargs and kwargs['json_object']:
-            return response.json()
-
-
-        return response.string()
+        # Whew! Made it past the errors, so return the response
+        return response
 
     return api_wrapper
 
