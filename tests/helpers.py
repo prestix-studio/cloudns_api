@@ -52,47 +52,41 @@ def set_no_debug(test_fn):
 # Request Mock functions
 
 class MockRequestResponse:
-    """Mocks a response from the requests library."""
-    def __init__(self, json_data=None, status_code=200):
+    def __init__(self, url='', params=None, json_data=None, status_code=200):
+        """Mocks the requests response object for testing.
+
+        :param url: string, the url that was called in the get or post request.
+        :param params: dict, parameters to be passed to requests.
+        :param json_data: dict, json data to be returned in the json() method.
+        :param status_code: integer, the status code to return in the test.
+            Defaults to 200.
+        """
+        self.url = url
         self.json_data = json_data
+        self.params = params
         self.status_code = status_code
 
     def json(self):
-        return self.json_data
+        """Mocks the json object method. If the response was initialized with
+        json_data, it will return that. Otherwise, it will return simply the
+        url and params that it was defined with."""
+        if self.json_data:
+            return self.json_data
+        else:
+            return {
+                'url' : self.url,
+                'params' : self.params,
+            }
 
 
-class Result():
-    def __init__(self, url, params=None, status_code=200):
-        """Mocks the requests Result object for testing.
-
-        :param url: string, (required) the url that was called in the get or
-            post request.
-        :param params: dict, (optiona) optional parameters to be passed to
-            requests.
-        :param status_code: integer, (optional) the status code to return in
-            the test. Defaults to 200.
-        """
-        self.url = url
-        self.params = params
-        self.status_code = 200
-
-    def json(self):
-        """Mocks the json object to return simply the url that the result
-        object was defined with for testing."""
-        return {
-            'url' : self.url,
-            'params' : self.params,
-        }
-
-
-def get_mock(url, params=None):
+def get_mock(url, params=None, json_data=None):
     """A mock get request to return the request-prepared url."""
-    return Result(url, params=params)
+    return MockRequestResponse(url, params=params, json_data=None)
 
 
-def post_mock(url, params=None):
+def post_mock(url, params=None, json_data=None):
     """A mock post request to return the request-prepared url."""
-    return Result(url, params=params)
+    return MockRequestResponse(url, params=params, json_data=None)
 
 
 def mock_get_request(test_fn):
