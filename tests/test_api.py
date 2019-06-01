@@ -275,8 +275,7 @@ def test_api_patch_update_decorator_gets_then_updates():
 
     @api
     def test_api_get(*args, **kwargs):
-        assert len(kwargs) == 2
-        assert kwargs['json_object'] == True
+        assert len(kwargs) == 1
         assert kwargs['domain_name'] == 'my_example.com'
         return MockRequestResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
                                                 'key_3': 'CCC', 'key_4': 'DDD'})
@@ -286,14 +285,14 @@ def test_api_patch_update_decorator_gets_then_updates():
     def update(*args, **kwargs):
         return MockRequestResponse(json_data = kwargs)
 
-    result = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
-                    patch=True, json_object=True)
+    response = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
+                      patch=True)
 
-    assert result['success']
-    assert result['data']['key_1'] == 'AAA'
-    assert result['data']['key_2'] == 'BBB'
-    assert result['data']['key_3'] == 'ZZZ'
-    assert result['data']['key_4'] == 'YYY'
+    assert response.success
+    assert response.data['key_1'] == 'AAA'
+    assert response.data['key_2'] == 'BBB'
+    assert response.data['key_3'] == 'ZZZ'
+    assert response.data['key_4'] == 'YYY'
 
 
 def test_api_patch_update_decorator_works_with_2_get_keys():
@@ -301,8 +300,7 @@ def test_api_patch_update_decorator_works_with_2_get_keys():
 
     @api
     def test_api_get(*args, **kwargs):
-        assert len(kwargs) == 3
-        assert kwargs['json_object'] == True
+        assert len(kwargs) == 2
         assert kwargs['domain_name'] == 'my_example.com'
         assert kwargs['id'] == 123
         return MockRequestResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
@@ -313,36 +311,34 @@ def test_api_patch_update_decorator_works_with_2_get_keys():
     def update(*args, **kwargs):
         return MockRequestResponse(json_data = kwargs)
 
-    result = update(domain_name='my_example.com', id=123, key_3='ZZZ',
-                    key_4='YYY', patch=True, json_object=True)
+    response = update(domain_name='my_example.com', id=123, key_3='ZZZ',
+                    key_4='YYY', patch=True)
 
-    assert result['success']
-    assert result['data']['key_1'] == 'AAA'
-    assert result['data']['key_2'] == 'BBB'
-    assert result['data']['key_3'] == 'ZZZ'
-    assert result['data']['key_4'] == 'YYY'
+    assert response.success
+    assert response.data['key_1'] == 'AAA'
+    assert response.data['key_2'] == 'BBB'
+    assert response.data['key_3'] == 'ZZZ'
+    assert response.data['key_4'] == 'YYY'
 
 
-def test_api_patch_update_decorator_works_with_json_string():
-    """API patch_update decorator works with json string."""
+def test_api_patch_update_fails_when_get_first_fails():
+    """API patch_update call fails when the get request first fails."""
 
     @api
     def test_api_get(*args, **kwargs):
-        assert len(kwargs) == 2
-        assert kwargs['json_object'] == True
-        assert kwargs['domain_name'] == 'my_example.com'
-        return MockRequestResponse(json_data = {'key_1': 'AAA', 'key_2': 'BBB',
-                                                'key_3': 'CCC', 'key_4': 'DDD'})
+        print('getting')
+        return MockRequestResponse(json_data = {'status': 'Failed',
+                                                'statusDescription':
+                                                'Missing domain-name'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name'])
     def update(*args, **kwargs):
-        return MockRequestResponse(json_data = kwargs)
+        print('updating')
+        return MockRequestResponse(json_data=kwargs)
 
-    result = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
-                    patch=True, json_object=False)
+    response = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
+                      patch=True)
 
-    assert '"key_1": "AAA"' in result
-    assert '"key_2": "BBB"' in result
-    assert '"key_3": "ZZZ"' in result
-    assert '"key_4": "YYY"' in result
+    assert not response.success
+    assert response.error == 'Missing domain-name'

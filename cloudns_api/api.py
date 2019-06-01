@@ -177,13 +177,14 @@ def patch_update(get, keys):
                 parameters given. If False, does nothing. False by default.
             """
             if patch:
-                result = get(json_object=True, **{key:value for key,value in
-                                                  kwargs.items() if key in
-                                                  keys})
-                if not result['success']:
-                    raise Exception('fix this...')
+                response = get(**{key:value for key,value in kwargs.items() if
+                                  key in keys})
+                if not response.success:
+                    # Return the requests.response. The API decorator will
+                    # return the original response.
+                    return response.response
 
-                kwargs = {**result['data'], **kwargs}
+                kwargs = {**response.data, **kwargs}
 
             return api_call(*args, **kwargs)
 
