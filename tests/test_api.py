@@ -35,6 +35,7 @@ from .helpers import (
 
 @use_test_auth
 def test_get_auth_params_returns_auth_params(test_id, test_password):
+    """Function get_auth_params() returns auth params."""
     auth_params = get_auth_params()
     assert auth_params['auth-id'] == test_id
     assert auth_params['auth-password'] == test_password
@@ -139,6 +140,8 @@ def test_api_response_can_have_error_set_on_response_without_request_response():
 
 
 def test_api_response_can_be_created_with_request_response_after_init():
+    """ApiResponse can be created with request response after it is
+    initialized."""
     request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
     response = ApiResponse()
     response.create(request_response)
@@ -156,6 +159,7 @@ def test_api_response_can_be_created_with_request_response_after_init():
 
 
 def test_api_response_can_be_converted_to_string():
+    """ApiResponse can be converted to a string."""
     request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
     response = ApiResponse(request_response)
 
