@@ -13,14 +13,20 @@ Functional tests for cloudns_api's api utilities module.
 
 from requests import exceptions as request_exceptions
 
-from cloudns_api.api import ApiResponse, api, get_auth_params, patch_update
+from cloudns_api.api import (
+    ApiResponse,
+    api,
+    get_auth_params,
+    patch_update,
+    use_snake_case_keys,
+)
 from cloudns_api.validation import ValidationError
 
 from .helpers import (
     MockRequestResponse,
     set_debug,
     set_no_debug,
-    use_test_auth
+    use_test_auth,
 )
 
 
@@ -43,6 +49,27 @@ def test_get_auth_params_returns_different_dict_every_time():
 
     new_params = get_auth_params()
     assert 'a-param' not in new_params
+
+
+##
+#  SnakeCase Tests
+
+def test_snake_case_converts_keys_to_snake_case():
+    pre_normalized_dict = {
+        'test'         : 123,
+        'testTest'     : 123,
+        'testTestTest' : 123,
+        'testTTL'      : 123,
+    }
+
+    normalized_dict = {
+        'test'           : 123,
+        'test_test'      : 123,
+        'test_test_test' : 123,
+        'test_ttl'       : 123,
+    }
+
+    assert use_snake_case_keys(pre_normalized_dict) == normalized_dict
 
 
 ##
@@ -136,6 +163,24 @@ def test_api_response_can_be_converted_to_string():
 
     assert response.string() == expected_string
     assert str(response) == expected_string
+
+def test_api_response_payload_is_normalized_to_snake_case():
+    """An ApiResponse object's payload keys are normalized to snake case."""
+    pre_normalized_data = {
+        'test'         : 123,
+        'testTest'     : 123,
+        'testTestTest' : 123,
+        'testTTL'      : 123,
+    }
+    request_response = MockRequestResponse(json_data=pre_normalized_data)
+    response = ApiResponse(request_response)
+
+    assert response.payload == {
+        'test'           : 123,
+        'test_test'      : 123,
+        'test_test_test' : 123,
+        'test_ttl'       : 123,
+    }
 
 
 ##

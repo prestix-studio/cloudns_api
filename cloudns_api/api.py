@@ -14,6 +14,7 @@ This module contains basic API utilities and the api decorator function.
 """
 
 from json import dumps as to_json_string
+from re import compile as re_compile
 from requests import codes as code, get
 from requests.exceptions import (
     ContentDecodingError,
@@ -38,6 +39,24 @@ def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
     return {'auth-id': CLOUDNS_API_AUTH_ID,
             'auth-password': CLOUDNS_API_AUTH_PASSWORD}
+
+
+_first_cap_re = re_compile('(.)([A-Z][a-z]+)')
+_all_cap_re   = re_compile('([a-z0-9])([A-Z])')
+
+def use_snake_case_keys(original_dict):
+    """Converts a dict's keys to snake case.
+
+    @see https://stackoverflow.com/questions/1175208
+    """
+    normalized_dict = {}
+
+    for key, value in original_dict.items():
+        key = _first_cap_re.sub(r'\1_\2', key)
+        key = _all_cap_re.sub(r'\1_\2', key).lower()
+        normalized_dict[key] = value
+
+    return normalized_dict
 
 
 class ApiResponse(object):
@@ -72,7 +91,7 @@ class ApiResponse(object):
 
         # Check for API error responses
         elif 'status' in self.payload and self.payload['status'] is 'Failed':
-            self.error = self.payload['statusDescription']
+            self.error = self.payload['status_description']
 
     @property
     def success(self):
@@ -88,7 +107,8 @@ class ApiResponse(object):
     @property
     def payload(self):
         """Wraps the request response's json method."""
-        return self.response.json() if self.response else {}
+        return use_snake_case_keys(self.response.json()) \
+            if self.response else {}
 
     def json(self):
         """Returns the response as a json object. This allows us to scrub the
