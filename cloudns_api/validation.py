@@ -89,7 +89,7 @@ def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
 def is_domain_name(value, fieldname, **kwargs):
     """Returns the value if value is a valid domain name. Otherwise, raises a
     validation error."""
-    if not re.match('^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
+    if not re.match(r'^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
                     value):
         raise ValidationError(fieldname,
                             'This field must be a valid domain name.')
@@ -99,7 +99,7 @@ def is_domain_name(value, fieldname, **kwargs):
 def is_email(value, fieldname, **kwargs):
     """Returns the value if value is a valid domain name. Otherwise, raises a
     validation error."""
-    if not re.match('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
+    if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
                     value):
         raise ValidationError(fieldname,
                             'This field must be a valid email.')
