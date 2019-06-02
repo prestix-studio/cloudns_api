@@ -213,8 +213,8 @@ def patch_update(get, keys):
                 parameters given. If False, does nothing. False by default.
             """
             if 'patch' in kwargs and kwargs['patch']:
-                response = get(**{key:value for key, value in kwargs.items() if
-                                  key in keys})
+                response = get(*args, **{key:value for key, value in
+                                         kwargs.items() if key in keys})
                 if not response.success:
                     # Return the requests.response. The API decorator will
                     # return the original response.
