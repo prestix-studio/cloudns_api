@@ -74,12 +74,13 @@ def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
     try:
         value += 0  # Try it to see if it is an integer
     except TypeError:
-        raise ValidationError(fieldname, 'This field must be an integer.')
+        if re.findall('[^0-9]', value):
+            raise ValidationError(fieldname, 'This field must be an integer.')
 
-    if min_value and value < min_value:
+    if min_value and int(value) < min_value:
         raise ValidationError(fieldname,
                             'This field must be greater than ' + str(min_value) + '.')
-    if max_value and value > max_value:
+    if max_value and int(value) > max_value:
         raise ValidationError(fieldname,
                             'This field must be less than ' + str(max_value) + '.')
     return True

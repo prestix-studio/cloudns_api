@@ -60,10 +60,12 @@ def test_validation_errors_batch_returns_all_error_details():
 def test_is_int_validates_integer_values():
     """Function is_int() validates if a value is an integer or not."""
     integer = 1
-    not_integer = '1'
+    also_integer = '1'
+    not_integer = '1abc'
     also_not_integer = 'abc'
 
     assert is_int(integer, 'test_field')
+    assert is_int(also_integer, 'test_field')
 
     with raises(ValidationError) as exception:
         is_int(not_integer, 'test_field')
