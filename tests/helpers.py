@@ -79,25 +79,41 @@ class MockRequestResponse:
             }
 
 
-def get_mock(url, params=None, json_data=None):
-    """A mock get request to return the request-prepared url."""
-    return MockRequestResponse(url, params=params, json_data=None)
+def mock_get_request(json_data=None):
+    """A closure decorator to pass json_data for the get_mock function.
+
+    Note: You must use parens even when you pass no arguments.
+        @mock_get_request()
+    """
+    def get_mock(url, params=None):
+        """A mock get request to return the request-prepared url."""
+        return MockRequestResponse(url, params=params, json_data=json_data)
+
+    def decorator(test_fn):
+        """Having the outer decorator allows passing arguments. This inner
+        decorator is where the function is passed."""
+        @patch('cloudns_api.soa.requests.get', new=get_mock)
+        def test_wrapper(*args, **kwargs):
+            test_fn(*args, **kwargs)
+        return test_wrapper
+    return decorator
 
 
-def post_mock(url, params=None, json_data=None):
-    """A mock post request to return the request-prepared url."""
-    return MockRequestResponse(url, params=params, json_data=None)
+def mock_post_request(json_data=None):
+    """A closure decorator to pass json_data for the post_mock function.
 
+    Note: You must use parens even when you pass no arguments.
+        @mock_post_request()
+    """
+    def post_mock(url, params=None, json_data=None):
+        """A mock post request to return the request-prepared url."""
+        return MockRequestResponse(url, params=params, json_data=json_data)
 
-def mock_get_request(test_fn):
-    @patch('cloudns_api.soa.requests.get', new=get_mock)
-    def test_wrapper(*args, **kwargs):
-        test_fn(*args, **kwargs)
-    return test_wrapper
-
-
-def mock_post_request(test_fn):
-    @patch('cloudns_api.soa.requests.post', new=post_mock)
-    def test_wrapper(*args, **kwargs):
-        test_fn(*args, **kwargs)
-    return test_wrapper
+    def decorator(test_fn):
+        """Having the outer decorator allows passing arguments. This inner
+        decorator is where the function is passed."""
+        @patch('cloudns_api.soa.requests.post', new=post_mock)
+        def test_wrapper(*args, **kwargs):
+            test_fn(*args, **kwargs)
+        return test_wrapper
+    return decorator
