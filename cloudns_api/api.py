@@ -90,7 +90,9 @@ class ApiResponse(object):
             self.error = 'HTTP response ' + self.status_code
 
         # Check for API error responses
-        elif 'status' in self.payload and self.payload['status'] is 'Failed':
+        elif isinstance(self.payload, dict) \
+            and 'status' in self.payload \
+            and self.payload['status'] is 'Failed':
             self.error = self.payload['status_description']
 
     @property
@@ -114,11 +116,13 @@ class ApiResponse(object):
 
         if isinstance(payload, dict):
             return use_snake_case_keys(payload)
-        else:
+        elif isinstance(payload, list):
             payload_list = []
             for item in payload:
                 payload_list.append(use_snake_case_keys(item))
             return payload_list
+        else:
+            return payload
 
     def json(self):
         """Returns the response as a json object. This allows us to scrub the

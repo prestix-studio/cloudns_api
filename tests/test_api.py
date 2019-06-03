@@ -107,6 +107,15 @@ def test_api_response_works_with_request_response_list():
                                 {'test3': 789}]
 
 
+def test_api_response_works_with_request_response_int():
+    """An ApiResponse object works with a request response object that is
+    simply an integer."""
+    request_response = MockRequestResponse(json_data=5, status_code=200)
+    response = ApiResponse(request_response)
+
+    assert response.payload == 5
+
+
 @set_no_debug
 def test_api_response_can_be_initialized_without_request_response():
     """An ApiResponse object can be initialized without a request response
