@@ -51,7 +51,7 @@ class Parameters(object):
 
     def to_dict(self):
         """Returns a dict of just the fieldname and values."""
-        return {fieldname:options['value'] if 'value' in options else options
+        return {fieldname:options['value'] if isinstance(options, dict) else options
                 for fieldname, options in self._params_with_options.items()}
 
     def validate(self):
@@ -60,12 +60,16 @@ class Parameters(object):
         errors = []
 
         for fieldname, options in self._params_with_options.items():
+            if isinstance(options, dict):
+                options = options.copy()
+                value = options.pop('value')
+            else:
+                # Options variable is actually the value in this instance:
+                value = options
+                options = {}
+
             try:
-                if 'value' in options:
-                    options = options.copy()
-                    validate(fieldname, options.pop('value'), **options)
-                else:
-                    validate(fieldname, options)
+                validate(fieldname, value, **options)
             except ValidationError as e:
                 errors.append(e)
 

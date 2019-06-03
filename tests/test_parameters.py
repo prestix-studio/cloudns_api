@@ -76,41 +76,43 @@ def test_parameters_arent_affected_by_validation(test_id, test_password):
     """Parameters object can be converted to a dict of parameter name and
     paramater value even after validation."""
     params = Parameters({
-		'domain-name' : 'example.com',
-		'primary-ns' : 'ns1.example.com',
-		'admin-mail' : 'test@example.com',
-		'refresh' : {
-			'value' : 1200,
-			'min_value' : 1200,
-			'max_value': 43200
-		},
-		'retry' : {
-			'value' : 180,
-			'min_value' : 180,
-			'max_value' : 2419200
-		},
-		'expire' : {
-			'value': 1209600,
-			'min_value': 1209600,
-			'max_value': 2419200
-		},
-		'default-ttl' : {
-			'value' : 60,
-			'min_value' : 60,
-			'max_value' : 2419200
-		}
+        'domain-name' : 'example.com',
+        'primary-ns'  : 'ns1.example.com',
+        'admin-mail'  : 'test@example.com',
+        'ttl'         : 60,
+        'refresh' : {
+            'value' : 1200,
+            'min_value' : 1200,
+            'max_value': 43200
+        },
+        'retry' : {
+            'value' : 180,
+            'min_value' : 180,
+            'max_value' : 2419200
+        },
+        'expire' : {
+            'value': 1209600,
+            'min_value': 1209600,
+            'max_value': 2419200
+        },
+        'default-ttl' : {
+            'value' : 60,
+            'min_value' : 60,
+            'max_value' : 2419200
+        }
     }, validate=True)
 
     assert params.to_dict() == {
         'auth-id'       : test_id,
         'auth-password' : test_password,
         'domain-name'   : 'example.com',
-		'primary-ns'    : 'ns1.example.com',
-		'admin-mail'    : 'test@example.com',
-		'refresh'       : 1200,
-		'retry'         : 180,
-		'expire'        : 1209600,
-		'default-ttl'   : 60,
+        'ttl'           : 60,
+        'primary-ns'    : 'ns1.example.com',
+        'admin-mail'    : 'test@example.com',
+        'refresh'       : 1200,
+        'retry'         : 180,
+        'expire'        : 1209600,
+        'default-ttl'   : 60,
     }
 
 
