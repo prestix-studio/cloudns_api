@@ -93,6 +93,19 @@ def test_api_response_can_be_initialized_with_request_response():
             'payload'     : {'test' : 123}
         }
 
+def test_api_response_works_with_request_response_list():
+    """An ApiResponse object works with a request response object that is a
+    list."""
+    request_response = MockRequestResponse(json_data=[{'test1': 123},
+                                                      {'test2': 456},
+                                                      {'test3': 789}],
+                                           status_code=200)
+    response = ApiResponse(request_response)
+
+    assert response.payload == [{'test1': 123},
+                                {'test2': 456},
+                                {'test3': 789}]
+
 
 @set_no_debug
 def test_api_response_can_be_initialized_without_request_response():

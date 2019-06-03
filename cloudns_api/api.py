@@ -107,8 +107,18 @@ class ApiResponse(object):
     @property
     def payload(self):
         """Wraps the request response's json method."""
-        return use_snake_case_keys(self.response.json()) \
-            if self.response else {}
+        if not self.response:
+            return {}
+
+        payload = self.response.json() # Get the requests response json
+
+        if isinstance(payload, dict):
+            return use_snake_case_keys(payload)
+        else:
+            payload_list = []
+            for item in payload:
+                payload_list.append(use_snake_case_keys(item))
+            return payload_list
 
     def json(self):
         """Returns the response as a json object. This allows us to scrub the
