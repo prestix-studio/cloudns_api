@@ -98,3 +98,15 @@ def test_soa_update_function_using_patch_helper():
     assert payload['url'] == 'https://api.cloudns.net/dns/modify-soa.json'
     assert payload['params']['domain-name'] == 'example.com'
     assert payload['params']['admin-mail'] == 'new_email@example.com'
+
+
+@mock_post_request()
+def test_soa_update_function_catches_validation_errors():
+    """SOA update function catches validation errors."""
+    response = soa.update('example.com',
+                          primary_ns='not a domain',
+                          admin_mail='test@example.com', refresh=1200,
+                          retry=180, expire=1209600, default_ttl=60)
+
+    assert not response.success
+    assert response.json()['error'] == 'Validation error.'
