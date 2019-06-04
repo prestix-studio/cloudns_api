@@ -319,23 +319,3 @@ def test_validate_function_still_checks_given_optional_fields():
 
     with raises(ValidationError) as exception:
         validate('ttl', optional_int)
-
-
-def test_batch_validate_batches_validation_errors():
-    """Function batch_validate() batches (holds) validation errors until
-    check_for_validation_errors() is called."""
-
-    not_an_email = 'example@@com'
-    not_an_int = 'abcd'
-    not_a_domain = '/domain/'
-
-    batch_validate('email', not_an_email)
-    batch_validate('int', not_an_int)
-    batch_validate('domain_name', not_a_domain)
-
-    with raises(ValidationError) as exception:
-        check_for_validation_errors()
-
-    # It can be caught by both exception handlers
-    with raises(ValidationErrorsBatch) as exception:
-        check_for_validation_errors()
