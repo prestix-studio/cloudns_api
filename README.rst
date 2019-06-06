@@ -58,29 +58,29 @@ Importing and Basic Usage
     >>> print(response.json())
 
         {
-			'success'     : True,
-			'status_code' : 200,
-			'payload'     : {
-				'admin_mail'    : 'admin@example.com',
-				'default_ttl'   : '3600',
-				'expire'        : '1209600',
-				'primary_ns'    : 'ns1.example.com',
-				'refresh'       : '7200',
-				'retry'         : '1800',
-				'serial_number' : '2019060601'},
-			}
-		}
+            'success'     : True,
+            'status_code' : 200,
+            'payload'     : {
+                'admin_mail'    : 'admin@example.com',
+                'default_ttl'   : '3600',
+                'expire'        : '1209600',
+                'primary_ns'    : 'ns1.example.com',
+                'refresh'       : '7200',
+                'retry'         : '1800',
+                'serial_number' : '2019060601'},
+            }
+        }
 
     >>> cloudns_api.soa.update(
-			'example.com',
-			admin_mail='admin@example.com,
-			default_ttl=3600,
-			expire='1209600', # You can use strings or integers
-			primary_ns='ns1.example.com',
-			refresh=7200,
-			retry=1800,
-			serial_number=2019060601
-		)
+            'example.com',
+            admin_mail='admin@example.com,
+            default_ttl=3600,
+            expire='1209600', # You can use strings or integers
+            primary_ns='ns1.example.com',
+            refresh=7200,
+            retry=1800,
+            serial_number=2019060601
+        )
 
 
 API Reference
