@@ -251,7 +251,7 @@ validation_functions = {
     'caa_flag':         is_caa_flag,
     'caa_type':         is_caa_type,
     'caa_value':        is_valid,
-    'default-ttl':      is_int,
+    'default-ttl':      is_ttl,
     'domain-name':      is_domain_name,
     'email':            is_email,
     'fptype':           is_fptype,
@@ -264,6 +264,7 @@ validation_functions = {
     'primary-ns':       is_domain_name,
     'priority':         is_int,
     'record':           is_required,
+    'record-type':      is_record_type,
     'redirect-type':    is_redirect_type,
     'refresh':          is_int,
     'required':         is_required,
@@ -271,6 +272,5 @@ validation_functions = {
     'status':           is_api_bool,
     'ttl':              is_ttl,
     'txt':              is_domain_name,
-    'type':             is_record_type,
     'weight':           is_int,
 }
