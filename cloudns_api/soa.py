@@ -50,6 +50,7 @@ def update(domain_name, primary_ns=None, admin_mail=None, refresh=None,
         seconds
     :param default_ttl: integer, (required) default TTL from 60 to 2419200
         seconds
+    :param patch: boolean, whether or not to do a patch update
     """
     url = 'https://api.cloudns.net/dns/modify-soa.json'
 
