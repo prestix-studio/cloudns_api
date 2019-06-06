@@ -48,7 +48,7 @@ def update(domain_name, primary_ns=None, admin_mail=None, refresh=None,
     :param retry: integer, (required) retry rate from 180 to 2419200 seconds
     :param expire: integer, (required) expire time from 1209600 to 2419200
         seconds
-    :param default-ttl: integer, (required) default TTL from 60 to 2419200
+    :param default_ttl: integer, (required) default TTL from 60 to 2419200
         seconds
     """
     url = 'https://api.cloudns.net/dns/modify-soa.json'
