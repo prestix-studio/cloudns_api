@@ -84,4 +84,4 @@ def update(domain_name, primary_ns=None, admin_mail=None, refresh=None,
 
 def patch(*args, **kwargs):
     """A convenience function for patch updates."""
-    update(*args, patch=True, **kwargs)
+    return update(*args, patch=True, **kwargs)
