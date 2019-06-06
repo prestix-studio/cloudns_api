@@ -175,12 +175,14 @@ def test_is_ttl_validates_cloudns_ttls():
     """Function is_ttl() validates if a value is a valid ClouDNS ttl."""
     ttl = 86400
     also_ttl = '12 Hours'
+    again_also_ttl = '86400'
 
     not_ttl = 8701
     also_not_ttl = '14 Hours'
 
     assert is_ttl(ttl, 'test_ttl')
     assert is_ttl(also_ttl, 'test_ttl')
+    assert is_ttl(again_also_ttl, 'test_ttl')
 
     with raises(ValidationError) as exception:
         is_ttl(not_ttl, 'test_ttl')

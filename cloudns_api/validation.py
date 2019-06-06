@@ -126,27 +126,22 @@ RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
 def is_ttl(value, fieldname, **kwargs):
     """Returns the value if value is a valid ClouDNS ttl. Otherwise, raises a
     validation error."""
-    try:
-        if value.lower() not in TTL_STRINGS:
-            raise ValidationError(fieldname,
-                                'This field must be a valid ttl. ' + \
-                                '(1 minute, 5 minutes, 15 minutes, ' + \
-                                '30 minutes, 1 hour, 6 hours, 12 hours, ' + \
-                                '1 day, 2 days, 3 days, 1 week, 2 weeks, ' + \
-                                'or 1 month)')
-    # If value isn't a string, lower() raises AttributeError
-    except AttributeError:
-        if value not in TTLS:
-            raise ValidationError(fieldname,
-                                'This field must be a valid ttl. ' + \
-                                '(60, 300, 900, 1800, 3600, 21600, ' + \
-                                '43200, 86400, 172800, 259200, 604800, ' + \
-                                '1209600, or 2592000)')
+    if hasattr(value, 'lower'):
+        value = value.lower()
+
+    if value not in TTLS and value not in TTL_STRINGS:
+        raise ValidationError(fieldname, 'This field must be a valid ttl. ' + \
+            '(1 minute, 5 minutes, 15 minutes, 30 minutes, 1 hour, 6 hours, ' + \
+            '12 hours, 1 day, 2 days, 3 days, 1 week, 2 weeks, or 1 month) ' + \
+            'or (60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, ' + \
+            '259200, 604800, 1209600, or 2592000)')
     return True
 
 TTL_STRINGS = ['1 minute', '5 minutes', '15 minutes', '30 minutes', '1 hour',
                '6 hours', '12 hours', '1 day', '2 days', '3 days', '1 week',
-               '2 weeks', '1 month']
+               '2 weeks', '1 month', '60', '300', '900', '1800', '3600',
+               '21600', '43200', '86400', '172800', '259200', '604800',
+               '1209600', '2592000']
 
 TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
         1209600, 2592000]
