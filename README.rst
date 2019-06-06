@@ -1,5 +1,8 @@
-cloudns_api: A python interface to the ClouDNS.net API
-======================================================
+cloudns_api
+###########
+
+A python interface to the ClouDNS.net API
+=========================================
 
 Please note that this is still in Beta. Use at your own risk.
 
