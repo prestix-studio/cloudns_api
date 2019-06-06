@@ -21,8 +21,9 @@ For information on the `CloudNS.net <https://cloudns.net>`_ API see `here
 Installing and including in projects
 ====================================
 
+
 Installing cloudns_api
----------------
+----------------------
 
 .. code:: bash
 
@@ -45,12 +46,45 @@ Running Tests
     $ cd <project directory>
     $ py.test
 
+
 Importing and Basic Usage
 -------------------------
 
 .. code:: python
 
     >>> import cloudns_api
+
+    >>> response = cloudns_api.soa.get('example.com')
+    >>> print(response.json())
+
+        {
+			'success'     : True,
+			'status_code' : 200,
+			'payload'     : {
+				'admin_mail'    : 'admin@example.com',
+				'default_ttl'   : '3600',
+				'expire'        : '1209600',
+				'primary_ns'    : 'ns1.example.com',
+				'refresh'       : '7200',
+				'retry'         : '1800',
+				'serial_number' : '2019060601'},
+			}
+		}
+
+    >>> cloudns_api.soa.update(
+			'example.com',
+			admin_mail='admin@example.com,
+			default_ttl=3600,
+			expire='1209600', # You can use strings or integers
+			primary_ns='ns1.example.com',
+			refresh=7200,
+			retry=1800,
+			serial_number=2019060601
+		)
+
+
+API Reference
+-------------
 
 
 ----
