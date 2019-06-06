@@ -37,6 +37,9 @@ In order to authenticate correctly, create the following environment variables
     export CLOUDNS_API_AUTH_USER=my_user
     export CLOUDNS_API_AUTH_PASSWORD=my_password
 
+    # When you are debugging:
+    export CLOUDNS_API_DEBUG=True
+
 
 Running Tests
 -------------
