@@ -24,8 +24,8 @@ setup(
     long_description = README,
     url = 'https://github.com/hbradleyiii/cloudns_api',
     download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.3.tar.gz',
-    author = 'Harold Bradley III',
-    author_email = 'harold@bradleystudio.net',
+    author = 'Harold Bradley III | Prestix Studio, LLC',
+    author_email = 'harold@prestix.studio',
     license = 'MIT License',
     keywords = ['dns', 'dns api', 'domain name system', 'cloudns', 'server development'],
     classifiers = [  # See https://pypi.python.org/pypi?%3Aaction = list_classifiers
