@@ -22,6 +22,7 @@ setup(
     version = '0.3',
     description = 'A python interface to the ClouDNS.net API',
     long_description = README,
+    long_description_content_type = 'text/x-rst',
     url = 'https://github.com/hbradleyiii/cloudns_api',
     download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.3.tar.gz',
     author = 'Harold Bradley III | Prestix Studio, LLC',
