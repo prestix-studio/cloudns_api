@@ -19,7 +19,7 @@ HERE = path.abspath(path.dirname(__file__))
 
 setup(
     name = 'cloudns_api',
-    version = '0.3',
+    version = '0.4',
     description = 'A python interface to the ClouDNS.net API',
     long_description = README,
     long_description_content_type = 'text/x-rst',
