@@ -10,8 +10,6 @@
 Unit tests for cloudns_api's api soa module.
 """
 
-from mock import patch
-
 from cloudns_api import soa
 
 from .helpers import mock_get_request, mock_post_request
