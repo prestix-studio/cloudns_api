@@ -25,15 +25,21 @@ def _is_true(env_var):
 CLOUDNS_API_TESTING = _is_true(environ.get('CLOUDNS_API_TESTING'))
 
 CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
-if not CLOUDNS_API_AUTH_ID and not CLOUDNS_API_TESTING:
-    raise EnvironmentError(
-        'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
-    )
+if not CLOUDNS_API_AUTH_ID:
+    if CLOUDNS_API_TESTING:
+        CLOUDNS_API_AUTH_ID = 'test_id'
+    else:
+        raise EnvironmentError(
+            'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
+        )
 
 CLOUDNS_API_AUTH_PASSWORD = environ.get('CLOUDNS_API_AUTH_PASSWORD')
-if not CLOUDNS_API_AUTH_PASSWORD and not CLOUDNS_API_TESTING:
-    raise EnvironmentError(
-        'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
-    )
+if not CLOUDNS_API_AUTH_PASSWORD:
+    if CLOUDNS_API_TESTING:
+        CLOUDNS_API_AUTH_PASSWORD = 'test_password'
+    else:
+        raise EnvironmentError(
+            'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
+        )
 
 CLOUDNS_API_DEBUG = _is_true(environ.get('CLOUDNS_API_DEBUG'))
