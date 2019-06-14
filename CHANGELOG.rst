@@ -4,6 +4,12 @@ Release History
 ---------------
 
 
+0.4 (- --, 2019)
+++++++++++++++++++++
+
+* Planning/Testing Release 'c' - adds major mvp modules.
+
+
 0.3 (June 05, 2019)
 +++++++++++++++++++
 

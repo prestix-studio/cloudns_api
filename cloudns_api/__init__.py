@@ -18,7 +18,7 @@ from . import soa
 
 
 __title__ = 'cloudns_api'
-__version__ = '0.3'
+__version__ = '0.4'
 __author__ = 'Harold Bradley III | Prestix Studio, LLC'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2018-2019 Harold Bradley III | Prestix Studio, LLC'
