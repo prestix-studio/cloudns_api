@@ -6,7 +6,7 @@ A python interface to the ClouDNS.net API
 
 Please note that this is still in Beta. Use at your own risk.
 
-This project is an independent project and is not endorsed by
+This project is an independent project not developed by
 `CloudNS.net <https://cloudns.net>`__.
 
 The interface is designed to be simple and intuitive. Entities are represented
@@ -17,6 +17,9 @@ are consistent. The code reads pretty clearly.
 
 For information on the `CloudNS.net <https://cloudns.net>`__ API see `here
 <https://www.cloudns.net/wiki/article/41/>`__.
+
+Please submit any bug reports and bug fixes on github `here
+<https://github.com/hbradleyiii/>`__.
 
 
 Installing and including in projects
