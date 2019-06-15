@@ -93,6 +93,41 @@ API Reference
 Introduction
 ------------
 
+We have created the API to be consistent and predictable. API calls usually
+include `list`, `get`, `create`, and `update` functions that do exactly what
+they say. Arguments are passed in a consistent manner across all functions.
+When an argument accepts an integer, it can be passed as an integer or a string
+of that integer.
+
+The ClouDNS sometimes uses camel case and sometimes uses dashes in its
+parameters. In our API, we convert both of these to snake case for consistency
+and compatibility with python.
+
+API update functions require all required parameters to be passed. This can be
+inconvenient at times, so cloudns_api includes an argument `patch` that when
+set to True allows you to only pass arguments you wish to change. Behind the
+scenes, the API will get the existing data and merge it with the new data for
+the update call. We've also included the convenient `patch` function as a
+wrapper around `update` with the `patch` argument set to True.
+
+The cloudns_api includes these two helpful functions for checking your login
+credentials and retrieving your CloudNS nameservers:
+
+.. code:: python
+
+    >>> print(cloudns_api.api.get_login())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status':             'Success',
+                'status_description': 'Success login.',
+            }
+        }
+
+    >>> print(cloudns_api.api.get_nameservers())
+
 
 ApiResponse
 ^^^^^^^^^^^
@@ -108,7 +143,9 @@ library.
 
     >>> print(response.status_code)  # Get the status of a response
 
-    >>> print(response.payload)      # The raw payload of a response
+    >>> print(response.payload)      # The payload of the response
+                                     # Note that the parameters are converted
+                                     # to camel case here.
 
     >>> print(response.json())       # Get the response as json
 
