@@ -70,35 +70,171 @@ Importing and Basic Usage
     >>> print(response.json())
 
         {
-            'success'     : True,
-            'status_code' : 200,
-            'payload'     : {
-                'admin_mail'    : 'admin@example.com',
-                'default_ttl'   : '3600',
-                'expire'        : '1209600',
-                'primary_ns'    : 'ns1.example.com',
-                'refresh'       : '7200',
-                'retry'         : '1800',
-                'serial_number' : '2019060601'},
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'admin_mail':     'admin@example.com',
+                'default_ttl':    '3600',
+                'expire':         '1209600',
+                'primary_ns':     'ns1.example.com',
+                'refresh':        '7200',
+                'retry':          '1800',
+                'serial_number':  '2019060601'},
             }
         }
 
-    >>> cloudns_api.soa.update(
-            'example.com',
-            admin_mail='admin@example.com,
+
+API Reference
+=============
+
+Introduction
+------------
+
+
+ApiResponse
+^^^^^^^^^^^
+
+All API calls return an ApiResponse instance. The `ApiResponse` object is a
+wrapper object to add custom functionality and properties to a basic response
+object from the `requests <https://github.com/kennethreitz/requests>`__
+library.
+
+.. code:: python
+
+	>>> print(response.success)  # See if a response succeeded
+
+	>>> print(response.status_code)  # Get the status of a response
+
+    >>> print(response.payload)  # The raw payload of a response
+
+    >>> print(response.json())  # Get the response as json
+
+    >>> print(response.string())  # Get the response as json
+
+
+ApiParameter
+^^^^^^^^^^^^
+
+The ApiParameter object is responsible for describing the kinds of parameters
+to pass to the api function and how these parameters should be validated.
+Understanding the ApiParameter object is not necessary for using the API, but
+can be helpful to see what is going on under the hood.
+
+By default, an ApiParameter validates its parameters upon initialization. But
+if the `validate` parameter is set to false, this can be deferred until later.
+You can then call the `validate()` method to manually validate the parameters.
+
+.. code:: python
+
+	>>> print(parameters.validate())  # Validates the parameters according to
+									  # their definitions
+
+	>>> print(response.to_dict())  # Returns the parameters as a dict. Used
+								   # when passing the parameters to requests.
+
+A full discription of how an ApiParameter object and its parameter definition
+works can be found in the `cloudns_api/parameters.py` file. You may also need
+to reference the `cloudns_api/validation.py` module to see how validation
+works.
+
+
+DNS SOA
+-------
+
+Every domain zone contains one SOA record that contains the current version of
+the data in the zone, the administrator of the zone record, and TTL information
+for the zone.
+
+These functions only work for master zones.
+
+
+Getting the SOA for a domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.soa.get('example.com')
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'admin_mail':     'admin@example.com',
+                'default_ttl':    '3600',
+                'expire':         '1209600',
+                'primary_ns':     'ns1.example.com',
+                'refresh':        '7200',
+                'retry':          '1800',
+                'serial_number':  '2019060601'},
+            }
+        }
+
+
+Updating the SOA for a domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Parameters:
+
++ domain_name - string (required) Domain name or reverse zone name whose SOA details you want to modify.
++ primary-ns - string (required) Hostname of primary nameserver.
++ admin-mail - string (required) DNS admin's e-mail.
++ refresh - integer (required) Refresh rate from 1200 to 43200 seconds.
++ retry - integer (required) Retry rate from 180 to 2419200 seconds.
++ expire - integer (required) Expire time from 1209600 to 2419200 seconds.
++ default-ttl - integer (required) Default TTL from 60 to 2419200 seconds.
+
+
+.. code:: python
+
+    >>> response = cloudns_api.soa.update(
+            'example.com',  # The domain to patch
+            admin_mail='admin@example.com',
             default_ttl=3600,
-            expire='1209600', # You can use strings or integers
+            expire=1209600,
             primary_ns='ns1.example.com',
             refresh=7200,
             retry=1800,
-            serial_number=2019060601
+        })
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'The SOA record was modified successfully.'
+            }
+        }
+
+
+Patch Updating the SOA for a domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A patch update allows you to specify only the parameters you wish to change.
+
+.. code:: python
+
+    >>> response = cloudns_api.soa.patch(
+            'example.com',  # The domain to patch
+            admin_mail='admin@example.com',
+            primary_ns='ns1.example.com',
         )
 
+    >>> print(response.json())
 
-API Reference
--------------
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'The SOA record was modified successfully.'
+            }
+        }
 
-TODO
 
 
 Soli Deo gloria.
