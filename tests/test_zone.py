@@ -59,6 +59,15 @@ def test_zone_create_function():
     assert payload['params']['ns'] == []
 
 
+@mock_post_request()
+def test_soa_create_function_catches_validation_errors():
+    """SOA update function catches validation errors."""
+    response = zone.create('not a domain', zone_type='Master')
+
+    assert not response.success
+    assert response.json()['error'] == 'Validation error.'
+
+
 @mock_get_request()
 def test_zone_get_function():
     """Zone get function sends properly formated request."""
