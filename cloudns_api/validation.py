@@ -278,6 +278,7 @@ validation_functions = {
     'geodns-location':  is_int,
     'integer':          is_int,
     'mail':             is_email,
+    'page':             is_int,
     'port':             is_int,
     'primary-ns':       is_domain_name,
     'priority':         is_int,
