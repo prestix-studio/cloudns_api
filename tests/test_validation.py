@@ -71,7 +71,8 @@ def test_is_int_validates_integer_values():
         is_int(not_integer, 'test_field')
 
     assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == 'This field must be an integer.'
+    assert exception.value.details['message'] == \
+        'This field must be an integer.'
 
     with raises(ValidationError):
         is_int(also_not_integer, 'test_field')
@@ -89,7 +90,8 @@ def test_is_int_validates_max_range():
         is_int(too_big, 'test_field', max_value=20)
 
     assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == 'This field must be less than 20.'
+    assert exception.value.details['message'] == \
+        'This field must be less than 20.'
 
 
 def test_is_int_validates_min_range():
@@ -103,7 +105,8 @@ def test_is_int_validates_min_range():
         is_int(too_small, 'test_field', min_value=10)
 
     assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == 'This field must be greater than 10.'
+    assert exception.value.details['message'] == \
+        'This field must be greater than 10.'
 
 
 def test_is_domain_name_validates_domain_names():
@@ -122,7 +125,8 @@ def test_is_domain_name_validates_domain_names():
         is_domain_name(not_a_domain_name, 'test_domain_field')
 
     assert exception.value.details['fieldname'] == 'test_domain_field'
-    assert exception.value.details['message'] == 'This field must be a valid domain name.'
+    assert exception.value.details['message'] == \
+        'This field must be a valid domain name.'
 
     with raises(ValidationError) as exception:
         is_domain_name(also_not_a_domain_name, 'test_domain_field')
@@ -143,7 +147,8 @@ def test_is_email_validates_emails():
         is_email(not_an_email, 'test_email')
 
     assert exception.value.details['fieldname'] == 'test_email'
-    assert exception.value.details['message'] == 'This field must be a valid email.'
+    assert exception.value.details['message'] == \
+        'This field must be a valid email.'
 
     with raises(ValidationError) as exception:
         is_email(also_not_an_email, 'test_email')
@@ -165,7 +170,8 @@ def test_is_record_type_validates_types():
         is_record_type(not_type, 'test_type')
 
     assert exception.value.details['fieldname'] == 'test_type'
-    assert exception.value.details['message'] == 'This field must be a valid domain record type.'
+    assert exception.value.details['message'] == \
+        'This field must be a valid domain record type.'
 
     with raises(ValidationError) as exception:
         is_record_type(also_not_type, 'test_type')
@@ -184,10 +190,10 @@ def test_is_ttl_validates_cloudns_ttls():
     assert is_ttl(also_ttl, 'test_ttl')
     assert is_ttl(again_also_ttl, 'test_ttl')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_ttl(not_ttl, 'test_ttl')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_ttl(also_not_ttl, 'test_ttl')
 
 
@@ -200,7 +206,7 @@ def test_is_redirect_type_validates_correctly():
     assert is_redirect_type(is_redirect, 'redirect')
     assert is_redirect_type(also_redirect, 'redirect')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_redirect_type(not_redirect, 'redirect')
 
 
@@ -214,10 +220,10 @@ def test_is_algorithm_validates_correctly():
     assert is_algorithm(is_an_algorithm, 'algorithm')
     assert is_algorithm(also_is_an_algoritm, 'algorithm')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_algorithm(not_algorithm, 'algorithm')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_algorithm(also_not_algorithm, 'algorithm')
 
 
@@ -231,10 +237,10 @@ def test_is_fptype_validates_correctly():
     assert is_fptype(is_an_fptype, 'fptype')
     assert is_fptype(also_an_fptype, 'fptype')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_fptype(not_an_fptype, 'fptype')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_fptype(also_not_an_fptype, 'fptype')
 
 
@@ -247,7 +253,7 @@ def test_is_caa_flag_validates_correctly():
     assert is_caa_flag(is_flag, 'caa_flag')
     assert is_caa_flag(also_flag, 'caa_flag')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_caa_flag(not_flag, 'caa_flag')
 
 
@@ -258,7 +264,7 @@ def test_is_caa_type_validates_correctly():
 
     assert is_caa_type(is_type, 'caa_type')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_caa_type(not_type, 'caa_type')
 
 
@@ -269,7 +275,7 @@ def test_is_required_validates_correctly():
 
     assert is_required(value, 'required')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_required(no_value, 'required')
 
 
@@ -284,10 +290,10 @@ def test_is_api_bool_validates_correctly():
     assert is_api_bool(is_bool, 'test_bool')
     assert is_api_bool(also_bool, 'test_bool')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_api_bool(not_bool, 'test_bool')
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         is_api_bool(also_not_bool, 'test_bool')
 
 
@@ -300,7 +306,7 @@ def test_validate_function_uses_validation_functions_dict():
     assert validate('integer', integer) == integer
     assert validate('domain', domain) == domain
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         validate('ttl', domain)
 
 
@@ -309,9 +315,9 @@ def test_validate_function_allows_for_optional_fields():
     optional = None
 
     # validate domain none, empty string, is optional a kwarg?
-    assert validate('domain', optional, optional=True) == None
+    assert validate('domain', optional, optional=True) is None
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         validate('domain', optional)
 
 
@@ -319,5 +325,5 @@ def test_validate_function_still_checks_given_optional_fields():
     """Function is_email() validates if a value is a valid email."""
     optional_int = 'abcd'
 
-    with raises(ValidationError) as exception:
+    with raises(ValidationError):
         validate('ttl', optional_int)

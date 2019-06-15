@@ -29,7 +29,7 @@ def get(domain_name):
     """
     url = 'https://api.cloudns.net/dns/soa-details.json'
 
-    params = Parameters({'domain-name' : domain_name})
+    params = Parameters({'domain-name': domain_name})
 
     return requests.get(url, params=params.to_dict())
 

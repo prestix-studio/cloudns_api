@@ -44,14 +44,16 @@ class Parameters(object):
         :param validate: boolean, whether or not to validate parameters on
             initialization. Defaults to True.
         """
-        self._params_with_options = {**get_auth_params(), **params_with_options}
+        self._params_with_options = {**get_auth_params(),
+                                     **params_with_options}
 
         if (validate):
             self.validate()
 
     def to_dict(self):
         """Returns a dict of just the fieldname and values."""
-        return {fieldname:options['value'] if isinstance(options, dict) else options
+        return {fieldname: options['value']
+                if isinstance(options, dict) else options
                 for fieldname, options in self._params_with_options.items()}
 
     def validate(self):

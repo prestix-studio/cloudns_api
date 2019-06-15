@@ -50,14 +50,14 @@ def test_soa_update_function():
     assert payload['params']['default-ttl'] == 60
 
 
-@mock_get_request(json_data={ 
-    'serialNumber' : '2019051202', 
-    'primaryNS'    : 'ns1.prestix.host',
-    'adminMail'    : 'support@prestix.host', 
-    'refresh'      : '7200', 
-    'retry'        : '1800', 
-    'expire'       : '1209600', 
-    'defaultTTL'   : '3600',
+@mock_get_request(json_data={
+    'serialNumber':  '2019051202',
+    'primaryNS':     'ns1.prestix.host',
+    'adminMail':     'support@prestix.host',
+    'refresh':       '7200',
+    'retry':         '1800',
+    'expire':        '1209600',
+    'defaultTTL':    '3600',
 })
 @mock_post_request()
 def test_soa_update_function_using_patch():
@@ -74,14 +74,14 @@ def test_soa_update_function_using_patch():
     assert payload['params']['admin-mail'] == 'new_email@example.com'
 
 
-@mock_get_request(json_data={ 
-    'serialNumber' : '2019051202', 
-    'primaryNS'    : 'ns1.prestix.host',
-    'adminMail'    : 'support@prestix.host', 
-    'refresh'      : '7200', 
-    'retry'        : '1800', 
-    'expire'       : '1209600', 
-    'defaultTTL'   : '3600',
+@mock_get_request(json_data={
+    'serialNumber':  '2019051202',
+    'primaryNS':     'ns1.prestix.host',
+    'adminMail':     'support@prestix.host',
+    'refresh':       '7200',
+    'retry':         '1800',
+    'expire':        '1209600',
+    'defaultTTL':    '3600',
 })
 @mock_post_request()
 def test_soa_update_function_using_patch_helper():

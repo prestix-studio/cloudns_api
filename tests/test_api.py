@@ -57,17 +57,17 @@ def test_get_auth_params_returns_different_dict_every_time():
 
 def test_snake_case_converts_keys_to_snake_case():
     pre_normalized_dict = {
-        'test'         : 123,
-        'testTest'     : 123,
-        'testTestTest' : 123,
-        'testTTL'      : 123,
+        'test':          123,
+        'testTest':      123,
+        'testTestTest':  123,
+        'testTTL':       123,
     }
 
     normalized_dict = {
-        'test'           : 123,
-        'test_test'      : 123,
-        'test_test_test' : 123,
-        'test_ttl'       : 123,
+        'test':            123,
+        'test_test':       123,
+        'test_test_test':  123,
+        'test_ttl':        123,
     }
 
     assert use_snake_case_keys(pre_normalized_dict) == normalized_dict
@@ -79,19 +79,21 @@ def test_snake_case_converts_keys_to_snake_case():
 def test_api_response_can_be_initialized_with_request_response():
     """An ApiResponse object can be initialized with a request response object.
     """
-    request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
+    request_response = MockRequestResponse(json_data={'test': 123},
+                                           status_code=200)
     response = ApiResponse(request_response)
 
     assert not response.error
     assert response.response == request_response
     assert response.success
-    assert response.status_code is 200
-    assert response.payload == {'test' : 123}
+    assert response.status_code == 200
+    assert response.payload == {'test': 123}
     assert response.json() == {
-            'status_code' : 200,
-            'success'     : True,
-            'payload'     : {'test' : 123}
+            'status_code':   200,
+            'success':      True,
+            'payload':      {'test': 123}
         }
+
 
 def test_api_response_works_with_request_response_list():
     """An ApiResponse object works with a request response object that is a
@@ -128,26 +130,27 @@ def test_api_response_can_be_initialized_without_request_response():
     assert not response.status_code
     assert response.payload == {}
     assert response.json() == {
-            'status_code' : None,
-            'success'     : False,
-            'payload'     : {}
+            'status_code':  None,
+            'success':      False,
+            'payload':      {}
         }
 
 
 @set_debug
-def test_api_response_without_request_response_shows_error_in_json_when_debugging():
+def test_api_response_without_request_response_shows_error_when_debugging():
     """An ApiResponse object that is initialized without a request response
     object shows an error in the json when debugging."""
     response = ApiResponse()
 
     # It's not yet initilized with an error
-    assert response.error == None
+    assert response.error is None
 
     # But it will give an error converting to json (when debug mode is set)
-    assert response.json()['error'] == 'Response has not yet been created with a requests.response.'
+    assert response.json()['error'] == \
+        'Response has not yet been created with a requests.response.'
 
 
-def test_api_response_can_have_error_set_on_response_without_request_response():
+def test_api_response_can_have_error_set_on_response_wout_request_response():
     """An ApiResponse object can have an error set on a response that has been
     initilized without a request response."""
     response = ApiResponse()
@@ -155,7 +158,7 @@ def test_api_response_can_have_error_set_on_response_without_request_response():
     response.error = 'Test error'
 
     assert response.error == 'Test error'
-    assert response.response == None
+    assert response.response is None
     assert not response.success
     assert not response.status_code
     assert response.payload == {}
@@ -164,7 +167,8 @@ def test_api_response_can_have_error_set_on_response_without_request_response():
 def test_api_response_can_be_created_with_request_response_after_init():
     """ApiResponse can be created with request response after it is
     initialized."""
-    request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
+    request_response = MockRequestResponse(json_data={'test': 123},
+                                           status_code=200)
     response = ApiResponse()
     response.create(request_response)
 
@@ -174,38 +178,41 @@ def test_api_response_can_be_created_with_request_response_after_init():
     assert response.status_code == 200
     assert response.payload == {'test': 123}
     assert response.json() == {
-            'status_code' : 200,
-            'success'     : True,
-            'payload'     : {'test': 123}
+            'status_code':  200,
+            'success':      True,
+            'payload':      {'test': 123}
         }
 
 
 def test_api_response_can_be_converted_to_string():
     """ApiResponse can be converted to a string."""
-    request_response = MockRequestResponse(json_data={'test': 123}, status_code=200)
+    request_response = MockRequestResponse(json_data={'test': 123},
+                                           status_code=200)
     response = ApiResponse(request_response)
 
-    expected_string = '{"status_code": 200, "success": true, "payload": {"test": 123}}'
+    expected_string = '{"status_code": 200, "success": true, "payload": ' \
+        + '{"test": 123}}'
 
     assert response.string() == expected_string
     assert str(response) == expected_string
 
+
 def test_api_response_payload_is_normalized_to_snake_case():
     """An ApiResponse object's payload keys are normalized to snake case."""
     pre_normalized_data = {
-        'test'         : 123,
-        'testTest'     : 123,
-        'testTestTest' : 123,
-        'testTTL'      : 123,
+        'test':          123,
+        'testTest':      123,
+        'testTestTest':  123,
+        'testTTL':       123,
     }
     request_response = MockRequestResponse(json_data=pre_normalized_data)
     response = ApiResponse(request_response)
 
     assert response.payload == {
-        'test'           : 123,
-        'test_test'      : 123,
-        'test_test_test' : 123,
-        'test_ttl'       : 123,
+        'test':            123,
+        'test_test':       123,
+        'test_test_test':  123,
+        'test_ttl':        123,
     }
 
 
@@ -267,7 +274,7 @@ def test_api_decorator_responds_to_bad_python_code():
     @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
-        return uninitialized_variable
+        return uninitialized_variable  # noqa: F821
 
     response = test_api_call()
     assert not response.success
@@ -282,7 +289,7 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
     @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
-        return uninitialized_variable
+        return uninitialized_variable  # noqa: F821
 
     response = test_api_call()
     assert not response.success
@@ -295,7 +302,7 @@ def test_api_decorator_responds_to_missing_required_args():
 
     @api
     def test_api_call(required_arg, *args, **kwargs):
-        return bad_python_code
+        return uninitialized_variable  # noqa: F821
 
     response = test_api_call()
     assert not response.success
@@ -308,13 +315,14 @@ def test_api_decorator_responds_to_validation_error():
     @api
     def test_api_call(*args, **kwargs):
         raise ValidationError('the_field_name',
-                                  'The field should be in this format.')
+                              'The field should be in this format.')
 
     response = test_api_call()
     assert not response.success
     assert response.error == 'Validation error.'
     assert response.validation_errors[0]['fieldname'] == 'the_field_name'
-    assert response.validation_errors[0]['message'] == 'The field should be in this format.'
+    assert response.validation_errors[0]['message'] == \
+        'The field should be in this format.'
 
 
 def test_api_decorator_responds_to_authentication_error():
@@ -322,13 +330,16 @@ def test_api_decorator_responds_to_authentication_error():
 
     @api
     def test_api_call(*args, **kwargs):
-        return MockRequestResponse(json_data={'status': 'Failed',
-                                              'statusDescription':
-                                              'Invalid authentication, incorrect auth-id or auth-password.'})
+        return MockRequestResponse(json_data={
+                                   'status': 'Failed',
+                                   'statusDescription':
+                                   'Invalid authentication, incorrect ' +
+                                   'auth-id or auth-password.'})
 
     response = test_api_call()
     assert not response.success
-    assert response.error == 'Invalid authentication, incorrect auth-id or auth-password.'
+    assert response.error == \
+        'Invalid authentication, incorrect auth-id or auth-password.'
 
 
 def test_api_patch_update_decorator_gets_then_updates():
@@ -374,7 +385,7 @@ def test_api_patch_update_decorator_works_with_2_get_keys():
         return MockRequestResponse(json_data=kwargs)
 
     response = update(domain_name='my_example.com', id=123, key_3='ZZZ',
-                    key_4='YYY', patch=True)
+                      key_4='YYY', patch=True)
 
     assert response.success
     assert response.payload['key_1'] == 'AAA'

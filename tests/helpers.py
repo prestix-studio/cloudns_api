@@ -7,17 +7,10 @@
 #
 
 """
-Mock and fixture helpers for cloudns_api unit tests.
+Mock helpers for cloudns_api unit tests.
 """
 
 from mock import patch
-from pytest import fixture
-
-from cloudns_api.config import (
-    CLOUDNS_API_AUTH_ID,
-    CLOUDNS_API_AUTH_PASSWORD,
-    CLOUDNS_API_DEBUG,
-)
 
 
 ##
@@ -25,6 +18,7 @@ from cloudns_api.config import (
 
 TEST_ID = 'test-auth-id'
 TEST_PASSWORD = 'test-auth-password'
+
 
 def use_test_auth(test_fn):
     @patch('cloudns_api.api.CLOUDNS_API_AUTH_ID', new=TEST_ID)
@@ -74,8 +68,8 @@ class MockRequestResponse:
             return self.json_data
         else:
             return {
-                'url' : self.url,
-                'params' : self.params,
+                'url':    self.url,
+                'params': self.params,
             }
 
 

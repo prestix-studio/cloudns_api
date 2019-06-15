@@ -17,19 +17,25 @@ with open('README.rst', 'r', 'utf-8') as f:
 
 HERE = path.abspath(path.dirname(__file__))
 
+version = '0.4'
+url = 'https://github.com/hbradleyiii/cloudns_api/archive/v' + version \
+      + '.tar.gz'
+
+
 setup(
-    name = 'cloudns_api',
-    version = '0.4',
-    description = 'A python interface to the ClouDNS.net API',
-    long_description = README,
-    long_description_content_type = 'text/x-rst',
-    url = 'https://github.com/hbradleyiii/cloudns_api',
-    download_url = 'https://github.com/hbradleyiii/cloudns_api/archive/v0.3.tar.gz',
-    author = 'Harold Bradley III | Prestix Studio, LLC',
-    author_email = 'harold@prestix.studio',
-    license = 'MIT License',
-    keywords = ['dns', 'dns api', 'domain name system', 'cloudns', 'server development'],
-    classifiers = [  # See https://pypi.python.org/pypi?%3Aaction = list_classifiers
+    name='cloudns_api',
+    version=version,
+    description='A python interface to the ClouDNS.net API',
+    long_description=README,
+    long_description_content_type='text/x-rst',
+    url='https://github.com/hbradleyiii/cloudns_api',
+    download_url=url,
+    author='Harold Bradley III | Prestix Studio, LLC',
+    author_email='harold@prestix.studio',
+    license='MIT License',
+    keywords=['dns', 'dns api', 'domain name system', 'cloudns',
+              'server development'],
+    classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
@@ -43,9 +49,9 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    packages = find_packages(),
-    install_requires = ['requests'],
-    test_requires = ['pytest>=2.8.0', 'mock'],
-    package_data = { '' : ['LICENSE'], },
-    entry_points = { },
+    packages=find_packages(),
+    install_requires=['requests'],
+    test_requires=['pytest>=2.8.0', 'mock'],
+    package_data={'': ['LICENSE']},
+    entry_points={},
 )
