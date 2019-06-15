@@ -84,10 +84,17 @@ def test_is_int_validates_max_range():
     just_right = 15
     too_big = 25
 
-    assert is_int(just_right, 'test_field', max_value=20)
+    with raises(ValidationError) as exception:
+        is_int(too_small, 'test_field', min_value=10, max_value=20)
+
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == \
+        'This field must be greater than 10.'
+
+    assert is_int(just_right, 'test_field', min_value=10, max_value=20)
 
     with raises(ValidationError) as exception:
-        is_int(too_big, 'test_field', max_value=20)
+        is_int(too_big, 'test_field', min_value=10, max_value=20)
 
     assert exception.value.details['fieldname'] == 'test_field'
     assert exception.value.details['message'] == \
