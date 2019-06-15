@@ -192,6 +192,185 @@ to reference the `cloudns_api/validation.py` module to see how validation
 works.
 
 
+DNS ZONE
+--------
+
+Parameters:
+
++ page - int/string (optional) Page number to show.
++ rows_per_page - int/string (optional) Number of rows per page to show.
++ search - string (optional) Optional string to filter results by.
++ group_id - int/string (optional) Optional group id to filter results by.
+
+Response Parameters:
+
++ name - Domain name.
++ type - Zone type (Master, Slave, Parked, GeoDNS)
++ zone -
++ status - active (1) or inactive(0)
+
+
+Listing DNS Zones
+^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.list(search='example')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      [
+                {
+                    'name':     'example.com',
+                    'type':     'master',
+                    'zone':     'domain',
+                    'status':   '1'
+                },
+                {
+                    'name':     'example.net',
+                    'type':     'master',
+                    'zone':     'domain',
+                    'status':   '1'
+                },
+                {
+                    'name':     'example.org',
+                    'type':     'master',
+                    'zone':     'domain',
+                    'status':   '1'
+                }
+            ]
+        }
+
+    >>> print(cloudns_api.zone.get_page_count(rows_per_page=10))  # Get page count
+
+
+Creating DNS Zones
+^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.create(domain_name='example.com',
+                                           zone_type='master')
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'Domain zone exampleharold.com was created successfully.'
+            }
+        }
+
+
+Getting a DNS Zone
+^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.get(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'name':     'example.com',
+                'type':     'master',
+                'zone':     'domain',
+                'status':   '1'
+            }
+        }
+
+
+Updating a DNS Zone Serial Number
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.update(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'Domain zone exampleharold.com was updated successfully.'
+            }
+        }
+
+
+Activating/Deactivating a DNS Zone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.activate(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'The zone was activated!'
+            }
+        }
+
+    >>> cloudns_api.zone.deactivate(domain_name='example.com')
+
+    >>> cloudns_api.zone.toggle_activation(domain_name='example.com')
+
+
+Deleting a DNS Zone
+^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.delete(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'Domain zone exampleharold.com was deleted successfully.'
+            }
+        }
+
+
+Getting ClouDNS Zone Stats
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.get_stats()
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'count': '25',  # Number of zones used
+                'limit': '40'   # Number of zones allowed by your plan
+            }
+        }
+
+
 DNS SOA Record
 --------------
 
@@ -201,34 +380,7 @@ for the zone.
 
 These functions only work for master zones.
 
-
-Getting the SOA for a domain
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code:: python
-
-    >>> response = cloudns_api.soa.get('example.com')
-    >>> print(response.json())
-
-        {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'admin_mail':     'admin@example.com',
-                'default_ttl':    '3600',
-                'expire':         '1209600',
-                'primary_ns':     'ns1.example.com',
-                'refresh':        '7200',
-                'retry':          '1800',
-                'serial_number':  '2019060601'},
-            }
-        }
-
-
-Updating the SOA for a domain
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Parameters:
+SOA Parameters:
 
 + domain_name - string (required) Domain name or reverse zone name whose SOA
   details you want to modify.
@@ -252,6 +404,33 @@ Parameters:
 Note that ClouDNS automatically increments the serial number when the zone is
 updated or changed.
 
+
+Getting the SOA for a domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.soa.get('example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'admin_mail':     'admin@example.com',
+                'default_ttl':    '3600',
+                'expire':         '1209600',
+                'primary_ns':     'ns1.example.com',
+                'refresh':        '7200',
+                'retry':          '1800',
+                'serial_number':  '2019060601'
+            }
+        }
+
+
+Updating the SOA for a domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
