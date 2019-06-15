@@ -42,7 +42,8 @@ def get_auth_params():
 
 
 _first_cap_re = re_compile('(.)([A-Z][a-z]+)')
-_all_cap_re   = re_compile('([a-z0-9])([A-Z])')
+_all_cap_re = re_compile('([a-z0-9])([A-Z])')
+
 
 def use_snake_case_keys(original_dict):
     """Converts a dict's keys to snake case.
@@ -91,8 +92,8 @@ class ApiResponse(object):
 
         # Check for API error responses
         elif isinstance(self.payload, dict) \
-            and 'status' in self.payload \
-            and self.payload['status'] is 'Failed':
+                and 'status' in self.payload \
+                and self.payload['status'] == 'Failed':
             self.error = self.payload['status_description']
 
     @property
@@ -112,7 +113,7 @@ class ApiResponse(object):
         if not self.response:
             return {}
 
-        payload = self.response.json() # Get the requests response json
+        payload = self.response.json()  # Get the requests response json
 
         if isinstance(payload, dict):
             return use_snake_case_keys(payload)
@@ -128,9 +129,9 @@ class ApiResponse(object):
         """Returns the response as a json object. This allows us to scrub the
         payload and massage it to our requirements."""
         json = {
-            'status_code' : self.status_code,
-            'success'     : self.success,
-            'payload'     : self.payload,
+            'status_code':  self.status_code,
+            'success':      self.success,
+            'payload':      self.payload,
         }
 
         if self.error:
@@ -140,7 +141,8 @@ class ApiResponse(object):
             json['validation_errors'] = self.validation_errors
 
         if CLOUDNS_API_DEBUG and not self.success and not self.error:
-            json['error'] = 'Response has not yet been created with a requests.response.'
+            json['error'] = \
+                'Response has not yet been created with a requests.response.'
 
         return json
 
@@ -172,10 +174,16 @@ def api(api_call):
         except (ConnectTimeout, Timeout, ReadTimeout) as e:
             response.error = 'API Connection timed out.'
 
+            if CLOUDNS_API_DEBUG:
+                response.error = str(e)
+
         # Catch Connection errors
         except (ContentDecodingError, ConnectionError, HTTPError, SSLError,
                 TooManyRedirects) as e:
             response.error = 'API Network Connection error.'
+
+            if CLOUDNS_API_DEBUG:
+                response.error = str(e)
 
         # Catch Validation errors
         except ValidationError as e:
@@ -223,11 +231,11 @@ def patch_update(get, keys):
             """ Wraps an api call in order to allow 'patching'
             maintain a consistent json format.
 
-            :param patch: bool, retrieve current parameter values to pass with the
-                parameters given. If False, does nothing. False by default.
+            :param patch: bool, retrieve current parameter values to pass with
+                the parameters given. If False, does nothing. False by default.
             """
             if 'patch' in kwargs and kwargs['patch']:
-                response = get(*args, **{key:value for key, value in
+                response = get(*args, **{key: value for key, value in
                                          kwargs.items() if key in keys})
                 if not response.success:
                     # Return the requests.response. The API decorator will
