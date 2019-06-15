@@ -255,3 +255,10 @@ def get_nameservers():
     """Returns the available nameservers."""
     return get('https://api.cloudns.net/dns/available-name-servers.json',
                params=get_auth_params())
+
+
+@api
+def get_my_ip():
+    """Returns the caller's ip address."""
+    return get('https://api.cloudns.net/dns/get-my-ip.json',
+               params=get_auth_params())
