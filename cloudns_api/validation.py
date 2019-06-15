@@ -69,100 +69,8 @@ def validate(fieldname, value, *args, **kwargs):
     raise ValidationError('Unexpected validation error.')
 
 
-def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
-    """Returns the value if value is an integer (within min_value/max_value
-    range); otherwise, raises a validation error."""
-    try:
-        value += 0  # Try it to see if it is an integer
-    except TypeError:
-        if re.findall('[^0-9]', value):
-            raise ValidationError(fieldname, 'This field must be an integer.')
-
-    if min_value and int(value) < min_value:
-        raise ValidationError(fieldname,
-                              'This field must be greater than ' +
-                              str(min_value) + '.')
-    if max_value and int(value) > max_value:
-        raise ValidationError(fieldname,
-                              'This field must be less than ' +
-                              str(max_value) + '.')
-    return True
-
-
-def is_domain_name(value, fieldname, **kwargs):
-    """Returns the value if value is a valid domain name. Otherwise, raises a
-    validation error."""
-    if not re.match(
-       r'^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
-       value):
-        raise ValidationError(fieldname,
-                              'This field must be a valid domain name.')
-    return True
-
-
-def is_email(value, fieldname, **kwargs):
-    """Returns the value if value is a valid domain name. Otherwise, raises a
-    validation error."""
-    if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
-                    value):
-        raise ValidationError(fieldname,
-                              'This field must be a valid email.')
-    return True
-
-
-def is_record_type(value, fieldname, **kwargs):
-    """Returns the value if value is a valid domain recordy type. Otherwise,
-    raises a validation error."""
-    try:
-        if value.upper() not in RECORD_TYPES:
-            raise ValidationError(fieldname,
-                                  'This field must be a valid domain record' +
-                                  ' type.')
-    # If value isn't a string, upper() raises AttributeError
-    except AttributeError:
-        raise ValidationError(fieldname,
-                              'This field must be a valid domain record type.')
-    return True
-
-
-RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
-                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR']
-
-
-def is_ttl(value, fieldname, **kwargs):
-    """Returns the value if value is a valid ClouDNS ttl. Otherwise, raises a
-    validation error."""
-    if hasattr(value, 'lower'):
-        value = value.lower()
-
-    if value not in TTLS and value not in TTL_STRINGS:
-        raise ValidationError(fieldname, 'This field must be a valid ttl. ' +
-                              '(1 minute, 5 minutes, 15 minutes, 30 minutes,' +
-                              ' 1 hour, 6 hours, 12 hours, 1 day, 2 days, 3 ' +
-                              'days, 1 week, 2 weeks, or 1 month) or (60, ' +
-                              '300, 900, 1800, 3600, 21600, 43200, 86400, ' +
-                              '172800, 259200, 604800, 1209600, or 2592000)')
-    return True
-
-
-TTL_STRINGS = ['1 minute', '5 minutes', '15 minutes', '30 minutes', '1 hour',
-               '6 hours', '12 hours', '1 day', '2 days', '3 days', '1 week',
-               '2 weeks', '1 month', '60', '300', '900', '1800', '3600',
-               '21600', '43200', '86400', '172800', '259200', '604800',
-               '1209600', '2592000']
-
-TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
-        1209600, 2592000]
-
-
-def is_redirect_type(value, fieldname, **kwargs):
-    """Returns the value if it is 301 or 302. Otherwise, raises a validation
-    error."""
-    if value != 301 and value != 302:
-        raise ValidationError(fieldname,
-                              'This field must be 301 (permanent) or 302 ' +
-                              '(temporary).')
-    return True
+##
+# Specific Validation Functions
 
 
 def is_algorithm(value, fieldname, **kwargs):
@@ -185,24 +93,13 @@ def is_algorithm(value, fieldname, **kwargs):
 ALGORITHMS = ['RSA', 'DSA', 'ECDSA', 'ED25519']
 
 
-def is_fptype(value, fieldname, **kwargs):
-    """Returns the value if it is a proper fingerprint type. Otherwise, raises
-    a validation error."""
-    try:
-        if value.upper() not in FP_TYPES:
-            raise ValidationError(fieldname,
-                                  'This field must be one of SHA-1 or ' +
-                                  'SHA-256.')
-    # If value isn't a string, upper() raises AttributeError
-    except AttributeError:
-        if value not in [1, 2]:
-            raise ValidationError(fieldname,
-                                  'This field must be one of SHA-1 or ' +
-                                  'SHA-256.')
+def is_api_bool(value, fieldname, **kwargs):
+    """Returns the value if value is a 0 or 1. Otherwise, raises a validation
+    error."""
+    if value != 0 and value != 1:
+        raise ValidationError(fieldname,
+                              'This field must be 0 or 1.')
     return True
-
-
-FP_TYPES = ['SHA-1', 'SHA-256']
 
 
 def is_caa_flag(value, fieldname, **kwargs):
@@ -234,6 +131,96 @@ def is_caa_type(value, fieldname, **kwargs):
 CAA_TYPES = ['issue', 'issuewild', 'iodef']
 
 
+def is_domain_name(value, fieldname, **kwargs):
+    """Returns the value if value is a valid domain name. Otherwise, raises a
+    validation error."""
+    if not re.match(
+       r'^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
+       value):
+        raise ValidationError(fieldname,
+                              'This field must be a valid domain name.')
+    return True
+
+
+def is_email(value, fieldname, **kwargs):
+    """Returns the value if value is a valid domain name. Otherwise, raises a
+    validation error."""
+    if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
+                    value):
+        raise ValidationError(fieldname,
+                              'This field must be a valid email.')
+    return True
+
+
+def is_fptype(value, fieldname, **kwargs):
+    """Returns the value if it is a proper fingerprint type. Otherwise, raises
+    a validation error."""
+    try:
+        if value.upper() not in FP_TYPES:
+            raise ValidationError(fieldname,
+                                  'This field must be one of SHA-1 or ' +
+                                  'SHA-256.')
+    # If value isn't a string, upper() raises AttributeError
+    except AttributeError:
+        if value not in [1, 2]:
+            raise ValidationError(fieldname,
+                                  'This field must be one of SHA-1 or ' +
+                                  'SHA-256.')
+    return True
+
+
+FP_TYPES = ['SHA-1', 'SHA-256']
+
+
+def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
+    """Returns the value if value is an integer (within min_value/max_value
+    range); otherwise, raises a validation error."""
+    try:
+        value += 0  # Try it to see if it is an integer
+    except TypeError:
+        if re.findall('[^0-9]', value):
+            raise ValidationError(fieldname, 'This field must be an integer.')
+
+    if min_value and int(value) < min_value:
+        raise ValidationError(fieldname,
+                              'This field must be greater than ' +
+                              str(min_value) + '.')
+    if max_value and int(value) > max_value:
+        raise ValidationError(fieldname,
+                              'This field must be less than ' +
+                              str(max_value) + '.')
+    return True
+
+
+def is_record_type(value, fieldname, **kwargs):
+    """Returns the value if value is a valid domain recordy type. Otherwise,
+    raises a validation error."""
+    try:
+        if value.upper() not in RECORD_TYPES:
+            raise ValidationError(fieldname,
+                                  'This field must be a valid domain record' +
+                                  ' type.')
+    # If value isn't a string, upper() raises AttributeError
+    except AttributeError:
+        raise ValidationError(fieldname,
+                              'This field must be a valid domain record type.')
+    return True
+
+
+RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
+                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR']
+
+
+def is_redirect_type(value, fieldname, **kwargs):
+    """Returns the value if it is 301 or 302. Otherwise, raises a validation
+    error."""
+    if value != 301 and value != 302:
+        raise ValidationError(fieldname,
+                              'This field must be 301 (permanent) or 302 ' +
+                              '(temporary).')
+    return True
+
+
 def is_required(value, fieldname, **kwargs):
     """Returns the value if there is some value provided. Otherwise, raises a
     validation error."""
@@ -243,17 +230,34 @@ def is_required(value, fieldname, **kwargs):
     return True
 
 
-def is_api_bool(value, fieldname, **kwargs):
-    """Returns the value if value is a 0 or 1. Otherwise, raises a validation
-    error."""
-    if value != 0 and value != 1:
-        raise ValidationError(fieldname,
-                              'This field must be 0 or 1.')
+def is_ttl(value, fieldname, **kwargs):
+    """Returns the value if value is a valid ClouDNS ttl. Otherwise, raises a
+    validation error."""
+    if hasattr(value, 'lower'):
+        value = value.lower()
+
+    if value not in TTLS and value not in TTL_STRINGS:
+        raise ValidationError(fieldname, 'This field must be a valid ttl. ' +
+                              '(1 minute, 5 minutes, 15 minutes, 30 minutes,' +
+                              ' 1 hour, 6 hours, 12 hours, 1 day, 2 days, 3 ' +
+                              'days, 1 week, 2 weeks, or 1 month) or (60, ' +
+                              '300, 900, 1800, 3600, 21600, 43200, 86400, ' +
+                              '172800, 259200, 604800, 1209600, or 2592000)')
     return True
 
 
+TTL_STRINGS = ['1 minute', '5 minutes', '15 minutes', '30 minutes', '1 hour',
+               '6 hours', '12 hours', '1 day', '2 days', '3 days', '1 week',
+               '2 weeks', '1 month', '60', '300', '900', '1800', '3600',
+               '21600', '43200', '86400', '172800', '259200', '604800',
+               '1209600', '2592000']
+
+TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
+        1209600, 2592000]
+
+
 def is_valid(value, fieldname, **kwargs):
-    """Returns the value assuming it's valid."""
+    """This is a stub. It always returns true."""
     return True
 
 

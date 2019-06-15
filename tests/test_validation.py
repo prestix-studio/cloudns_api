@@ -25,6 +25,7 @@ from cloudns_api.validation import (
     is_redirect_type,
     is_required,
     is_ttl,
+    is_valid,
     validate,
     ValidationError,
     ValidationErrorsBatch,
@@ -103,63 +104,63 @@ def test_validate_function_still_checks_given_optional_fields():
 # Specific Validation Functions Tests
 
 
-def test_is_int_validates_integer_values():
-    """Function is_int() validates if a value is an integer or not."""
-    integer = 1
-    also_integer = '1'
-    not_integer = '1abc'
-    also_not_integer = 'abc'
+def test_is_algorithm_validates_correctly():
+    """Function is_algorithm() validates appropriately."""
+    is_an_algorithm = 1
+    also_is_an_algoritm = 'rsa'
+    not_algorithm = 'vcr'
+    also_not_algorithm = 10
 
-    assert is_int(integer, 'test_field')
-    assert is_int(also_integer, 'test_field')
-
-    with raises(ValidationError) as exception:
-        is_int(not_integer, 'test_field')
-
-    assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == \
-        'This field must be an integer.'
+    assert is_algorithm(is_an_algorithm, 'algorithm')
+    assert is_algorithm(also_is_an_algoritm, 'algorithm')
 
     with raises(ValidationError):
-        is_int(also_not_integer, 'test_field')
+        is_algorithm(not_algorithm, 'algorithm')
+
+    with raises(ValidationError):
+        is_algorithm(also_not_algorithm, 'algorithm')
 
 
-def test_is_int_validates_max_range():
-    """Function is_int() validates if a value is less than max range."""
-    too_small = 1
-    just_right = 15
-    too_big = 25
+def test_is_api_bool_validates_correctly():
+    """Function is_required() validates if any value is provided."""
+    is_bool = 0
+    also_bool = 1
 
-    with raises(ValidationError) as exception:
-        is_int(too_small, 'test_field', min_value=10, max_value=20)
+    not_bool = 8701
+    also_not_bool = 'true'
 
-    assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == \
-        'This field must be greater than 10.'
+    assert is_api_bool(is_bool, 'test_bool')
+    assert is_api_bool(also_bool, 'test_bool')
 
-    assert is_int(just_right, 'test_field', min_value=10, max_value=20)
+    with raises(ValidationError):
+        is_api_bool(not_bool, 'test_bool')
 
-    with raises(ValidationError) as exception:
-        is_int(too_big, 'test_field', min_value=10, max_value=20)
-
-    assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == \
-        'This field must be less than 20.'
+    with raises(ValidationError):
+        is_api_bool(also_not_bool, 'test_bool')
 
 
-def test_is_int_validates_min_range():
-    """Function is_int() validates if a value is more than a min range."""
-    just_right = 15
-    too_small = 1
+def test_is_caa_flag_validates_correctly():
+    """Function is_caa_flag() validates true for 0 and 128."""
+    is_flag = 0
+    also_flag = 128
+    not_flag = 1
 
-    assert is_int(just_right, 'test_field', min_value=10)
+    assert is_caa_flag(is_flag, 'caa_flag')
+    assert is_caa_flag(also_flag, 'caa_flag')
 
-    with raises(ValidationError) as exception:
-        is_int(too_small, 'test_field', min_value=10)
+    with raises(ValidationError):
+        is_caa_flag(not_flag, 'caa_flag')
 
-    assert exception.value.details['fieldname'] == 'test_field'
-    assert exception.value.details['message'] == \
-        'This field must be greater than 10.'
+
+def test_is_caa_type_validates_correctly():
+    """Function is_caa_type() validates true for 0 and 128."""
+    is_type = 'issuewild'
+    not_type = 'abc'
+
+    assert is_caa_type(is_type, 'caa_type')
+
+    with raises(ValidationError):
+        is_caa_type(not_type, 'caa_type')
 
 
 def test_is_domain_name_validates_domain_names():
@@ -207,6 +208,74 @@ def test_is_email_validates_emails():
         is_email(also_not_an_email, 'test_email')
 
 
+def test_is_fptype_validates_correctly():
+    """Function is_fptype() validates appropriately."""
+    is_an_fptype = 2
+    also_an_fptype = 'Sha-256'
+    not_an_fptype = 100
+    also_not_an_fptype = 'sha-3'
+
+    assert is_fptype(is_an_fptype, 'fptype')
+    assert is_fptype(also_an_fptype, 'fptype')
+
+    with raises(ValidationError):
+        is_fptype(not_an_fptype, 'fptype')
+
+    with raises(ValidationError):
+        is_fptype(also_not_an_fptype, 'fptype')
+
+
+def test_is_int_validates_integer_values():
+    """Function is_int() validates if a value is an integer or not."""
+    integer = 1
+    also_integer = '1'
+    not_integer = '1abc'
+    also_not_integer = 'abc'
+
+    assert is_int(integer, 'test_field')
+    assert is_int(also_integer, 'test_field')
+
+    with raises(ValidationError) as exception:
+        is_int(not_integer, 'test_field')
+
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == \
+        'This field must be an integer.'
+
+    with raises(ValidationError):
+        is_int(also_not_integer, 'test_field')
+
+
+def test_is_int_validates_max_range():
+    """Function is_int() validates if a value is less than max range."""
+    just_right = 15
+    too_big = 25
+
+    assert is_int(just_right, 'test_field', min_value=10, max_value=20)
+
+    with raises(ValidationError) as exception:
+        is_int(too_big, 'test_field', min_value=10, max_value=20)
+
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == \
+        'This field must be less than 20.'
+
+
+def test_is_int_validates_min_range():
+    """Function is_int() validates if a value is more than a min range."""
+    just_right = 15
+    too_small = 1
+
+    assert is_int(just_right, 'test_field', min_value=10)
+
+    with raises(ValidationError) as exception:
+        is_int(too_small, 'test_field', min_value=10)
+
+    assert exception.value.details['fieldname'] == 'test_field'
+    assert exception.value.details['message'] == \
+        'This field must be greater than 10.'
+
+
 def test_is_record_type_validates_types():
     """Function is_record_type() validates if a value is a valid domain record
     type."""
@@ -230,6 +299,30 @@ def test_is_record_type_validates_types():
         is_record_type(also_not_type, 'test_type')
 
 
+def test_is_redirect_type_validates_correctly():
+    """Function is_redirect_type() validates true for 301 and 302."""
+    is_redirect = 301
+    also_redirect = 302
+    not_redirect = 1
+
+    assert is_redirect_type(is_redirect, 'redirect')
+    assert is_redirect_type(also_redirect, 'redirect')
+
+    with raises(ValidationError):
+        is_redirect_type(not_redirect, 'redirect')
+
+
+def test_is_required_validates_correctly():
+    """Function is_required() validates if any value is provided."""
+    value = 'the value'
+    no_value = ''
+
+    assert is_required(value, 'required')
+
+    with raises(ValidationError):
+        is_required(no_value, 'required')
+
+
 def test_is_ttl_validates_cloudns_ttls():
     """Function is_ttl() validates if a value is a valid ClouDNS ttl."""
     ttl = 86400
@@ -250,101 +343,8 @@ def test_is_ttl_validates_cloudns_ttls():
         is_ttl(also_not_ttl, 'test_ttl')
 
 
-def test_is_redirect_type_validates_correctly():
-    """Function is_redirect_type() validates true for 301 and 302."""
-    is_redirect = 301
-    also_redirect = 302
-    not_redirect = 1
-
-    assert is_redirect_type(is_redirect, 'redirect')
-    assert is_redirect_type(also_redirect, 'redirect')
-
-    with raises(ValidationError):
-        is_redirect_type(not_redirect, 'redirect')
-
-
-def test_is_algorithm_validates_correctly():
-    """Function is_algorithm() validates appropriately."""
-    is_an_algorithm = 1
-    also_is_an_algoritm = 'rsa'
-    not_algorithm = 'vcr'
-    also_not_algorithm = 10
-
-    assert is_algorithm(is_an_algorithm, 'algorithm')
-    assert is_algorithm(also_is_an_algoritm, 'algorithm')
-
-    with raises(ValidationError):
-        is_algorithm(not_algorithm, 'algorithm')
-
-    with raises(ValidationError):
-        is_algorithm(also_not_algorithm, 'algorithm')
-
-
-def test_is_fptype_validates_correctly():
-    """Function is_fptype() validates appropriately."""
-    is_an_fptype = 2
-    also_an_fptype = 'Sha-256'
-    not_an_fptype = 100
-    also_not_an_fptype = 'sha-3'
-
-    assert is_fptype(is_an_fptype, 'fptype')
-    assert is_fptype(also_an_fptype, 'fptype')
-
-    with raises(ValidationError):
-        is_fptype(not_an_fptype, 'fptype')
-
-    with raises(ValidationError):
-        is_fptype(also_not_an_fptype, 'fptype')
-
-
-def test_is_caa_flag_validates_correctly():
-    """Function is_caa_flag() validates true for 0 and 128."""
-    is_flag = 0
-    also_flag = 128
-    not_flag = 1
-
-    assert is_caa_flag(is_flag, 'caa_flag')
-    assert is_caa_flag(also_flag, 'caa_flag')
-
-    with raises(ValidationError):
-        is_caa_flag(not_flag, 'caa_flag')
-
-
-def test_is_caa_type_validates_correctly():
-    """Function is_caa_type() validates true for 0 and 128."""
-    is_type = 'issuewild'
-    not_type = 'abc'
-
-    assert is_caa_type(is_type, 'caa_type')
-
-    with raises(ValidationError):
-        is_caa_type(not_type, 'caa_type')
-
-
-def test_is_required_validates_correctly():
-    """Function is_required() validates if any value is provided."""
-    value = 'the value'
-    no_value = ''
-
-    assert is_required(value, 'required')
-
-    with raises(ValidationError):
-        is_required(no_value, 'required')
-
-
-def test_is_api_bool_validates_correctly():
-    """Function is_required() validates if any value is provided."""
-    is_bool = 0
-    also_bool = 1
-
-    not_bool = 8701
-    also_not_bool = 'true'
-
-    assert is_api_bool(is_bool, 'test_bool')
-    assert is_api_bool(also_bool, 'test_bool')
-
-    with raises(ValidationError):
-        is_api_bool(not_bool, 'test_bool')
-
-    with raises(ValidationError):
-        is_api_bool(also_not_bool, 'test_bool')
+def test_is_valid_always_returns_true():
+    """Function is_valid() always returns true."""
+    assert is_valid(None, 'test')
+    assert is_valid(123, 'test')
+    assert is_valid('abc', 'test')
