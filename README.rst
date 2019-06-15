@@ -104,15 +104,15 @@ library.
 
 .. code:: python
 
-	>>> print(response.success)  # See if a response succeeded
+    >>> print(response.success)      # See if a response succeeded
 
-	>>> print(response.status_code)  # Get the status of a response
+    >>> print(response.status_code)  # Get the status of a response
 
-    >>> print(response.payload)  # The raw payload of a response
+    >>> print(response.payload)      # The raw payload of a response
 
-    >>> print(response.json())  # Get the response as json
+    >>> print(response.json())       # Get the response as json
 
-    >>> print(response.string())  # Get the response as json
+    >>> print(response.string())     # Get the response as json
 
 
 ApiParameter
@@ -129,11 +129,11 @@ You can then call the `validate()` method to manually validate the parameters.
 
 .. code:: python
 
-	>>> print(parameters.validate())  # Validates the parameters according to
-									  # their definitions
+    >>> print(parameters.validate())  # Validates the parameters according to
+                                      # their definitions
 
-	>>> print(response.to_dict())  # Returns the parameters as a dict. Used
-								   # when passing the parameters to requests.
+    >>> print(response.to_dict())  # Returns the parameters as a dict. Used
+                                   # when passing the parameters to requests.
 
 A full discription of how an ApiParameter object and its parameter definition
 works can be found in the `cloudns_api/parameters.py` file. You may also need
@@ -141,8 +141,8 @@ to reference the `cloudns_api/validation.py` module to see how validation
 works.
 
 
-DNS SOA
--------
+DNS SOA Record
+--------------
 
 Every domain zone contains one SOA record that contains the current version of
 the data in the zone, the administrator of the zone record, and TTL information
@@ -180,12 +180,12 @@ Updating the SOA for a domain
 Parameters:
 
 + domain_name - string (required) Domain name or reverse zone name whose SOA details you want to modify.
-+ primary-ns - string (required) Hostname of primary nameserver.
-+ admin-mail - string (required) DNS admin's e-mail.
++ primary_ns - string (required) Hostname of primary nameserver.
++ admin_mail - string (required) DNS admin's e-mail.
 + refresh - integer (required) Refresh rate from 1200 to 43200 seconds.
 + retry - integer (required) Retry rate from 180 to 2419200 seconds.
 + expire - integer (required) Expire time from 1209600 to 2419200 seconds.
-+ default-ttl - integer (required) Default TTL from 60 to 2419200 seconds.
++ default_ttl - integer (required) Default TTL from 60 to 2419200 seconds.
 
 
 .. code:: python
