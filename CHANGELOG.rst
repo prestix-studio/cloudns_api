@@ -4,10 +4,11 @@ Release History
 ---------------
 
 
-0.4 (- --, 2019)
+0.4 (June 15, 2019)
 ++++++++++++++++++++
 
-* Planning/Testing Release 'c' - adds major mvp modules.
+* Alpha Release - all mvp features.
+* Minor bugfixes from v0.3.
 
 
 0.3 (June 05, 2019)
