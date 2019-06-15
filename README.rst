@@ -22,6 +22,7 @@ Please submit any bug reports and bug fixes on github `here
 <https://github.com/hbradleyiii/>`__.
 
 
+
 Installing and including in projects
 ====================================
 
@@ -99,6 +100,7 @@ Importing and Basic Usage
         }
 
 
+
 API Reference
 =============
 
@@ -134,7 +136,7 @@ credentials and retrieving your CloudNS nameservers:
             'status_code':  200,
             'payload':      {
                 'status':             'Success',
-                'status_description': 'Success login.',
+                'status_description': 'Success login.'
             }
         }
 
