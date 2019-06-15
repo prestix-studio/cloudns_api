@@ -147,9 +147,9 @@ library.
                                      # Note that the parameters are converted
                                      # to camel case here.
 
-    >>> print(response.json())       # Get the response as json
+    >>> print(response.json())       # Get the response as json object
 
-    >>> print(response.string())     # Get the response as json
+    >>> print(response.string())     # Get the response as json string
 
 
 ApiParameter

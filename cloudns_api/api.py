@@ -147,7 +147,7 @@ class ApiResponse(object):
         return json
 
     def string(self):
-        """Returns the json response as a string."""
+        """Returns the json response as a json string."""
         return to_json_string(self.json())
 
 
