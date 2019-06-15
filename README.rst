@@ -94,7 +94,7 @@ Introduction
 ------------
 
 We have created the API to be consistent and predictable. API calls usually
-include `list`, `get`, `create`, and `update` functions that do exactly what
+include `list`, `create`, `get`, and `update` functions that do exactly what
 they say. Arguments are passed in a consistent manner across all functions.
 When an argument accepts an integer, it can be passed as an integer or a string
 of that integer.
@@ -216,13 +216,27 @@ Updating the SOA for a domain
 
 Parameters:
 
-+ domain_name - string (required) Domain name or reverse zone name whose SOA details you want to modify.
++ domain_name - string (required) Domain name or reverse zone name whose SOA
+  details you want to modify.
 + primary_ns - string (required) Hostname of primary nameserver.
-+ admin_mail - string (required) DNS admin's e-mail.
-+ refresh - integer (required) Refresh rate from 1200 to 43200 seconds.
-+ retry - integer (required) Retry rate from 180 to 2419200 seconds.
-+ expire - integer (required) Expire time from 1209600 to 2419200 seconds.
-+ default_ttl - integer (required) Default TTL from 60 to 2419200 seconds.
++ admin_mail - string (required) DNS zone administrator's e-mail.
++ refresh - integer (required) The time in seconds that a secondary DNS server
+  waits before querying the primary DNS server's SOA record to check for
+  changes. Rate can be any integer from 1200 to 43200 seconds.
++ retry - integer (required) The time in seconds that a secondary server waits
+  before retrying a failed zone transfer. Usually, the retry rate is less than
+  the refresh rate. Rate can be any integer from 180 to 2419200 seconds.
++ expire - integer (required) The time in seconds that a secondary server will
+  keep trying to complete a zone transfer. If this time expires before a
+  successful zone transfer, the secondary server will expire its zone file. The
+  secondary will stop answering queries, as it considers its data too old to be
+  reliable. Time can be any integer from 1209600 to 2419200 seconds.
++ default_ttl - integer (required) The minimum time-to-live value applies to
+  all resource records in the zone file. TTL can be any integer from 60 to
+  2419200 seconds.
+
+Note that ClouDNS automatically increments the serial number when the zone is
+updated or changed.
 
 
 .. code:: python
