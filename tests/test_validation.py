@@ -24,6 +24,7 @@ from cloudns_api.validation import (
     is_record_type,
     is_redirect_type,
     is_required,
+    is_rows_per_page,
     is_ttl,
     is_valid,
     validate,
@@ -321,6 +322,23 @@ def test_is_required_validates_correctly():
 
     with raises(ValidationError):
         is_required(no_value, 'required')
+
+
+def test_is_rows_per_page_validates_correctly():
+    """Function is_rows_per_page() validates correctly."""
+    valid = 10
+    also_valid = '50'
+    not_valid = 11
+    also_not_valid = '51'
+
+    assert is_rows_per_page(valid, 'rows-per-page')
+    assert is_rows_per_page(also_valid, 'rows-per-page')
+
+    with raises(ValidationError):
+        is_rows_per_page(not_valid, 'rows-per-page')
+
+    with raises(ValidationError):
+        is_rows_per_page(also_not_valid, 'rows-per-page')
 
 
 def test_is_ttl_validates_cloudns_ttls():

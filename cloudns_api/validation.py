@@ -230,6 +230,16 @@ def is_required(value, fieldname, **kwargs):
     return True
 
 
+def is_rows_per_page(value, fieldname, **kwargs):
+    """Validates and returns True if a proper rows-per-page value is provided
+    (10, 20, 30, 50, or 100). Otherwise, raises a valiadation error."""
+    if value not in [10, 20, 30, 50, 100, '10', '20', '30', '50', '100']:
+        raise ValidationError(fieldname,
+                              'This field must be one of: 10, 20, 30, 50, or' +
+                              ' 100.')
+    return True
+
+
 def is_ttl(value, fieldname, **kwargs):
     """Validates and returns True if the value is a valid ClouDNS ttl.
     Otherwise, raises a validation error."""
@@ -287,6 +297,7 @@ validation_functions = {
     'redirect-type':    is_redirect_type,
     'refresh':          is_int,
     'required':         is_required,
+    'rows-per-page':    is_rows_per_page,
     'save-path':        is_api_bool,
     'status':           is_api_bool,
     'ttl':              is_ttl,
