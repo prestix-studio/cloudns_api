@@ -55,7 +55,7 @@ def validate(fieldname, value, *args, **kwargs):
     """
     if kwargs.get('optional', False) and not value:
         return value
-    elif not value:
+    elif value is None or value == '':
         raise ValidationError(fieldname, 'This field is required.')
 
     if fieldname not in validation_functions:
@@ -224,7 +224,7 @@ def is_redirect_type(value, fieldname, **kwargs):
 def is_required(value, fieldname, **kwargs):
     """Validates and returns True if any value is provided. Otherwise, raises a
     validation error."""
-    if not value:
+    if value is None or value == '':
         raise ValidationError(fieldname,
                               'This field is required.')
     return True

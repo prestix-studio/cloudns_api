@@ -85,13 +85,17 @@ def test_validate_function_uses_validation_functions_dict():
 
 def test_validate_function_allows_for_optional_fields():
     """Function validate() allows for optional fields."""
-    optional = None
-
-    # validate domain none, empty string, is optional a kwarg?
-    assert validate('domain', optional, optional=True) is None
+    assert validate('domain', None, optional=True) is None
+    assert validate('domain', '', optional=True) == ''
 
     with raises(ValidationError):
-        validate('domain', optional)
+        validate('domain', '')
+
+    with raises(ValidationError):
+        validate('domain', None)
+
+    # But this should not raise an error
+    assert validate('domain', 0) == 0
 
 
 def test_validate_function_still_checks_given_optional_fields():
@@ -124,7 +128,7 @@ def test_is_algorithm_validates_correctly():
 
 
 def test_is_api_bool_validates_correctly():
-    """Function is_required() validates if any value is provided."""
+    """Function is_api_bool() validates if any value is provided."""
     is_bool = 0
     also_bool = 1
 
@@ -317,12 +321,18 @@ def test_is_redirect_type_validates_correctly():
 def test_is_required_validates_correctly():
     """Function is_required() validates if any value is provided."""
     value = 'the value'
+    also_value = 0
     no_value = ''
+    also_no_value = None
 
     assert is_required(value, 'required')
+    assert is_required(also_value, 'required')
 
     with raises(ValidationError):
         is_required(no_value, 'required')
+
+    with raises(ValidationError):
+        is_required(also_no_value, 'required')
 
 
 def test_is_rows_per_page_validates_correctly():
