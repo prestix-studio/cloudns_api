@@ -46,7 +46,7 @@ class ValidationErrorsBatch(ValidationError):
 
 def validate(fieldname, value, *args, **kwargs):
     """Validates a value for a particular fieldtype.
-    Returns a value if it is valid; raises an error otherwise.
+    Returns True if it is valid; raises an error otherwise.
 
     :param fieldname: string, the fieldname to validate (determines the type of
         validation to use)
@@ -54,15 +54,15 @@ def validate(fieldname, value, *args, **kwargs):
     :param optional: bool, (kwarg) if True, accept None as a valid value
     """
     if kwargs.get('optional', False) and not value:
-        return value
+        return True
     elif value is None or value == '':
         raise ValidationError(fieldname, 'This field is required.')
 
     if fieldname not in validation_functions:
-        return value
+        return True
 
     if validation_functions[fieldname](value, fieldname, *args, **kwargs):
-        return value
+        return True
 
     # If for some reason the validation fails, but no error was raised,
     # raise one here. This should hopefully never happen

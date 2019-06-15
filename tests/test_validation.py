@@ -76,8 +76,8 @@ def test_validate_function_uses_validation_functions_dict():
     integer = 1234
     domain = 'example.com'
 
-    assert validate('integer', integer) == integer
-    assert validate('domain', domain) == domain
+    assert validate('integer', integer)
+    assert validate('domain', domain)
 
     with raises(ValidationError):
         validate('ttl', domain)
@@ -85,8 +85,8 @@ def test_validate_function_uses_validation_functions_dict():
 
 def test_validate_function_allows_for_optional_fields():
     """Function validate() allows for optional fields."""
-    assert validate('domain', None, optional=True) is None
-    assert validate('domain', '', optional=True) == ''
+    assert validate('domain', None, optional=True)
+    assert validate('domain', '', optional=True)
 
     with raises(ValidationError):
         validate('domain', '')
@@ -95,7 +95,7 @@ def test_validate_function_allows_for_optional_fields():
         validate('domain', None)
 
     # But this should not raise an error
-    assert validate('domain', 0) == 0
+    assert validate('domain', 0)
 
 
 def test_validate_function_still_checks_given_optional_fields():
