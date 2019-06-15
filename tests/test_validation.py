@@ -27,6 +27,7 @@ from cloudns_api.validation import (
     is_rows_per_page,
     is_ttl,
     is_valid,
+    is_zone_type,
     validate,
     ValidationError,
     ValidationErrorsBatch,
@@ -366,3 +367,22 @@ def test_is_valid_always_returns_true():
     assert is_valid(None, 'test')
     assert is_valid(123, 'test')
     assert is_valid('abc', 'test')
+
+
+def test_is_zone_type_validates_correctly():
+    """Function is_zone_type() validates if a value is a valid ClouDNS zone
+    type."""
+    zone_type = 'Master'
+    also_zone_type = 'slave'
+
+    not_zone_type = 123
+    also_not_zone_type = 'masterdns'
+
+    assert is_zone_type(zone_type, 'test_zone_type')
+    assert is_zone_type(also_zone_type, 'test_zone_type')
+
+    with raises(ValidationError):
+        is_zone_type(not_zone_type, 'test_zone_type')
+
+    with raises(ValidationError):
+        is_zone_type(also_not_zone_type, 'test_zone_type')

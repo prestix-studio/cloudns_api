@@ -271,6 +271,21 @@ def is_valid(value, fieldname, **kwargs):
     return True
 
 
+def is_zone_type(value, fieldname, **kwargs):
+    """Validates and returns True if the value is a valid zone type.
+    Otherwise, raises a validation error."""
+    if hasattr(value, 'lower'):
+        value = value.lower()
+
+    if value not in ZONE_TYPES:
+        raise ValidationError(fieldname, 'This field must be a valid zone ' +
+                              'type. (master, slave, parked, or geodns)')
+    return True
+
+
+ZONE_TYPES = ['master', 'slave', 'parked', 'geodns']
+
+
 # Set up validation functions dict
 validation_functions = {
     'admin-mail':       is_email,
@@ -303,4 +318,5 @@ validation_functions = {
     'ttl':              is_ttl,
     'txt':              is_domain_name,
     'weight':           is_int,
+    'zone_type':        is_zone_type,
 }
