@@ -31,7 +31,12 @@ from cloudns_api.validation import (
 )
 
 
+##
+# Validation Exception Tests
+
+
 def test_validation_error_exception_can_return_error_details():
+    """Tests ValidationError exception."""
     validation_error = ValidationError('name-of-field', 'The error message.')
 
     details = validation_error.get_details()
@@ -40,6 +45,7 @@ def test_validation_error_exception_can_return_error_details():
 
 
 def test_validation_errors_batch_returns_all_error_details():
+    """Tests ValidationErrorsBatch exception."""
     error_1 = ValidationError('first-field', 'The first error message.')
     error_2 = ValidationError('second-field', 'The second error message.')
     error_3 = ValidationError('third-field', 'The third error message.')
@@ -55,6 +61,46 @@ def test_validation_errors_batch_returns_all_error_details():
     assert details[1]['message'] == 'The second error message.'
     assert details[2]['fieldname'] == 'third-field'
     assert details[2]['message'] == 'The third error message.'
+
+
+##
+# Validate Function Tests
+
+
+def test_validate_function_uses_validation_functions_dict():
+    """Function validate() uses validation_functions dict to validate
+    values."""
+    integer = 1234
+    domain = 'example.com'
+
+    assert validate('integer', integer) == integer
+    assert validate('domain', domain) == domain
+
+    with raises(ValidationError):
+        validate('ttl', domain)
+
+
+def test_validate_function_allows_for_optional_fields():
+    """Function validate() allows for optional fields."""
+    optional = None
+
+    # validate domain none, empty string, is optional a kwarg?
+    assert validate('domain', optional, optional=True) is None
+
+    with raises(ValidationError):
+        validate('domain', optional)
+
+
+def test_validate_function_still_checks_given_optional_fields():
+    """Function validate() validates optional fields if they are given."""
+    optional_int = 'abcd'
+
+    with raises(ValidationError):
+        validate('ttl', optional_int)
+
+
+##
+# Specific Validation Functions Tests
 
 
 def test_is_int_validates_integer_values():
@@ -302,35 +348,3 @@ def test_is_api_bool_validates_correctly():
 
     with raises(ValidationError):
         is_api_bool(also_not_bool, 'test_bool')
-
-
-def test_validate_function_uses_validation_functions_dict():
-    """Function validate() uses validation_functions dict to validate
-    values."""
-    integer = 1234
-    domain = 'example.com'
-
-    assert validate('integer', integer) == integer
-    assert validate('domain', domain) == domain
-
-    with raises(ValidationError):
-        validate('ttl', domain)
-
-
-def test_validate_function_allows_for_optional_fields():
-    """Function validate() allows for optional fields."""
-    optional = None
-
-    # validate domain none, empty string, is optional a kwarg?
-    assert validate('domain', optional, optional=True) is None
-
-    with raises(ValidationError):
-        validate('domain', optional)
-
-
-def test_validate_function_still_checks_given_optional_fields():
-    """Function is_email() validates if a value is a valid email."""
-    optional_int = 'abcd'
-
-    with raises(ValidationError):
-        validate('ttl', optional_int)
