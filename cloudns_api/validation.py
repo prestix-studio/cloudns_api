@@ -74,8 +74,8 @@ def validate(fieldname, value, *args, **kwargs):
 
 
 def is_algorithm(value, fieldname, **kwargs):
-    """Returns the value if it is a proper algorithm. Otherwise, raises a
-    validation error."""
+    """Validates and returns True if the value is a proper algorithm.
+    Otherwise, raises a validation error."""
     try:
         if value.upper() not in ALGORITHMS:
             raise ValidationError(fieldname,
@@ -94,8 +94,8 @@ ALGORITHMS = ['RSA', 'DSA', 'ECDSA', 'ED25519']
 
 
 def is_api_bool(value, fieldname, **kwargs):
-    """Returns the value if value is a 0 or 1. Otherwise, raises a validation
-    error."""
+    """Validates and returns True if the value is a 0 or 1. Otherwise, raises a
+    validation error."""
     if value != 0 and value != 1:
         raise ValidationError(fieldname,
                               'This field must be 0 or 1.')
@@ -103,8 +103,8 @@ def is_api_bool(value, fieldname, **kwargs):
 
 
 def is_caa_flag(value, fieldname, **kwargs):
-    """Returns the value if it is 0 or 128. Otherwise, raises a validation
-    error."""
+    """Validates and returns True if the value is 0 or 128. Otherwise, raises a
+    validation error."""
     if value != 0 and value != 128:
         raise ValidationError(fieldname,
                               'This field must be 0 (non-critical) or 128 ' +
@@ -113,8 +113,8 @@ def is_caa_flag(value, fieldname, **kwargs):
 
 
 def is_caa_type(value, fieldname, **kwargs):
-    """Returns the value if value is a caa type. Otherwise, raises a validation
-    error."""
+    """Validates and returns True if value is a caa type. Otherwise, raises a
+    validation error."""
     try:
         if value.lower() not in CAA_TYPES:
             raise ValidationError(fieldname,
@@ -132,8 +132,8 @@ CAA_TYPES = ['issue', 'issuewild', 'iodef']
 
 
 def is_domain_name(value, fieldname, **kwargs):
-    """Returns the value if value is a valid domain name. Otherwise, raises a
-    validation error."""
+    """Validates and returns True if the value is a valid domain name.
+    Otherwise, raises a validation error."""
     if not re.match(
        r'^((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}$',
        value):
@@ -143,8 +143,8 @@ def is_domain_name(value, fieldname, **kwargs):
 
 
 def is_email(value, fieldname, **kwargs):
-    """Returns the value if value is a valid domain name. Otherwise, raises a
-    validation error."""
+    """Validates and returns true if the value is a valid email. Otherwise,
+    raises a validation error."""
     if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
                     value):
         raise ValidationError(fieldname,
@@ -153,8 +153,8 @@ def is_email(value, fieldname, **kwargs):
 
 
 def is_fptype(value, fieldname, **kwargs):
-    """Returns the value if it is a proper fingerprint type. Otherwise, raises
-    a validation error."""
+    """Validates and returns True if the value is a proper fingerprint type.
+    Otherwise, raises a validation error."""
     try:
         if value.upper() not in FP_TYPES:
             raise ValidationError(fieldname,
@@ -173,8 +173,8 @@ FP_TYPES = ['SHA-1', 'SHA-256']
 
 
 def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
-    """Returns the value if value is an integer (within min_value/max_value
-    range); otherwise, raises a validation error."""
+    """Validates and returns True if the value is an integer (within
+    min_value/max_value range). Otherwise, raises a validation error."""
     try:
         value += 0  # Try it to see if it is an integer
     except TypeError:
@@ -193,8 +193,8 @@ def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
 
 
 def is_record_type(value, fieldname, **kwargs):
-    """Returns the value if value is a valid domain recordy type. Otherwise,
-    raises a validation error."""
+    """Validates and returns True if the value is a valid domain record type.
+    Otherwise, raises a validation error."""
     try:
         if value.upper() not in RECORD_TYPES:
             raise ValidationError(fieldname,
@@ -212,8 +212,8 @@ RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
 
 
 def is_redirect_type(value, fieldname, **kwargs):
-    """Returns the value if it is 301 or 302. Otherwise, raises a validation
-    error."""
+    """Validates and returns True if the value is 301 or 302. Otherwise, raises
+    a validation error."""
     if value != 301 and value != 302:
         raise ValidationError(fieldname,
                               'This field must be 301 (permanent) or 302 ' +
@@ -222,7 +222,7 @@ def is_redirect_type(value, fieldname, **kwargs):
 
 
 def is_required(value, fieldname, **kwargs):
-    """Returns the value if there is some value provided. Otherwise, raises a
+    """Validates and returns True if any value is provided. Otherwise, raises a
     validation error."""
     if not value:
         raise ValidationError(fieldname,
@@ -231,8 +231,8 @@ def is_required(value, fieldname, **kwargs):
 
 
 def is_ttl(value, fieldname, **kwargs):
-    """Returns the value if value is a valid ClouDNS ttl. Otherwise, raises a
-    validation error."""
+    """Validates and returns True if the value is a valid ClouDNS ttl.
+    Otherwise, raises a validation error."""
     if hasattr(value, 'lower'):
         value = value.lower()
 
