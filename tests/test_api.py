@@ -399,7 +399,6 @@ def test_api_patch_update_fails_when_get_first_fails():
 
     @api
     def test_api_get(*args, **kwargs):
-        print('getting')
         return MockRequestResponse(json_data={'status': 'Failed',
                                               'statusDescription':
                                               'Missing domain-name'})
@@ -407,7 +406,6 @@ def test_api_patch_update_fails_when_get_first_fails():
     @api
     @patch_update(get=test_api_get, keys=['domain_name'])
     def update(*args, **kwargs):
-        print('updating')
         return MockRequestResponse(json_data=kwargs)
 
     response = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
