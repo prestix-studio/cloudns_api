@@ -20,7 +20,7 @@ from .helpers import mock_get_request, mock_post_request
 
 @mock_get_request()
 def test_soa_get_function():
-    """SOA get function sends propely formated request."""
+    """SOA get function sends properly formated request."""
     response = soa.get('example.com')
     assert response.success
 
