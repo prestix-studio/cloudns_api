@@ -43,12 +43,19 @@ In order to authenticate correctly, create the following environment variables
     export CLOUDNS_API_DEBUG=True
 
 
+To make things easier, you could put these in your python virtual environment
+or use a package like
+`python-dotenv <https://github.com/theskumar/python-dotenv>`__ to automatically
+load your environment variables. Be sure to not include your private username
+and password in your public repositories.
+
+
 Running Tests
 -------------
 
 .. code:: bash
 
-    $ cd <project directory>
+    $ cd <cloudns_api directory>
     $ py.test
 
 
