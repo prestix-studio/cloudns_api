@@ -69,21 +69,33 @@ Importing and Basic Usage
 
     >>> import cloudns_api
 
-    >>> response = cloudns_api.soa.get('example.com')
+    >>> response = cloudns_api.zone.list(search='example')
+
     >>> print(response.json())
 
         {
             'success':      True,
             'status_code':  200,
-            'payload':      {
-                'admin_mail':     'admin@example.com',
-                'default_ttl':    '3600',
-                'expire':         '1209600',
-                'primary_ns':     'ns1.example.com',
-                'refresh':        '7200',
-                'retry':          '1800',
-                'serial_number':  '2019060601'},
-            }
+            'payload':      [
+                {
+                    'name':     'example.com',
+                    'type':     'master',
+                    'zone':     'domain',
+                    'status':   '1'
+                },
+                {
+                    'name':     'example.net',
+                    'type':     'master',
+                    'zone':     'domain',
+                    'status':   '1'
+                },
+                {
+                    'name':     'example.org',
+                    'type':     'master',
+                    'zone':     'domain',
+                    'status':   '1'
+                }
+            ]
         }
 
 
