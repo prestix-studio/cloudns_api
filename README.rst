@@ -582,6 +582,74 @@ Besides the SOA record, a domain can have a number of other records.
   * ttl - time to keep record in cache
 
 
++ ALIAS record - a special ClouDNS record type similar to CNAME records that
+  allow you to take advantage of Round-robbin DNS.
+
+  * host - subdomain to optionally add to main domain
+
+  * record - the host this is an alias for
+
+  * ttl - time to keep record in cache
+
+
++ RP record - specifies the email address of the user responsible for the
+  hostname.
+
+  * host - subdomain to optionally add to main domain
+
+  * record - an email address
+
+  * ttl - time to keep record in cache
+
+
++ SSHFP record - contains the fingerprints for public keys used in SSH servers.
+
+  * host - subdomain to optionally add to main domain
+
+  * record - the fingerprint
+
+  * algorithm - algorithm type to use (RSA, DSA, ECDSA, or Ed25159)
+
+  * fptype - fingerprint type (SHA-1 or SHA-256)
+
+  * ttl - time to keep record in cache
+
+
++ PTR record - used for reverse DNS lookups. For every PTR record, there must
+  be a corresponding A record. Must be created on a reverse DNS zone.
+
+  * host - subdomain to optionally add to main domain
+
+  * record - the PTR record
+
+  * ttl - time to keep record in cache
+
+
++ NAPTR record - used to map servers and user addresses in the Session
+  Initiation Protocol (SIP)
+
+  * host - subdomain to optionally add to main domain
+
+  * record - the NAPTR record
+
+  * ttl - time to keep record in cache
+
+
++ CAA record - allows a DNS domain name holder to specify one or more
+  Certification Authorities (CAs) authorized to issue certificates for that
+  domain
+
+  * host - subdomain to optionally add to main domain
+
+  * ttl - time to keep record in cache
+
+  * caa-flag - 0 for non-critical, 128 for critical
+
+  * caa-type - issue, issuewild, iodef
+
+  * caa-value - the record value
+
+
 A wildcard ('*') can be added for domains and subdomains that do not exist in
 the DNS record for these types: A (or AAAA), MX, TXT, CNAME, ALIAS and Web
 Redirect.
