@@ -72,7 +72,7 @@ def validate(fieldname, value, *args, **kwargs):
 ##
 # Specific Validation Functions
 
-def is_algorithm(value, fieldname, **kwargs):
+def is_algorithm(value, fieldname='algorithm', **kwargs):
     """Validates and returns True if the value is a proper algorithm.
     Otherwise, raises a validation error."""
     try:
@@ -92,7 +92,7 @@ def is_algorithm(value, fieldname, **kwargs):
 ALGORITHMS = ['RSA', 'DSA', 'ECDSA', 'ED25519']
 
 
-def is_api_bool(value, fieldname, **kwargs):
+def is_api_bool(value, fieldname='api-bool', **kwargs):
     """Validates and returns True if the value is a 0 or 1. Otherwise, raises a
     validation error."""
     if value != 0 and value != 1:
@@ -101,7 +101,7 @@ def is_api_bool(value, fieldname, **kwargs):
     return True
 
 
-def is_caa_flag(value, fieldname, **kwargs):
+def is_caa_flag(value, fieldname='caa-flag', **kwargs):
     """Validates and returns True if the value is 0 or 128. Otherwise, raises a
     validation error."""
     if value != 0 and value != 128:
@@ -111,7 +111,7 @@ def is_caa_flag(value, fieldname, **kwargs):
     return True
 
 
-def is_caa_type(value, fieldname, **kwargs):
+def is_caa_type(value, fieldname='caa-type', **kwargs):
     """Validates and returns True if value is a caa type. Otherwise, raises a
     validation error."""
     try:
@@ -130,7 +130,7 @@ def is_caa_type(value, fieldname, **kwargs):
 CAA_TYPES = ['issue', 'issuewild', 'iodef']
 
 
-def is_domain_name(value, fieldname, **kwargs):
+def is_domain_name(value, fieldname='domain-name', **kwargs):
     """Validates and returns True if the value is a valid domain name.
     Otherwise, raises a validation error."""
     if not re.match(
@@ -141,7 +141,7 @@ def is_domain_name(value, fieldname, **kwargs):
     return True
 
 
-def is_email(value, fieldname, **kwargs):
+def is_email(value, fieldname='email', **kwargs):
     """Validates and returns true if the value is a valid email. Otherwise,
     raises a validation error."""
     if not re.match(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)',
@@ -151,7 +151,7 @@ def is_email(value, fieldname, **kwargs):
     return True
 
 
-def is_fptype(value, fieldname, **kwargs):
+def is_fptype(value, fieldname='fptype', **kwargs):
     """Validates and returns True if the value is a proper fingerprint type.
     Otherwise, raises a validation error."""
     try:
@@ -171,7 +171,7 @@ def is_fptype(value, fieldname, **kwargs):
 FP_TYPES = ['SHA-1', 'SHA-256']
 
 
-def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
+def is_int(value, fieldname='int', min_value=None, max_value=None, **kwargs):
     """Validates and returns True if the value is an integer (within
     min_value/max_value range). Otherwise, raises a validation error."""
     try:
@@ -191,7 +191,7 @@ def is_int(value, fieldname, min_value=None, max_value=None, **kwargs):
     return True
 
 
-def is_record_type(value, fieldname, **kwargs):
+def is_record_type(value, fieldname='record-type', **kwargs):
     """Validates and returns True if the value is a valid domain record type.
     Otherwise, raises a validation error."""
     try:
@@ -210,7 +210,7 @@ RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
                 'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR']
 
 
-def is_redirect_type(value, fieldname, **kwargs):
+def is_redirect_type(value, fieldname='redirect-type', **kwargs):
     """Validates and returns True if the value is 301 or 302. Otherwise, raises
     a validation error."""
     if value != 301 and value != 302:
@@ -220,7 +220,7 @@ def is_redirect_type(value, fieldname, **kwargs):
     return True
 
 
-def is_required(value, fieldname, **kwargs):
+def is_required(value, fieldname='required', **kwargs):
     """Validates and returns True if any value is provided. Otherwise, raises a
     validation error."""
     if value is None or value == '':
@@ -229,7 +229,7 @@ def is_required(value, fieldname, **kwargs):
     return True
 
 
-def is_rows_per_page(value, fieldname, **kwargs):
+def is_rows_per_page(value, fieldname='rows-per-page', **kwargs):
     """Validates and returns True if a proper rows-per-page value is provided
     (10, 20, 30, 50, or 100). Otherwise, raises a valiadation error."""
     if value not in [10, 20, 30, 50, 100, '10', '20', '30', '50', '100']:
@@ -239,7 +239,7 @@ def is_rows_per_page(value, fieldname, **kwargs):
     return True
 
 
-def is_ttl(value, fieldname, **kwargs):
+def is_ttl(value, fieldname='ttl', **kwargs):
     """Validates and returns True if the value is a valid ClouDNS ttl.
     Otherwise, raises a validation error."""
     if hasattr(value, 'lower'):
@@ -265,12 +265,12 @@ TTLS = [60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200, 604800,
         1209600, 2592000]
 
 
-def is_valid(value, fieldname, **kwargs):
+def is_valid(value, fieldname='valid', **kwargs):
     """This is a stub. It always returns true."""
     return True
 
 
-def is_zone_type(value, fieldname, **kwargs):
+def is_zone_type(value, fieldname='zone-type', **kwargs):
     """Validates and returns True if the value is a valid zone type.
     Otherwise, raises a validation error."""
     if hasattr(value, 'lower'):
