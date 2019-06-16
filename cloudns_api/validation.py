@@ -56,7 +56,8 @@ def validate(fieldname, value, *args, **kwargs):
     if kwargs.get('optional', False) and not value:
         return True
     elif value is None or value == '':
-        raise ValidationError(fieldname, 'This field is required.')
+        raise ValidationError(fieldname, 'This field (' + fieldname +
+                              ') is required.')
 
     if fieldname not in validation_functions:
         return True
