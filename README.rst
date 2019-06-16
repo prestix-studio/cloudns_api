@@ -483,5 +483,88 @@ A patch update allows you to specify only the parameters you wish to change.
         }
 
 
+DNS Records
+-----------
+
+Besides the SOA record, a domain can have a number of other records.
+
++ A record - points a hostname to an IPv4 address.
+  + host - subdomain to optionally add to main domain
+  + record - an IPv4
+  + ttl - time to keep record in cache
+
++ AAAA record - points a hostname to an IPv6 address.
+  + host - subdomain to optionally add to main domain
+  + record - an IPv6
+  + ttl - time to keep record in cache
+
++ MX record - server responsible for accepting e-mail messages.
+  + host - subdomain to optionally add to main domain
+  + record - hostname of the server that will handle the email messages
+  + priority - priority index, prioritize the lowest indexed server
+  + ttl - time to keep record in cache
+
++ CNAME record - canonical name record used for specifying host alisases.
+  + host - subdomain to optionally add to main domain
+  + record - the host this is an alias for
+  + ttl - time to keep record in cache
+
++ TXT record - used to provide information for a wide variety of sources.
+  + host - subdomain to optionally add to main domain
+  + record - any text is valid
+  + ttl - time to keep record in cache
+
++ SPF record - used to identify which servers are permitted to send emails for
+  your host. This record type is deprecated in favor of using a TXT record.
+  + host - subdomain to optionally add to main domain
+  + record - a specific format is required for this record
+  + ttl - time to keep record in cache
+
++ NS record - used to identify the name servers responsible for your domain.
+  This must be the same as what your domain provider has configured.
+  + host - subdomain to optionally add to main domain
+  + record - the hostname of the nameserver
+  + ttl - time to keep record in cache
+
++ SRV record - used to identify the host and port of specific services.
+  + host - subdomain to optionally add to main domain
+  + record - the hostname of the server
+  + port - the port the service answers on
+  + priority - priority index, prioritize the lowest indexed server
+  + weight - a relative weight for services with the same index
+  + ttl - time to keep record in cache
+
++ WR record - web redirect record. Points web requests from one server to
+  another. This is not an official DNS record type.
+  + host - subdomain to optionally add to main domain
+  + record - the url to redirect
+  + redirect-type - use a 301 (permanent) or 302 (temporary) redirect code
+  + ttl - time to keep record in cache
+
+
+A wildcard ('*') can be added for domains and subdomains that do not exist in
+the DNS record for these types: A (or AAAA), MX, TXT, CNAME, ALIAS and Web
+Redirect.
+
+ClouDNS supports the following values for TTLs:
+
++ 1 Minute
++ 5 Minutes
++ 15 Minutes
++ 30 Minutes
++ 1 Hours
++ 6 Hours
++ 12 Hours
++ 1 Day
++ 2 Days
++ 3 Days
++ 1 Week
++ 2 Weeks
++ 1 Month
+
+ClouDNS uses round-robbin DNS when multiple A, AAAA, or Alias records are
+provided with different values.
+
+
 
 Soli Deo gloria.
