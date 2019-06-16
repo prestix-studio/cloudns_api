@@ -216,6 +216,32 @@ def test_api_response_payload_is_normalized_to_snake_case():
     }
 
 
+def test_request_response_has_status_code():
+    """An RequestResponseStub object's has expected properties."""
+    response = RequestResponseStub(status_code=301)
+
+    assert response.status_code == 301
+
+    assert RequestResponseStub().status_code == 200
+
+
+def test_request_response_has_json_data():
+    """An RequestResponseStub object's has expected properties."""
+    response = RequestResponseStub(json_data={'abc': 123, 'def': 456})
+
+    assert response.json_data == {'abc': 123, 'def': 456}
+    assert response.json() == {'abc': 123, 'def': 456}
+
+
+def test_request_response_can_be_used_for_tests():
+    """An RequestResponseStub object's has expected properties."""
+    response = RequestResponseStub(url='https://example.com/',
+                                   params={'abc': 123, 'def': 456})
+
+    assert response.json() == {'url': 'https://example.com/',
+                               'params': {'abc': 123, 'def': 456}}
+
+
 ##
 # API Decorator Tests
 
