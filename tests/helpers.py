@@ -47,7 +47,6 @@ def set_no_debug(test_fn):
 ##
 # Request Mock functions
 
-
 def mock_get_request(json_data=None):
     """A closure decorator to pass json_data for the get_mock function.
 

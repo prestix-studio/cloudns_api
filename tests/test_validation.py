@@ -37,7 +37,6 @@ from cloudns_api.validation import (
 ##
 # Validation Exception Tests
 
-
 def test_validation_error_exception_can_return_error_details():
     """Tests ValidationError exception."""
     validation_error = ValidationError('name-of-field', 'The error message.')
@@ -68,7 +67,6 @@ def test_validation_errors_batch_returns_all_error_details():
 
 ##
 # Validate Function Tests
-
 
 def test_validate_function_uses_validation_functions_dict():
     """Function validate() uses validation_functions dict to validate
@@ -108,7 +106,6 @@ def test_validate_function_still_checks_given_optional_fields():
 
 ##
 # Specific Validation Functions Tests
-
 
 def test_is_algorithm_validates_correctly():
     """Function is_algorithm() validates appropriately."""

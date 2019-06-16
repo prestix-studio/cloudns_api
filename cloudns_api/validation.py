@@ -72,7 +72,6 @@ def validate(fieldname, value, *args, **kwargs):
 ##
 # Specific Validation Functions
 
-
 def is_algorithm(value, fieldname, **kwargs):
     """Validates and returns True if the value is a proper algorithm.
     Otherwise, raises a validation error."""
