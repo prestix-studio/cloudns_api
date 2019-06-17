@@ -262,7 +262,7 @@ Creating DNS Zones
             'payload':      {
                 'status': 'Success',
                 'status_description':
-                    'Domain zone exampleharold.com was created successfully.'
+                    'Domain zone example.com was created successfully.'
             }
         }
 
@@ -303,7 +303,7 @@ Updating a DNS Zone Serial Number
             'payload':      {
                 'status': 'Success',
                 'status_description':
-                    'Domain zone exampleharold.com was updated successfully.'
+                    'Domain zone example.com was updated successfully.'
             }
         }
 
@@ -347,7 +347,7 @@ Deleting a DNS Zone
             'payload':      {
                 'status': 'Success',
                 'status_description':
-                    'Domain zone exampleharold.com was deleted successfully.'
+                    'Domain zone example.com was deleted successfully.'
             }
         }
 
