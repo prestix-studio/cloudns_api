@@ -44,16 +44,16 @@ class ValidationErrorsBatch(ValidationError):
         return [error.details for error in self.validation_errors]
 
 
-def validate(fieldname, value, *args, **kwargs):
+def validate(fieldname, value, optional=False, *args, **kwargs):
     """Validates a value for a particular fieldtype.
     Returns True if it is valid; raises an error otherwise.
 
     :param fieldname: string, the fieldname to validate (determines the type of
         validation to use)
     :param value: mixed, the value to validate
-    :param optional: bool, (kwarg) if True, accept None as a valid value
+    :param optional: bool, if True, accept None as a valid value
     """
-    if kwargs.get('optional', False) and not value:
+    if optional and not value:
         return True
     elif value is None or value == '':
         raise ValidationError(fieldname, 'This field (' + fieldname +
