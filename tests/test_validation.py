@@ -315,6 +315,7 @@ def test_is_ipv6_validates_ipv6_addresses():
     also_ip = '2009:db8:95a3:0:0:9a2e:370:8334'
     not_ip = '8.8.8.8'
     also_not_ip = '1234:5678:abcdef'
+    again_also_not_ip = '2009:0db8:95a3:0000:10000:9a2e:0370:8334'
 
     assert is_ipv6(ip)
     assert is_ipv6(also_ip)
@@ -324,6 +325,9 @@ def test_is_ipv6_validates_ipv6_addresses():
 
     with raises(ValidationError):
         is_ipv6(also_not_ip)
+
+    with raises(ValidationError):
+        is_ipv6(again_also_not_ip)
 
 
 def test_is_record_type_validates_types():
