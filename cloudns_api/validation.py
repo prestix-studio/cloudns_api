@@ -250,7 +250,7 @@ def is_record_type(value, fieldname='record-type', **kwargs):
     return True
 
 
-RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'NS', 'SRV', 'WR',
+RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'SPF', 'NS', 'SRV', 'WR',
                 'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR']
 
 
