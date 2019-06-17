@@ -106,6 +106,17 @@ def test_validate_function_still_checks_given_optional_fields():
         validate('ttl', optional_int)
 
 
+def test_validate_function_accepts_validate_as_argument():
+    """Function validate() accepts a  of additional validators to run."""
+    int_value = 123
+    not_int_value = 'abc'
+
+    assert validate('new_field', int_value, validate_as='integer')
+
+    with raises(ValidationError):
+        assert validate('new_field', not_int_value, validate_as='integer')
+
+
 ##
 # Specific Validation Functions Tests
 
