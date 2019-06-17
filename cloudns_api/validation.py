@@ -362,6 +362,7 @@ validation_functions = {
     'status':           is_api_bool,
     'ttl':              is_ttl,
     'txt':              is_domain_name,
+    'valid':            is_valid,
     'weight':           is_int,
     'zone_type':        is_zone_type,
 }
