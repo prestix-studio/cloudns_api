@@ -21,6 +21,8 @@ from cloudns_api.validation import (
     is_email,
     is_fptype,
     is_int,
+    is_ipv4,
+    is_ipv6,
     is_record_type,
     is_redirect_type,
     is_required,
@@ -277,6 +279,40 @@ def test_is_int_validates_min_range():
     assert exception.value.details['fieldname'] == 'test_field'
     assert exception.value.details['message'] == \
         'This field must be greater than 10.'
+
+
+def test_is_ipv4_validates_ipv4_addresses():
+    """Function is_ipv4() validates IPv4 addresses."""
+    ip = '10.0.0.1'
+    also_ip = '8.8.8.8'
+    not_ip = '8.8.8.8.8'
+    also_not_ip = '12345678abcdef'
+
+    assert is_ipv4(ip)
+    assert is_ipv4(also_ip)
+
+    with raises(ValidationError):
+        is_ipv4(not_ip)
+
+    with raises(ValidationError):
+        is_ipv4(also_not_ip)
+
+
+def test_is_ipv6_validates_ipv6_addresses():
+    """Function is_ipv6() validates IPv6 addresses."""
+    ip = '2009:0db8:95a3:0000:0000:9a2e:0370:8334'
+    also_ip = '2009:db8:95a3:0:0:9a2e:370:8334'
+    not_ip = '8.8.8.8'
+    also_not_ip = '1234:5678:abcdef'
+
+    assert is_ipv6(ip)
+    assert is_ipv6(also_ip)
+
+    with raises(ValidationError):
+        is_ipv6(not_ip)
+
+    with raises(ValidationError):
+        is_ipv6(also_not_ip)
 
 
 def test_is_record_type_validates_types():

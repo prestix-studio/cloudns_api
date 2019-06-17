@@ -192,6 +192,41 @@ def is_int(value, fieldname='int', min_value=None, max_value=None, **kwargs):
     return True
 
 
+def is_ipv4(value, fieldname='ipv4', **kwargs):
+    """Validates and returns True if the value is an IPv4 address. Otherwise,
+    raises a validation error. Note that this is just a rudimentary check."""
+    octets = []
+
+    if hasattr(value, 'split'):
+        octets = [o for o in value.split('.') if o.isdigit() and
+                  0 <= int(o) and int(o) <= 255]
+
+    if len(octets) != 4:
+        raise ValidationError(fieldname,
+                              'This field must be a valid IPv4 address.')
+
+    return True
+
+
+def is_ipv6(value, fieldname='ipv6', **kwargs):
+    """Validates and returns True if the value is an IPv6 address. Otherwise,
+    raises a validation error. Note that this is just a rudimentary check."""
+    hextet = []
+
+    if hasattr(value, 'split'):
+        try:
+            hextet = [h for h in value.split(':')
+                      if 0 <= int(h, 16) and int(h, 16) <= 65535]
+        except ValueError:
+            hextet = []
+
+    if len(hextet) != 8:
+        raise ValidationError(fieldname,
+                              'This field must be a valid IPv6 address.')
+
+    return True
+
+
 def is_record_type(value, fieldname='record-type', **kwargs):
     """Validates and returns True if the value is a valid domain record type.
     Otherwise, raises a validation error."""
