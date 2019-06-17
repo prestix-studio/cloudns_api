@@ -345,6 +345,8 @@ validation_functions = {
     'frame-title':      is_valid,
     'geodns-location':  is_int,
     'integer':          is_int,
+    'ipv4':             is_ipv4,
+    'ipv6':             is_ipv6,
     'mail':             is_email,
     'page':             is_int,
     'port':             is_int,
