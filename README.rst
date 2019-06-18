@@ -581,6 +581,15 @@ Besides the SOA record, a domain can have a number of other records.
 
   * ttl - time to keep record in cache
 
+  * frame - redirect the url in a frame so it is "transparent" to the user. Use
+    '1' to enable and '0' to disable.
+
+  * frame-title - Title of the frame
+
+  * frame-keywords - Keywords used in the frame
+
+  * frame-description - Description used in the frame
+
 
 + ALIAS record - a special ClouDNS record type similar to CNAME records that
   allow you to take advantage of Round-robbin DNS.
