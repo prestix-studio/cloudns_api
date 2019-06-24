@@ -251,7 +251,7 @@ def is_record_type(value, fieldname='record-type', **kwargs):
 
 
 RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'SPF', 'NS', 'SRV', 'WR',
-                'RP', 'SSHFP', 'ALIAS', 'CAA', 'PTR']
+                'RP', 'SSHFP', 'ALIAS', 'CAA', 'NAPTR', 'PTR']
 
 
 def is_redirect_type(value, fieldname='redirect-type', **kwargs):
