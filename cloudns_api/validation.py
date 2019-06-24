@@ -363,5 +363,5 @@ validation_functions = {
     'txt':              is_domain_name,
     'valid':            is_valid,
     'weight':           is_int,
-    'zone_type':        is_zone_type,
+    'zone-type':        is_zone_type,
 }
