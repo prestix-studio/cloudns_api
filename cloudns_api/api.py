@@ -45,6 +45,12 @@ _first_cap_re = re_compile('(.)([A-Z][a-z]+)')
 _all_cap_re = re_compile('([a-z0-9])([A-Z])')
 
 
+def convert_to_snake_case(string):
+    string = _first_cap_re.sub(r'\1_\2', string)
+    string = _all_cap_re.sub(r'\1_\2', string).lower()
+    return string
+
+
 def use_snake_case_keys(original_dict):
     """Converts a dict's keys to snake case.
 
@@ -53,9 +59,7 @@ def use_snake_case_keys(original_dict):
     normalized_dict = {}
 
     for key, value in original_dict.items():
-        key = _first_cap_re.sub(r'\1_\2', key)
-        key = _all_cap_re.sub(r'\1_\2', key).lower()
-        normalized_dict[key] = value
+        normalized_dict[convert_to_snake_case(key)] = value
 
     return normalized_dict
 
@@ -117,11 +121,6 @@ class ApiResponse(object):
 
         if isinstance(payload, dict):
             return use_snake_case_keys(payload)
-        elif isinstance(payload, list):
-            payload_list = []
-            for item in payload:
-                payload_list.append(use_snake_case_keys(item))
-            return payload_list
         else:
             return payload
 
