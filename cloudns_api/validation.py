@@ -325,7 +325,7 @@ def is_zone_type(value, fieldname='zone-type', **kwargs):
     return True
 
 
-ZONE_TYPES = ['master', 'slave', 'parked', 'geodns']
+ZONE_TYPES = ['master', 'slave', 'parked', 'geodns', 'domain', 'reverse']
 
 
 # Set up validation functions dict
