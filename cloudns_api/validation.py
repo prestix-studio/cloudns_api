@@ -67,7 +67,6 @@ def validate(fieldname, value, optional=False, validate_as=None, *args,
         validate_as = fieldname
 
     if validate_as not in validation_functions:
-        print
         return True
 
     if validation_functions[validate_as](value, fieldname, *args, **kwargs):
