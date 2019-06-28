@@ -181,12 +181,13 @@ class RequestResponseStub(object):
 
 
 class ApiException(Exception):
-    def __init__(self, message):
+    def __init__(self, message, *args, **kwargs):
         """An exception type reported and caught by the API.
 
         :param message: string a message to report to the user.
         """
         self.message = message
+        super(ApiException, self).__init__(*args, **kwargs)
 
 
 def api(api_call):
