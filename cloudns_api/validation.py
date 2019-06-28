@@ -352,6 +352,7 @@ validation_functions = {
     'primary-ns':       is_domain_name,
     'priority':         is_int,
     'record':           is_required,
+    'record-id':        is_int,
     'record-type':      is_record_type,
     'redirect-type':    is_redirect_type,
     'refresh':          is_int,
