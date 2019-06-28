@@ -163,7 +163,7 @@ class RequestResponseStub(object):
             Defaults to 200.
         """
         self.url = url
-        self.json_data = json_data
+        self.json_data = self.payload = json_data
         self.params = params
         self.status_code = status_code
 
