@@ -15,10 +15,11 @@ from requests import exceptions as request_exceptions
 
 from cloudns_api.api import (
     ApiResponse,
+    ApiException,
+    RequestResponseStub,
     api,
     get_auth_params,
     patch_update,
-    RequestResponseStub,
     use_snake_case_keys,
 )
 from cloudns_api.validation import ValidationError
@@ -333,6 +334,33 @@ def test_api_decorator_responds_to_missing_required_args():
     response = test_api_call()
     assert not response.success
     assert response.error == 'Missing a required argument.'
+
+
+def test_api_decorator_responds_to_api_exceptions():
+    """API decorator responds appropriately to more generic API exceptions."""
+
+    @api
+    def test_api_call(*args, **kwargs):
+        raise ApiException('There was an error.')
+
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'There was an error.'
+
+
+def test_api_decorator_responds_to_derived_api_exceptions():
+    """API decorator responds appropriately to derived API exceptions."""
+
+    class ChildException(ApiException):
+        pass
+
+    @api
+    def test_api_call(*args, **kwargs):
+        raise ChildException('There was an error.')
+
+    response = test_api_call()
+    assert not response.success
+    assert response.error == 'There was an error.'
 
 
 def test_api_decorator_responds_to_validation_error():

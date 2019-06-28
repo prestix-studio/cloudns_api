@@ -180,6 +180,15 @@ class RequestResponseStub(object):
             }
 
 
+class ApiException(Exception):
+    def __init__(self, message):
+        """An exception type reported and caught by the API.
+
+        :param message: string a message to report to the user.
+        """
+        self.message = message
+
+
 def api(api_call):
     """Decorates an api call in order to consistently handle errors and
     maintain a consistent json format.
@@ -213,6 +222,10 @@ def api(api_call):
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
+
+        # Catch API reported exceptions
+        except ApiException as e:
+            response.error = e.message
 
         # Catch Validation errors
         except ValidationError as e:
