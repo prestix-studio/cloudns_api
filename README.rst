@@ -812,6 +812,32 @@ Getting a specific DNS Record
         }
 
 
+Getting the Dynamic URL for a DNS Record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.get_dynamic_url(
+            domain_name='example.com', record_id='12345')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'host':              'example.com',
+                'url':               'https://ipv4.cloudns.net/api/dynamicURL/?q=ABC123',
+            }
+        }
+
+        # This will set 'example.com' to the IP address of the machine that
+        # runs the code:
+    >>> requests.get('https://ipv4.cloudns.net/api/dynamicURL/?q=ABC123')
+
+        OK
+
+
 Updating a specific DNS Record
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
