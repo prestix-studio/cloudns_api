@@ -226,11 +226,11 @@ def test_request_response_has_status_code():
     assert RequestResponseStub().status_code == 200
 
 
-def test_request_response_has_json_data():
+def test_request_response_has_a_payload():
     """An RequestResponseStub object's has expected properties."""
     response = RequestResponseStub(json_data={'abc': 123, 'def': 456})
 
-    assert response.json_data == {'abc': 123, 'def': 456}
+    assert response.payload == {'abc': 123, 'def': 456}
     assert response.json() == {'abc': 123, 'def': 456}
 
 

@@ -93,10 +93,10 @@ class ApiResponse(object):
         self.response = response
 
         # Check for HTTP error codes
-        if self.status_code is not code.OK:
-            self.error = 'HTTP response ' + self.status_code
+        if not self.error and self.status_code is not code.OK:
+            self.error = 'HTTP response ' + str(self.status_code)
 
-        # Check for API error responses
+        # Check for error responses from ClouDNS
         elif isinstance(self.payload, dict) \
                 and 'status' in self.payload \
                 and self.payload['status'] == 'Failed':
@@ -158,23 +158,24 @@ class RequestResponseStub(object):
         API code as well as for testing for testing.
 
         :param url: string, the url that was called in the get or post request.
-            Used for testing.
+            (Used for testing.)
         :param params: dict, parameters to be passed to requests.
+            (Used for testing.)
         :param json_data: dict, json data to be returned in the json() method.
         :param status_code: integer, the status code to return in the test.
             Defaults to 200.
         """
         self.url = url
-        self.json_data = self.payload = json_data
+        self.payload = json_data
         self.params = params
         self.status_code = status_code
 
     def json(self):
-        """Mocks the json object method. If the response was initialized with
-        json_data, it will return that. Otherwise, it will return simply the
-        url and params that it was defined with."""
-        if self.json_data:
-            return self.json_data
+        """Mocks the json object method. If the response was initialized with a
+        payload, it will return that. Otherwise, it will return simply the url
+        and params that it was defined with."""
+        if self.payload:
+            return self.payload
         else:
             return {
                 'url':    self.url,
@@ -196,8 +197,9 @@ def api(api_call):
     """Decorates an api call in order to consistently handle errors and
     maintain a consistent json format.
 
-    The decorated function should return a requests.response, and this will
-    cause the function to end up returning an ApiResponse.
+    The decorated function should return a requests.response (or
+    RequestResponseStub), and this wrapper will cause the function to finally
+    return an ApiResponse.
 
     :param api_call: function, the function to be decorated
     """
@@ -246,7 +248,7 @@ def api(api_call):
                 import traceback
                 print('\n' + traceback.format_exc())
 
-        # Catch all other python errors
+        # Catch all other errors
         except Exception as e:
             response.error = 'Something went wrong.'
 
