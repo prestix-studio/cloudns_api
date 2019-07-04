@@ -373,7 +373,7 @@ def get(domain_name=None, record_id=None):
     """
     response = list(domain_name)
 
-    if not str(record_id) in response.payload:
+    if str(record_id) not in response.payload:
         raise RecordNotFound('Record "' + str(record_id) + '" not found in "' +
                              domain_name + '" zone.')
 
