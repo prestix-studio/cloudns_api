@@ -111,7 +111,14 @@ class ApiResponse(object):
     @property
     def status_code(self):
         """Wraps the request response's status code."""
+        if hasattr(self, '_status_code'):
+            return self._status_code
         return self.response.status_code if self.response else None
+
+    @status_code.setter
+    def status_code(self, status_code):
+        """Status code setter"""
+        self._status_code = status_code
 
     @property
     def payload(self):
@@ -184,6 +191,8 @@ class RequestResponseStub(object):
 
 
 class ApiException(Exception):
+    status_code = '400'
+
     def __init__(self, message, *args, **kwargs):
         """An exception type reported and caught by the API.
 
@@ -216,6 +225,7 @@ def api(api_call):
         # Catch Timeout errors
         except (ConnectTimeout, Timeout, ReadTimeout) as e:
             response.error = 'API Connection timed out.'
+            response.status_code = '504'
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
@@ -224,6 +234,7 @@ def api(api_call):
         except (ContentDecodingError, ConnectionError, HTTPError, SSLError,
                 TooManyRedirects) as e:
             response.error = 'API Network Connection error.'
+            response.status_code = '500'
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
@@ -231,15 +242,18 @@ def api(api_call):
         # Catch API reported exceptions
         except ApiException as e:
             response.error = e.message
+            response.status_code = e.status_code
 
         # Catch Validation errors
         except ValidationError as e:
             response.error = 'Validation error.'
             response.validation_errors = e.get_details()
+            response.status_code = '400'
 
         # Catch Other Python errors
         except TypeError as e:
             response.error = 'Missing a required argument.'
+            response.status_code = '400'
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
@@ -251,6 +265,7 @@ def api(api_call):
         # Catch all other errors
         except Exception as e:
             response.error = 'Something went wrong.'
+            response.status_code = '500'
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)

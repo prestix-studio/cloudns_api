@@ -267,6 +267,7 @@ def test_api_decorator_responds_to_network_errors():
     response = test_api_call()
     assert response.success is False
     assert response.error == 'API Network Connection error.'
+    assert response.status_code == '500'
 
 
 def test_api_decorator_responds_to_timeout_errors():
@@ -279,6 +280,7 @@ def test_api_decorator_responds_to_timeout_errors():
     response = test_api_call()
     assert not response.success
     assert response.error == 'API Connection timed out.'
+    assert response.status_code == '504'
 
 
 def test_api_decorator_responds_to_500_errors():
@@ -287,11 +289,11 @@ def test_api_decorator_responds_to_500_errors():
     @api
     def test_api_call(*args, **kwargs):
         return RequestResponseStub(json_data={'response': 'Testing...'},
-                                   status_code=500)
+                                   status_code='500')
 
     response = test_api_call()
     assert not response.success
-    assert response.status_code == 500
+    assert response.status_code == '500'
 
 
 @set_no_debug
@@ -306,6 +308,7 @@ def test_api_decorator_responds_to_bad_python_code():
     response = test_api_call()
     assert not response.success
     assert response.error == 'Something went wrong.'
+    assert response.status_code == '500'
 
 
 @set_debug
@@ -334,6 +337,7 @@ def test_api_decorator_responds_to_missing_required_args():
     response = test_api_call()
     assert not response.success
     assert response.error == 'Missing a required argument.'
+    assert response.status_code == '400'
 
 
 def test_api_decorator_responds_to_api_exceptions():
@@ -346,13 +350,14 @@ def test_api_decorator_responds_to_api_exceptions():
     response = test_api_call()
     assert not response.success
     assert response.error == 'There was an error.'
+    assert response.status_code == '400'
 
 
 def test_api_decorator_responds_to_derived_api_exceptions():
     """API decorator responds appropriately to derived API exceptions."""
 
     class ChildException(ApiException):
-        pass
+        status_code = '403'
 
     @api
     def test_api_call(*args, **kwargs):
@@ -361,6 +366,7 @@ def test_api_decorator_responds_to_derived_api_exceptions():
     response = test_api_call()
     assert not response.success
     assert response.error == 'There was an error.'
+    assert response.status_code == '403'
 
 
 def test_api_decorator_responds_to_validation_error():
