@@ -62,6 +62,10 @@ Running Tests
     $ cd <cloudns_api directory>
     $ py.test
 
+    $ py.test -x                    # Stop on failures
+    $ py.test tests/test_record.py  # Specific test
+    $ py.test -k validate           # Run tests with 'validate' in the name
+
 
 Importing and Basic Usage
 -------------------------
