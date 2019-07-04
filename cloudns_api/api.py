@@ -27,6 +27,7 @@ from requests.exceptions import (
     ReadTimeout,
 )
 
+import cloudns_api
 from .config import (
     CLOUDNS_API_AUTH_ID,
     CLOUDNS_API_AUTH_PASSWORD,
@@ -240,12 +241,20 @@ def api(api_call):
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
 
+            if hasattr(cloudns_api, '_testing') and cloudns_api._testing:
+                import traceback
+                print('\n' + traceback.format_exc())
+
         # Catch all other python errors
         except Exception as e:
             response.error = 'Something went wrong.'
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
+
+            if hasattr(cloudns_api, '_testing') and cloudns_api._testing:
+                import traceback
+                print('\n' + traceback.format_exc())
 
         # Whew! Made it past the errors, so return the response
         return response
