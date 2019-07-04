@@ -14,6 +14,7 @@ This package contains interface functions to make calls to the ClouDNS.net API.
 """
 
 from . import api
+from . import record
 from . import soa
 from . import zone
 
