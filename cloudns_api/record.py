@@ -416,7 +416,13 @@ def update(domain_name=None, record_id=None, record_type=None, patch=False,
     url = 'https://api.cloudns.net/dns/mod-record.json'
 
     if not record_type:
-        record_type = get(domain_name, record_id).payload['type']
+        response = get(domain_name, record_id)
+
+        if not response.success:
+            return RequestResponseStub(json_data=response.json(),
+                                       status_code=response.status_code)
+
+        record_type = response.payload['type']
 
     params = generate_record_parameters(domain_name=domain_name,
                                         record_type=record_type,
