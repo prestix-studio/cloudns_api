@@ -87,8 +87,8 @@ def test_soa_update_function_using_patch():
 def test_soa_update_function_using_patch_helper():
     """SOA update function sends properly formated update request when doing a
     patch update using the patch helper function."""
-    response = soa.update(domain_name='example.com',
-                          admin_mail='new_email@example.com', patch=True)
+    response = soa.patch(domain_name='example.com',
+                         admin_mail='new_email@example.com')
 
     assert response.success
 
