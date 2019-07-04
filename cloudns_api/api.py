@@ -15,7 +15,8 @@ This module contains basic API utilities and the api decorator function.
 
 from json import dumps as to_json_string
 from re import compile as re_compile
-from requests import codes as code, get
+import requests
+from requests import codes as code
 from requests.exceptions import (
     ContentDecodingError,
     ConnectionError,
@@ -324,19 +325,20 @@ def patch_update(get, keys):
 @api
 def get_login():
     """Returns the login status using available credentials."""
-    return get('https://api.cloudns.net/dns/login.json',
-               params=get_auth_params())
+    return requests.get('https://api.cloudns.net/dns/login.json',
+                        params=get_auth_params())
 
 
 @api
 def get_nameservers():
     """Returns the available nameservers."""
-    return get('https://api.cloudns.net/dns/available-name-servers.json',
-               params=get_auth_params())
+    return requests.get(
+        'https://api.cloudns.net/dns/available-name-servers.json',
+        params=get_auth_params())
 
 
 @api
 def get_my_ip():
     """Returns the caller's ip address."""
-    return get('https://api.cloudns.net/dns/get-my-ip.json',
-               params=get_auth_params())
+    return requests.get('https://api.cloudns.net/dns/get-my-ip.json',
+                        params=get_auth_params())

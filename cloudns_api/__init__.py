@@ -13,6 +13,8 @@ cloudns_api
 This package contains interface functions to make calls to the ClouDNS.net API.
 """
 
+import requests  # noqa: F401
+
 from . import api     # noqa: F401
 from . import record  # noqa: F401
 from . import soa     # noqa: F401

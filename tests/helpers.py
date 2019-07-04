@@ -60,7 +60,7 @@ def mock_get_request(json_data=None):
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
         decorator is where the function is passed."""
-        @patch('cloudns_api.soa.requests.get', new=get_mock)
+        @patch('cloudns_api.requests.get', new=get_mock)
         def test_wrapper(*args, **kwargs):
             test_fn(*args, **kwargs)
         return test_wrapper
@@ -80,7 +80,7 @@ def mock_post_request(json_data=None):
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
         decorator is where the function is passed."""
-        @patch('cloudns_api.soa.requests.post', new=post_mock)
+        @patch('cloudns_api.requests.post', new=post_mock)
         def test_wrapper(*args, **kwargs):
             test_fn(*args, **kwargs)
         return test_wrapper
