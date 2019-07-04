@@ -378,7 +378,7 @@ def get(domain_name=None, record_id=None):
         raise RecordNotFound('Record "' + str(record_id) + '" not found in "' +
                              domain_name + '" zone.')
 
-    return RequestResponseStub(json_data=response.payload[str(record_id)],
+    return RequestResponseStub(payload=response.payload[str(record_id)],
                                status_code=response.status_code)
 
 
@@ -420,7 +420,7 @@ def update(domain_name=None, record_id=None, record_type=None, patch=False,
         response = get(domain_name, record_id)
 
         if not response.success:
-            return RequestResponseStub(json_data=response.json(),
+            return RequestResponseStub(payload=response.json(),
                                        status_code=response.status_code)
 
         record_type = response.payload['type']

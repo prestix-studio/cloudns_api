@@ -50,7 +50,7 @@ def test_soa_update_function():
     assert payload['params']['default-ttl'] == 60
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     'serialNumber':  '2019051202',
     'primaryNS':     'ns1.prestix.host',
     'adminMail':     'support@prestix.host',
@@ -74,7 +74,7 @@ def test_soa_update_function_using_patch():
     assert payload['params']['admin-mail'] == 'new_email@example.com'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     'serialNumber':  '2019051202',
     'primaryNS':     'ns1.prestix.host',
     'adminMail':     'support@prestix.host',

@@ -161,7 +161,7 @@ class ApiResponse(object):
 
 
 class RequestResponseStub(object):
-    def __init__(self, url='', params=None, json_data=None, status_code=200):
+    def __init__(self, url='', params=None, payload=None, status_code=200):
         """Requests response stub used for stubbing request responses in the
         API code as well as for testing for testing.
 
@@ -169,12 +169,12 @@ class RequestResponseStub(object):
             (Used for testing.)
         :param params: dict, parameters to be passed to requests.
             (Used for testing.)
-        :param json_data: dict, json data to be returned in the json() method.
+        :param payload: dict, json data to be returned in the json() method.
         :param status_code: integer, the status code to return in the test.
             Defaults to 200.
         """
         self.url = url
-        self.payload = json_data
+        self.payload = payload
         self.params = params
         self.status_code = status_code
 

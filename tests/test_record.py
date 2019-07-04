@@ -372,7 +372,7 @@ def test_record_transfer_function():
     assert payload['params']['server'] == '1.1.1.1'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     1234: {
         'type':        'A',
         'domain-name': 'example.com',
@@ -398,7 +398,7 @@ def test_record_get_function():
     assert payload['record'] == '10.0.0.10'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     1234: {
         'type':        'A',
         'domain-name': 'example.com',
@@ -448,7 +448,7 @@ def test_record_update_function():
     assert payload['params']['record'] == '10.0.0.10'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     1234: {
         'type':        'A',
         'domain-name': 'example.com',
@@ -476,7 +476,7 @@ def test_record_update_function_can_figure_out_record_type():
     assert payload['params']['record'] == '10.0.0.10'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     1234: {
         'type':        'A',
         'domain-name': 'example.com',
@@ -498,7 +498,7 @@ def test_record_update_function_with_bad_record_id():
     assert str(response.status_code) == '404'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     1234: {
         'type':        'A',
         'domain-name': 'example.com',
@@ -526,7 +526,7 @@ def test_record_update_function_using_patch():
     assert payload['params']['record'] == '10.10.10.10'
 
 
-@mock_get_request(json_data={
+@mock_get_request(payload={
     1234: {
         'type':        'A',
         'domain-name': 'example.com',

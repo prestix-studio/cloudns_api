@@ -47,15 +47,15 @@ def set_no_debug(test_fn):
 ##
 # Request Mock functions
 
-def mock_get_request(json_data=None):
-    """A closure decorator to pass json_data for the get_mock function.
+def mock_get_request(payload=None):
+    """A closure decorator to pass payload for the get_mock function.
 
     Note: You must use parens even when you pass no arguments.
         @mock_get_request()
     """
     def get_mock(url, params=None):
         """A mock get request to return the request-prepared url."""
-        return RequestResponseStub(url, params=params, json_data=json_data)
+        return RequestResponseStub(url, params=params, payload=payload)
 
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
@@ -67,15 +67,15 @@ def mock_get_request(json_data=None):
     return decorator
 
 
-def mock_post_request(json_data=None):
-    """A closure decorator to pass json_data for the post_mock function.
+def mock_post_request(payload=None):
+    """A closure decorator to pass payload for the post_mock function.
 
     Note: You must use parens even when you pass no arguments.
         @mock_post_request()
     """
-    def post_mock(url, params=None, json_data=None):
+    def post_mock(url, params=None, payload=None):
         """A mock post request to return the request-prepared url."""
-        return RequestResponseStub(url, params=params, json_data=json_data)
+        return RequestResponseStub(url, params=params, payload=payload)
 
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner

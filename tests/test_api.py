@@ -84,7 +84,7 @@ def test_snake_case_converts_keys_to_snake_case():
 def test_api_response_can_be_initialized_with_request_response():
     """An ApiResponse object can be initialized with a request response object.
     """
-    request_response = RequestResponseStub(json_data={'test': 123},
+    request_response = RequestResponseStub(payload={'test': 123},
                                            status_code=200)
     response = ApiResponse(request_response)
 
@@ -103,9 +103,9 @@ def test_api_response_can_be_initialized_with_request_response():
 def test_api_response_works_with_request_response_list():
     """An ApiResponse object works with a request response object that is a
     list."""
-    request_response = RequestResponseStub(json_data=[{'test1': 123},
-                                                      {'test2': 456},
-                                                      {'test3': 789}],
+    request_response = RequestResponseStub(payload=[{'test1': 123},
+                                                    {'test2': 456},
+                                                    {'test3': 789}],
                                            status_code=200)
     response = ApiResponse(request_response)
 
@@ -117,7 +117,7 @@ def test_api_response_works_with_request_response_list():
 def test_api_response_works_with_request_response_int():
     """An ApiResponse object works with a request response object that is
     simply an integer."""
-    request_response = RequestResponseStub(json_data=5, status_code=200)
+    request_response = RequestResponseStub(payload=5, status_code=200)
     response = ApiResponse(request_response)
 
     assert response.payload == 5
@@ -172,7 +172,7 @@ def test_api_response_can_have_error_set_on_response_wout_request_response():
 def test_api_response_can_be_created_with_request_response_after_init():
     """ApiResponse can be created with request response after it is
     initialized."""
-    request_response = RequestResponseStub(json_data={'test': 123},
+    request_response = RequestResponseStub(payload={'test': 123},
                                            status_code=200)
     response = ApiResponse()
     response.create(request_response)
@@ -191,7 +191,7 @@ def test_api_response_can_be_created_with_request_response_after_init():
 
 def test_api_response_can_be_converted_to_string():
     """ApiResponse can be converted to a string."""
-    request_response = RequestResponseStub(json_data={'test': 123},
+    request_response = RequestResponseStub(payload={'test': 123},
                                            status_code=200)
     response = ApiResponse(request_response)
 
@@ -210,7 +210,7 @@ def test_api_response_payload_is_normalized_to_snake_case():
         'testTestTest':  123,
         'testTTL':       123,
     }
-    request_response = RequestResponseStub(json_data=pre_normalized_data)
+    request_response = RequestResponseStub(payload=pre_normalized_data)
     response = ApiResponse(request_response)
 
     assert response.payload == {
@@ -232,7 +232,7 @@ def test_request_response_has_status_code():
 
 def test_request_response_has_a_payload():
     """An RequestResponseStub object's has expected properties."""
-    response = RequestResponseStub(json_data={'abc': 123, 'def': 456})
+    response = RequestResponseStub(payload={'abc': 123, 'def': 456})
 
     assert response.payload == {'abc': 123, 'def': 456}
     assert response.json() == {'abc': 123, 'def': 456}
@@ -255,7 +255,7 @@ def test_api_decorator_responds_to_success():
 
     @api
     def test_api_call(*args, **kwargs):
-        return RequestResponseStub(json_data={'response': 'Testing...'})
+        return RequestResponseStub(payload={'response': 'Testing...'})
 
     response = test_api_call()
     assert response.success
@@ -292,7 +292,7 @@ def test_api_decorator_responds_to_500_errors():
 
     @api
     def test_api_call(*args, **kwargs):
-        return RequestResponseStub(json_data={'response': 'Testing...'},
+        return RequestResponseStub(payload={'response': 'Testing...'},
                                    status_code='500')
 
     response = test_api_call()
@@ -394,7 +394,7 @@ def test_api_decorator_responds_to_authentication_error():
 
     @api
     def test_api_call(*args, **kwargs):
-        return RequestResponseStub(json_data={
+        return RequestResponseStub(payload={
                                    'status': 'Failed',
                                    'statusDescription':
                                    'Invalid authentication, incorrect ' +
@@ -414,13 +414,13 @@ def test_api_patch_update_decorator_gets_then_updates():
     def test_api_get(*args, **kwargs):
         assert len(kwargs) == 1
         assert kwargs['domain_name'] == 'my_example.com'
-        return RequestResponseStub(json_data={'key_1': 'AAA', 'key_2': 'BBB',
-                                              'key_3': 'CCC', 'key_4': 'DDD'})
+        return RequestResponseStub(payload={'key_1': 'AAA', 'key_2': 'BBB',
+                                            'key_3': 'CCC', 'key_4': 'DDD'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name'])
     def update(*args, **kwargs):
-        return RequestResponseStub(json_data=kwargs)
+        return RequestResponseStub(payload=kwargs)
 
     response = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
                       patch=True)
@@ -440,13 +440,13 @@ def test_api_patch_update_decorator_works_with_2_get_keys():
         assert len(kwargs) == 2
         assert kwargs['domain_name'] == 'my_example.com'
         assert kwargs['id'] == 123
-        return RequestResponseStub(json_data={'key_1': 'AAA', 'key_2': 'BBB',
-                                              'key_3': 'CCC', 'key_4': 'DDD'})
+        return RequestResponseStub(payload={'key_1': 'AAA', 'key_2': 'BBB',
+                                            'key_3': 'CCC', 'key_4': 'DDD'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name', 'id'])
     def update(*args, **kwargs):
-        return RequestResponseStub(json_data=kwargs)
+        return RequestResponseStub(payload=kwargs)
 
     response = update(domain_name='my_example.com', id=123, key_3='ZZZ',
                       key_4='YYY', patch=True)
@@ -463,14 +463,14 @@ def test_api_patch_update_fails_when_get_first_fails():
 
     @api
     def test_api_get(*args, **kwargs):
-        return RequestResponseStub(json_data={'status': 'Failed',
-                                              'statusDescription':
-                                              'Missing domain-name'})
+        return RequestResponseStub(payload={'status': 'Failed',
+                                            'statusDescription':
+                                            'Missing domain-name'})
 
     @api
     @patch_update(get=test_api_get, keys=['domain_name'])
     def update(*args, **kwargs):
-        return RequestResponseStub(json_data=kwargs)
+        return RequestResponseStub(payload=kwargs)
 
     response = update(domain_name='my_example.com', key_3='ZZZ', key_4='YYY',
                       patch=True)
