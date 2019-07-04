@@ -360,6 +360,18 @@ def test_record_create_function_catches_validation_errors():
     assert response.json()['error'] == 'Validation error.'
 
 
+@mock_post_request()
+def test_record_transfer_function():
+    """Record transfer function sends properly formated get request."""
+    response = record.transfer('example.com', server='1.1.1.1')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/axfr-import.json'
+    assert payload['params']['domain-name'] == 'example.com'
+    assert payload['params']['server'] == '1.1.1.1'
+
+
 @mock_get_request(json_data={
     1234: {
         'type':        'A',

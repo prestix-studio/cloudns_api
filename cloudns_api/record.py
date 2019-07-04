@@ -346,6 +346,22 @@ def create(domain_name=None, record_type=None, **kwargs):
 
 
 @api
+def transfer(domain_name, server):
+    """Transfers all the domain records from one DNS server to ClouDNS's
+    server. The domain name must be the same on both servers.
+
+    :param domain_name: string, the domain name to transfer
+    :param server: string, the server to transfer the records from (can be a
+        domain name or ip address)
+    """
+    url = 'https://api.cloudns.net/dns/axfr-import.json'
+
+    params = Parameters({'domain-name': domain_name, 'server': server})
+
+    return requests.post(url, params=params.to_dict())
+
+
+@api
 def get(domain_name, record_id):
     """Returns a specific record_id for a domain.
 
