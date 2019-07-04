@@ -418,6 +418,18 @@ def test_record_get_function_with_bad_record_id():
         'Record "5678" not found in "example.com" zone.'
 
 
+@mock_get_request()
+def test_record_get_dynamic_url_function():
+    """Record get_dynamic_url function sends properly formated get request."""
+    response = record.get_dynamic_url('example.com', record_id=1234)
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/get-dynamic-url.json'
+    assert payload['params']['domain-name'] == 'example.com'
+    assert payload['params']['record-id'] == 1234
+
+
 @mock_post_request()
 def test_record_update_function():
     """Record update function sends properly formated update request."""

@@ -382,6 +382,22 @@ def get(domain_name=None, record_id=None):
 
 
 @api
+def get_dynamic_url(domain_name=None, record_id=None):
+    """Returns a url that is used to dynamically update an A or AAAA record to
+    the IP address of the device that calls the URL.
+
+    :param domain_name: string, the domain name
+    :param record_id: int, the ClouDNS record id to return. Must be an A or
+        AAAA record type.
+    """
+    url = 'https://api.cloudns.net/dns/get-dynamic-url.json'
+
+    params = Parameters({'domain-name': domain_name, 'record-id': record_id})
+
+    return requests.get(url, params=params.to_dict())
+
+
+@api
 @patch_update(get=get, keys=['domain_name', 'record_id'])
 def update(domain_name=None, record_id=None, record_type=None, patch=False,
            **kwargs):
