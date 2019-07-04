@@ -251,18 +251,6 @@ def api(api_call):
             response.validation_errors = e.get_details()
             response.status_code = code.BAD_REQUEST
 
-        # Catch Other Python errors
-        except TypeError as e:
-            response.error = 'Missing a required argument.'
-            response.status_code = code.BAD_REQUEST
-
-            if CLOUDNS_API_DEBUG:  # pragma: no cover
-                response.error = str(e)
-
-            if hasattr(cloudns_api, '_testing') and cloudns_api._testing:
-                import traceback
-                print('\n' + traceback.format_exc())
-
         # Catch all other errors
         except Exception as e:
             response.error = 'Something went wrong.'

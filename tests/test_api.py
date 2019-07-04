@@ -340,8 +340,8 @@ def test_api_decorator_responds_to_missing_required_args():
 
     response = test_api_call()
     assert not response.success
-    assert response.error == 'Missing a required argument.'
-    assert str(response.status_code) == '400'
+    assert response.error == 'Something went wrong.'
+    assert str(response.status_code) == '500'
 
 
 def test_api_decorator_responds_to_api_exceptions():
