@@ -28,7 +28,7 @@ CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
 if not CLOUDNS_API_AUTH_ID:
     if CLOUDNS_API_TESTING:
         CLOUDNS_API_AUTH_ID = 'test_id'
-    else:
+    else:  # pragma: no cover
         raise EnvironmentError(
             'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
         )
@@ -37,7 +37,7 @@ CLOUDNS_API_AUTH_PASSWORD = environ.get('CLOUDNS_API_AUTH_PASSWORD')
 if not CLOUDNS_API_AUTH_PASSWORD:
     if CLOUDNS_API_TESTING:
         CLOUDNS_API_AUTH_PASSWORD = 'test_password'
-    else:
+    else:  # pragma: no cover
         raise EnvironmentError(
             'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
         )

@@ -227,7 +227,7 @@ def api(api_call):
             response.error = 'API Connection timed out.'
             response.status_code = code.GATEWAY_TIMEOUT
 
-            if CLOUDNS_API_DEBUG:
+            if CLOUDNS_API_DEBUG:  # pragma: no cover
                 response.error = str(e)
 
         # Catch Connection errors
@@ -236,7 +236,7 @@ def api(api_call):
             response.error = 'API Network Connection error.'
             response.status_code = code.SERVER_ERROR
 
-            if CLOUDNS_API_DEBUG:
+            if CLOUDNS_API_DEBUG:  # pragma: no cover
                 response.error = str(e)
 
         # Catch API reported exceptions
@@ -255,7 +255,7 @@ def api(api_call):
             response.error = 'Missing a required argument.'
             response.status_code = code.BAD_REQUEST
 
-            if CLOUDNS_API_DEBUG:
+            if CLOUDNS_API_DEBUG:  # pragma: no cover
                 response.error = str(e)
 
             if hasattr(cloudns_api, '_testing') and cloudns_api._testing:

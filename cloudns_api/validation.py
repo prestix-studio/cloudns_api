@@ -74,7 +74,7 @@ def validate(fieldname, value, optional=False, validate_as=None, *args,
 
     # If for some reason the validation fails, but no error was raised,
     # raise one here. This should hopefully never happen
-    raise ValidationError('Unexpected validation error.')
+    raise ValidationError('Unexpected validation error.')  # pragma: no cover
 
 
 ##
