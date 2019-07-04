@@ -19,12 +19,16 @@ from cloudns_api.api import (
     RequestResponseStub,
     api,
     get_auth_params,
+    get_login,
+    get_my_ip,
+    get_nameservers,
     patch_update,
     use_snake_case_keys,
 )
 from cloudns_api.validation import ValidationError
 
 from .helpers import (
+    mock_get_request,
     set_debug,
     set_no_debug,
     use_test_auth,
@@ -473,3 +477,23 @@ def test_api_patch_update_fails_when_get_first_fails():
 
     assert not response.success
     assert response.error == 'Missing domain-name'
+
+
+@use_test_auth
+@mock_get_request()
+def test_simple_api_functions(test_id, test_password):
+    """Tests that get_login, get_nameservers, and get_my_ip send properly
+    formated requests."""
+    expected_payload = {
+        'auth-id': test_id,
+        'auth-password': test_password,
+    }
+
+    response = get_login()
+    assert response.payload['params'] == expected_payload
+
+    response = get_nameservers()
+    assert response.payload['params'] == expected_payload
+
+    response = get_my_ip()
+    assert response.payload['params'] == expected_payload
