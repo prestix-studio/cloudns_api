@@ -687,5 +687,198 @@ ClouDNS uses round-robbin DNS when multiple A, AAAA, or Alias records are
 provided with different values.
 
 
+Getting available record types for a zone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record \
+            .get_available_record_types(zone_type='domain')
+
+    >>> print(response.json())
+
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      [
+                "A", "AAAA", "MX", "CNAME", "TXT", "SPF", "NS", "SRV", "WR",
+                "ALIAS", "RP", "SSHFP", "NAPTR", "CAA"
+            ]
+        }
+
+
+Getting available TTLs for Records
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.get_available_ttls()
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      [
+                60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200,
+                604800, 1209600, 2592000
+            ]
+        }
+
+
+Listing DNS Records
+^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.list(domain_name='example.com',
+                                           host='ns1')  # Host is optional
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                '1234567': {
+                    'id':                '1234567',
+                    'type':              'A',
+                    'host':              'ns1',
+                    'record':            '10.0.0.1',
+                    'dynamicurl_status': 0,
+                    'failover':          '0',
+                    'ttl':               '86400',
+                    'status':            1
+                },
+                '2345678': {
+                    'id':                '2345678',
+                    'type':              'A',
+                    'host':              'ns1',
+                    'record':            '10.0.0.2',
+                    'dynamicurl_status': 0,
+                    'failover':          '0',
+                    'ttl':               '86400',
+                    'status':            1
+                }
+            }
+        }
+
+
+Creating DNS Records
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.create(domain_name='example.com',
+                                             host='', record_type='A',
+                                             record='10.10.10.10', ttl=3600)
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description': 'The record was added successfully.',
+                'data': {'id': 123456789}
+            }
+        }
+
+
+Getting a specific DNS Record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.get(domain_name='example.com',
+                                          record_id=1234567)
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'id':                '1234567',
+                'type':              'A',
+                'host':              'ns1',
+                'record':            '10.0.0.1',
+                'dynamicurl_status': 0,
+                'failover':          '0',
+                'ttl':               '86400',
+                'status':            1
+            }
+        }
+
+
+Updating a specific DNS Record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.get(domain_name='example.com',
+                                          record_id=1234567)
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload': {
+                'id':                '1234567',
+                'type':              'A',
+                'host':              '',
+                'record':            '10.0.0.1',
+                'dynamicurl_status': 0,
+                'failover':          '0',
+                'ttl':               '86400',
+                'status':            1
+            }
+        }
+
+
+Activating/Deactivating a DNS Record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.activate(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'Record activated'
+            }
+        }
+
+    >>> cloudns_api.record.deactivate(domain_name='example.com')
+
+    >>> cloudns_api.record.toggle_activation(domain_name='example.com')
+
+
+Deleting a specific DNS Record
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.delete(domain_name='example.com',
+                                             record_id='123456789')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description': 'The record was deleted successfully.',
+            }
+        }
 
 Soli Deo gloria.
