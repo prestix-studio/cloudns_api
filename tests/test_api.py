@@ -87,7 +87,7 @@ def test_api_response_can_be_initialized_with_request_response():
     assert not response.error
     assert response.response == request_response
     assert response.success
-    assert response.status_code == 200
+    assert str(response.status_code) == '200'
     assert response.payload == {'test': 123}
     assert response.json() == {
             'status_code':   200,
@@ -176,7 +176,7 @@ def test_api_response_can_be_created_with_request_response_after_init():
     assert not response.error
     assert response.response == request_response
     assert response.success
-    assert response.status_code == 200
+    assert str(response.status_code) == '200'
     assert response.payload == {'test': 123}
     assert response.json() == {
             'status_code':  200,
@@ -221,9 +221,9 @@ def test_request_response_has_status_code():
     """An RequestResponseStub object's has expected properties."""
     response = RequestResponseStub(status_code=301)
 
-    assert response.status_code == 301
+    assert str(response.status_code) == '301'
 
-    assert RequestResponseStub().status_code == 200
+    assert str(RequestResponseStub().status_code) == '200'
 
 
 def test_request_response_has_a_payload():
@@ -267,7 +267,7 @@ def test_api_decorator_responds_to_network_errors():
     response = test_api_call()
     assert response.success is False
     assert response.error == 'API Network Connection error.'
-    assert response.status_code == '500'
+    assert str(response.status_code) == '500'
 
 
 def test_api_decorator_responds_to_timeout_errors():
@@ -280,7 +280,7 @@ def test_api_decorator_responds_to_timeout_errors():
     response = test_api_call()
     assert not response.success
     assert response.error == 'API Connection timed out.'
-    assert response.status_code == '504'
+    assert str(response.status_code) == '504'
 
 
 def test_api_decorator_responds_to_500_errors():
@@ -293,7 +293,7 @@ def test_api_decorator_responds_to_500_errors():
 
     response = test_api_call()
     assert not response.success
-    assert response.status_code == '500'
+    assert str(response.status_code) == '500'
 
 
 @set_no_debug
@@ -308,7 +308,7 @@ def test_api_decorator_responds_to_bad_python_code():
     response = test_api_call()
     assert not response.success
     assert response.error == 'Something went wrong.'
-    assert response.status_code == '500'
+    assert str(response.status_code) == '500'
 
 
 @set_debug
@@ -337,7 +337,7 @@ def test_api_decorator_responds_to_missing_required_args():
     response = test_api_call()
     assert not response.success
     assert response.error == 'Missing a required argument.'
-    assert response.status_code == '400'
+    assert str(response.status_code) == '400'
 
 
 def test_api_decorator_responds_to_api_exceptions():
@@ -350,7 +350,7 @@ def test_api_decorator_responds_to_api_exceptions():
     response = test_api_call()
     assert not response.success
     assert response.error == 'There was an error.'
-    assert response.status_code == '400'
+    assert str(response.status_code) == '400'
 
 
 def test_api_decorator_responds_to_derived_api_exceptions():
@@ -366,7 +366,7 @@ def test_api_decorator_responds_to_derived_api_exceptions():
     response = test_api_call()
     assert not response.success
     assert response.error == 'There was an error.'
-    assert response.status_code == '403'
+    assert str(response.status_code) == '403'
 
 
 def test_api_decorator_responds_to_validation_error():

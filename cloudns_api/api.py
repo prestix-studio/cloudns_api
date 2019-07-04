@@ -191,7 +191,7 @@ class RequestResponseStub(object):
 
 
 class ApiException(Exception):
-    status_code = '400'
+    status_code = code.BAD_REQUEST
 
     def __init__(self, message, *args, **kwargs):
         """An exception type reported and caught by the API.
@@ -225,7 +225,7 @@ def api(api_call):
         # Catch Timeout errors
         except (ConnectTimeout, Timeout, ReadTimeout) as e:
             response.error = 'API Connection timed out.'
-            response.status_code = '504'
+            response.status_code = code.GATEWAY_TIMEOUT
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
@@ -234,7 +234,7 @@ def api(api_call):
         except (ContentDecodingError, ConnectionError, HTTPError, SSLError,
                 TooManyRedirects) as e:
             response.error = 'API Network Connection error.'
-            response.status_code = '500'
+            response.status_code = code.SERVER_ERROR
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
@@ -248,12 +248,12 @@ def api(api_call):
         except ValidationError as e:
             response.error = 'Validation error.'
             response.validation_errors = e.get_details()
-            response.status_code = '400'
+            response.status_code = code.BAD_REQUEST
 
         # Catch Other Python errors
         except TypeError as e:
             response.error = 'Missing a required argument.'
-            response.status_code = '400'
+            response.status_code = code.BAD_REQUEST
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
@@ -265,7 +265,7 @@ def api(api_call):
         # Catch all other errors
         except Exception as e:
             response.error = 'Something went wrong.'
-            response.status_code = '500'
+            response.status_code = code.SERVER_ERROR
 
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)

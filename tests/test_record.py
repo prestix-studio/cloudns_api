@@ -416,6 +416,7 @@ def test_record_get_function_with_bad_record_id():
     assert not response.success
     assert response.error == \
         'Record "5678" not found in "example.com" zone.'
+    assert str(response.status_code) == '404'
 
 
 @mock_get_request()
@@ -494,6 +495,7 @@ def test_record_update_function_with_bad_record_id():
     assert not response.success
     assert response.error == \
         'Record "5678" not found in "example.com" zone.'
+    assert str(response.status_code) == '404'
 
 
 @mock_get_request(json_data={

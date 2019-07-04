@@ -34,7 +34,7 @@ from .validation import is_record_type, ValidationError
 
 class RecordNotFound(ApiException):
     """Record not found API exception."""
-    status_code = '404'
+    status_code = requests.codes.NOT_FOUND
 
 
 @api
