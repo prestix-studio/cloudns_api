@@ -59,7 +59,7 @@ def get_available_ttls():
 
 
 @api
-def list(domain_name, host=None, record_type=''):
+def list(domain_name=None, host=None, record_type=''):
     """Lists DNS records for a particular domain.
 
     :param domain_name: string, the domain name for which to retrieve the
@@ -346,7 +346,7 @@ def create(domain_name=None, record_type=None, **kwargs):
 
 
 @api
-def transfer(domain_name, server):
+def transfer(domain_name=None, server=None):
     """Transfers all the domain records from one DNS server to ClouDNS's
     server. The domain name must be the same on both servers.
 
@@ -362,7 +362,7 @@ def transfer(domain_name, server):
 
 
 @api
-def get(domain_name, record_id):
+def get(domain_name=None, record_id=None):
     """Returns a specific record_id for a domain.
 
     This is a wrapper around the list function extracting just the specified
@@ -419,7 +419,7 @@ def patch(*args, **kwargs):
 
 
 @api
-def activate(domain_name, record_id):
+def activate(domain_name=None, record_id=None):
     """Makes a particular record on a domain name active
 
     :param domain_name: string, the domain name on which to work
@@ -434,7 +434,7 @@ def activate(domain_name, record_id):
 
 
 @api
-def deactivate(domain_name, record_id):
+def deactivate(domain_name=None, record_id=None):
     """Makes a particular record on a domain name inactive
 
     :param domain_name: string, the domain name on which to work
@@ -449,7 +449,7 @@ def deactivate(domain_name, record_id):
 
 
 @api
-def toggle_activation(domain_name, record_id):
+def toggle_activation(domain_name=None, record_id=None):
     """Toggles active/inactive status on a particular record of a domain name.
 
     :param domain_name: string, the domain name on which to work
@@ -463,7 +463,7 @@ def toggle_activation(domain_name, record_id):
 
 
 @api
-def delete(domain_name, record_id):
+def delete(domain_name=None, record_id=None):
     """Deletes a DNS record
 
     :param domain_name: string, the domain name on which to work

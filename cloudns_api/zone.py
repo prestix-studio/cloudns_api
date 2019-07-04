@@ -75,7 +75,7 @@ def get_page_count(rows_per_page=10, search='', group_id=''):
 
 
 @api
-def create(domain_name, zone_type='master', ns=[], master_ip=None):
+def create(domain_name=None, zone_type='master', ns=[], master_ip=None):
     """Creates a new DNS zone.
 
     :param domain_name: string, (required) the domain name for which to
@@ -111,7 +111,7 @@ def create(domain_name, zone_type='master', ns=[], master_ip=None):
 
 
 @api
-def get(domain_name):
+def get(domain_name=None):
     """Retreives the DNS zone information for a particular domain.
 
     :param domain_name: string, (required) the domain name for which to
@@ -125,7 +125,7 @@ def get(domain_name):
 
 
 @api
-def update(domain_name):
+def update(domain_name=None):
     """Updates the DNS zone serial number.
 
     :param domain_name: string, (required) the domain name for which to
@@ -139,7 +139,7 @@ def update(domain_name):
 
 
 @api
-def activate(domain_name):
+def activate(domain_name=None):
     """Activates the domain's zone.
 
     :param domain_name: string, (required) the domain name to activate
@@ -152,7 +152,7 @@ def activate(domain_name):
 
 
 @api
-def deactivate(domain_name):
+def deactivate(domain_name=None):
     """Deactivates the domain's zone.
 
     :param domain_name: string, (required) the domain name to deactivate
@@ -165,7 +165,7 @@ def deactivate(domain_name):
 
 
 @api
-def toggle_activation(domain_name):
+def toggle_activation(domain_name=None):
     """Toggles the domain's zone activation.
 
     :param domain_name: string, (required) the domain name to toggle
@@ -178,7 +178,7 @@ def toggle_activation(domain_name):
 
 
 @api
-def delete(domain_name):
+def delete(domain_name=None):
     """Deletes a domain's zone
 
     :param domain_name: string, (required) the domain name for the zone to
