@@ -318,6 +318,9 @@ def get_nameservers():
 
 @api
 def get_my_ip():
-    """Returns the caller's ip address."""
+    """Returns the caller's ip address.
+
+    NOTE: This doesn't seem to be working on ClouDNS's servers.
+    """
     return requests.get('https://api.cloudns.net/dns/get-my-ip.json',
                         params=get_auth_params())

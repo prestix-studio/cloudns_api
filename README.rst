@@ -254,6 +254,9 @@ Listing DNS Zones
 Creating DNS Zones
 ^^^^^^^^^^^^^^^^^^
 
+NOTE: The nameserver argument doesn't seem to currently work on ClouDNS's
+servers.
+
 .. code:: python
 
     >>> response = cloudns_api.zone.create(domain_name='example.com',
@@ -788,6 +791,9 @@ Creating DNS Records
 
 Transferring DNS Records
 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+NOTE: This currently doesn't work as expected. For every domain, I seem to be
+getting 'The zone transfers are not allowed from this server!'
 
 .. code:: python
 
