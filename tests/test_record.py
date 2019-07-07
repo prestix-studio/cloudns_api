@@ -420,6 +420,17 @@ def test_record_get_function_with_bad_record_id():
 
 
 @mock_get_request()
+def test_record_export_function():
+    """Record export function sends properly formated get request."""
+    response = record.export('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/records-export.json'
+    assert payload['params']['domain-name'] == 'example.com'
+
+
+@mock_get_request()
 def test_record_get_dynamic_url_function():
     """Record get_dynamic_url function sends properly formated get request."""
     response = record.get_dynamic_url('example.com', record_id=1234)

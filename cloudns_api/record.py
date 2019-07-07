@@ -383,6 +383,19 @@ def get(domain_name=None, record_id=None):
 
 
 @api
+def export(domain_name=None):
+    """Exports all of the records for a domain_name in BIND format.
+
+    :param domain_name: string, the domain name to export
+    """
+    url = 'https://api.cloudns.net/dns/records-export.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.get(url, params=params.to_dict())
+
+
+@api
 def get_dynamic_url(domain_name=None, record_id=None):
     """Returns a url that is used to dynamically update an A or AAAA record to
     the IP address of the device that calls the URL.
