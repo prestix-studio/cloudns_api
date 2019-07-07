@@ -93,6 +93,11 @@ class ApiResponse(object):
         """
         self.response = response
 
+        try:
+            self.error = self.payload['error']
+        except (TypeError, KeyError):
+            pass
+
         # Check for HTTP error codes
         if not self.error and self.status_code is not code.OK:
             self.error = 'HTTP response ' + str(self.status_code)
