@@ -812,6 +812,25 @@ Getting a specific DNS Record
         }
 
 
+Exporting a DNS Record to BIND
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.export(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'zone': '$ORIGIN example.com.\n@\t3600\tIN\tSOA\tns1.example.com. ....'
+            }
+        }
+
+
 Getting the Dynamic URL for a DNS Record
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
