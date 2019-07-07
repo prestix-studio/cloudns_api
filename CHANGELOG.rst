@@ -4,8 +4,8 @@ Release History
 ---------------
 
 
-0.4 (June 15, 2019)
-++++++++++++++++++++
+0.4 (July 07, 2019)
++++++++++++++++++++
 
 * Alpha Release - all mvp features.
 * Minor bugfixes from v0.3.
