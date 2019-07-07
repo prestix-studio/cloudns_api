@@ -786,6 +786,44 @@ Creating DNS Records
         }
 
 
+Transferring DNS Records
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.transfer(domain_name='example.com',
+                                               server='1.1.1.1')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {}
+        }
+
+
+Copying DNS Records
+^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.record.copy(domain_name='example.com',
+                                           from_domain='example.net',
+                                           delete_current_records=False)
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description': '8 records were copied',
+            }
+        }
+
+
 Getting a specific DNS Record
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
