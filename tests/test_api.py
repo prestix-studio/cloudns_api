@@ -240,8 +240,9 @@ def test_request_response_has_a_payload():
 
 def test_request_response_can_be_used_for_tests():
     """An RequestResponseStub object's has expected properties."""
-    response = RequestResponseStub(url='https://example.com/',
-                                   params={'abc': 123, 'def': 456})
+    response = RequestResponseStub(payload={
+                                   'url': 'https://example.com/',
+                                   'params': {'abc': 123, 'def': 456}})
 
     assert response.json() == {'url': 'https://example.com/',
                                'params': {'abc': 123, 'def': 456}}

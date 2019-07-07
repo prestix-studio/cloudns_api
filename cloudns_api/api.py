@@ -161,34 +161,20 @@ class ApiResponse(object):
 
 
 class RequestResponseStub(object):
-    def __init__(self, url='', params=None, payload=None, status_code=200):
+    def __init__(self, payload=None, status_code=200):
         """Requests response stub used for stubbing request responses in the
         API code as well as for testing for testing.
 
-        :param url: string, the url that was called in the get or post request.
-            (Used for testing.)
-        :param params: dict, parameters to be passed to requests.
-            (Used for testing.)
         :param payload: dict, json data to be returned in the json() method.
         :param status_code: integer, the status code to return in the test.
             Defaults to 200.
         """
-        self.url = url
-        self.payload = payload
-        self.params = params
+        self.payload = payload if payload else {}
         self.status_code = status_code
 
     def json(self):
-        """Mocks the json object method. If the response was initialized with a
-        payload, it will return that. Otherwise, it will return simply the url
-        and params that it was defined with."""
-        if self.payload:
-            return self.payload
-        else:
-            return {
-                'url':    self.url,
-                'params': self.params,
-            }
+        """Mocks the json object method."""
+        return self.payload
 
 
 class ApiException(Exception):

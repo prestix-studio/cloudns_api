@@ -53,9 +53,14 @@ def mock_get_request(payload=None):
     Note: You must use parens even when you pass no arguments.
         @mock_get_request()
     """
-    def get_mock(url, params=None):
+    def get_mock(url, params=None, payload=payload):
         """A mock get request to return the request-prepared url."""
-        return RequestResponseStub(url, params=params, payload=payload)
+        if not payload:
+            payload = {
+                'url': url,
+                'params': params,
+            }
+        return RequestResponseStub(payload=payload)
 
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
@@ -73,9 +78,14 @@ def mock_post_request(payload=None):
     Note: You must use parens even when you pass no arguments.
         @mock_post_request()
     """
-    def post_mock(url, params=None, payload=None):
+    def post_mock(url, params=None, payload=payload):
         """A mock post request to return the request-prepared url."""
-        return RequestResponseStub(url, params=params, payload=payload)
+        if not payload:
+            payload = {
+                'url': url,
+                'params': params,
+            }
+        return RequestResponseStub(payload=payload)
 
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
