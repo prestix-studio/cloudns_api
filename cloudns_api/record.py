@@ -363,6 +363,27 @@ def transfer(domain_name=None, server=None):
 
 
 @api
+def copy(domain_name=None, from_domain=None, delete_current_records=False):
+    """Transfers all the domain records from one DNS server to ClouDNS's
+    server. The domain name must be the same on both servers.
+
+    :param domain_name: string, the domain name to copy to
+    :param from_domain: string, the domain name from which to copy
+    :param delete_current_records: int, whether or not to delete the current
+        records.
+    """
+    url = 'https://api.cloudns.net/dns/copy-records.json'
+
+    params = Parameters({
+        'domain-name': domain_name,
+        'from-domain': from_domain,
+        'delete-current-records': 1 if delete_current_records else 0,
+    })
+
+    return requests.get(url, params=params.to_dict())
+
+
+@api
 def get(domain_name=None, record_id=None):
     """Returns a specific record_id for a domain.
 

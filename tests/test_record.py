@@ -372,6 +372,20 @@ def test_record_transfer_function():
     assert payload['params']['server'] == '1.1.1.1'
 
 
+@mock_get_request()
+def test_record_copy_function():
+    """Record copy function sends properly formated get request."""
+    response = record.copy('example.com', from_domain='example.net',
+                           delete_current_records=True)
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/copy-records.json'
+    assert payload['params']['domain-name'] == 'example.com'
+    assert payload['params']['from-domain'] == 'example.net'
+    assert payload['params']['delete-current-records'] == 1
+
+
 @mock_get_request(payload={
     1234: {
         'type':        'A',
