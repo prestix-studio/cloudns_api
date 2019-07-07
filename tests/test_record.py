@@ -554,6 +554,28 @@ def test_record_update_function_using_patch_helper():
     assert payload['params']['record'] == '10.10.10.10'
 
 
+@mock_get_request(payload={
+    1234: {
+        'type':        'A',
+        'domain-name': 'example.com',
+        'record-id':   1234,
+        'host':        'ns1',
+        'ttl':         3600,
+        'record':      '10.0.0.10',
+    }
+})
+def test_record_patch_function_with_bad_record_id():
+    """Record update function sends properly formated error message when record_id
+    does not exist."""
+    response = record.patch('example.com', record_id=5678, host='ns1',
+                            ttl=3600, record='10.0.0.10')
+
+    assert not response.success
+    assert response.error == \
+        'Record "5678" not found in "example.com" zone.'
+    assert str(response.status_code) == '404'
+
+
 @mock_post_request()
 def test_record_update_function_catches_validation_errors():
     """Record update function catches validation errors."""

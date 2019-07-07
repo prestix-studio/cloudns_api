@@ -290,7 +290,7 @@ def patch_update(get, keys):
                 if not response.success:
                     # Return the requests.response. The API decorator will
                     # return the original response.
-                    return response.response
+                    return response
 
                 kwargs = {**response.payload, **kwargs}
 
