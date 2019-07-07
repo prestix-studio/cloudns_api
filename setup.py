@@ -36,7 +36,7 @@ setup(
     keywords=['dns', 'dns api', 'domain name system', 'cloudns',
               'server development'],
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
