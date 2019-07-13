@@ -72,6 +72,7 @@ if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
     exit 1
 fi
 
+git push
 twine upload dist/*
 
 echo "Publish complete."
