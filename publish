@@ -1,0 +1,70 @@
+#!/bin/bash
+
+CURRENT_BRANCH="$(git symbolic-ref --short -q HEAD)"
+
+
+echo -e "\n\n  ---------------------------------------"
+echo -e "  Publishing next version of cloudns_api."
+echo -e "  ---------------------------------------\n\n"
+
+
+##
+# Make sure we are in virtual environment.
+
+if [[ -z ${VIRTUAL_ENV+x} ]] ; then
+    echo "Must run this from a virtual environment."
+    echo "Run: source venv/bin/activate"
+    exit 1
+fi
+
+
+##
+# Make sure tests pass.
+
+py.test
+
+if [[ ! $? == 0 ]] ; then
+    echo "Cannot publish now. Tests do not all pass."
+    exit 1
+fi
+
+
+##
+# Make sure user is ready to publish.
+
+read -p "Are you sure you are ready to publish this version? ($CURRENT_BRANCH) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    echo "Quitting."
+    exit 1
+fi
+
+
+##
+# Merge version branch with master
+
+git co master
+git merge -
+if [[ ! $? == 0 ]] ; then
+    git merge - --no-ff
+    if [[ ! $? == 0 ]] ; then
+        echo "Please fix the merge issues."
+        exit 1
+    fi
+fi
+
+
+##
+# Run build and upload to pypi
+
+python setup.py sdist bdist_wheel
+
+twine check dist/*
+if [[ ! $? == 0 ]] ; then
+    echo "Please fix these issues."
+    exit 1
+fi
+
+twine upload dist/*
+
+echo "Publish complete."
