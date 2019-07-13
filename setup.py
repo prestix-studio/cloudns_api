@@ -9,18 +9,14 @@ cloudns_api setup
 
 from codecs import open
 from setuptools import setup, find_packages
-from os import path
 
 
 with open('README.rst', 'r', 'utf-8') as f:
     README = f.read()
 
-HERE = path.abspath(path.dirname(__file__))
-
 version = '0.5'
-url = 'https://github.com/prestix-studio/cloudns_api/archive/v' + version \
-      + '.tar.gz'
-
+url = 'https://github.com/prestix-studio/cloudns_api/archive/v{}.tar.gz'\
+        .format(version)
 
 setup(
     name='cloudns_api',
