@@ -19,7 +19,7 @@ For information on the `CloudNS.net <https://cloudns.net>`__ API see `here
 <https://www.cloudns.net/wiki/article/41/>`__.
 
 Please submit any bug reports and bug fixes on github `here
-<https://github.com/hbradleyiii/>`__.
+<https://github.com/prestix-studio/>`__.
 
 
 

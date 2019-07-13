@@ -18,7 +18,7 @@ with open('README.rst', 'r', 'utf-8') as f:
 HERE = path.abspath(path.dirname(__file__))
 
 version = '0.4'
-url = 'https://github.com/hbradleyiii/cloudns_api/archive/v' + version \
+url = 'https://github.com/prestix-studio/cloudns_api/archive/v' + version \
       + '.tar.gz'
 
 
@@ -28,7 +28,7 @@ setup(
     description='A python interface to the ClouDNS.net API',
     long_description=README,
     long_description_content_type='text/x-rst',
-    url='https://github.com/hbradleyiii/cloudns_api',
+    url='https://github.com/prestix-studio/cloudns_api',
     download_url=url,
     author='Harold Bradley III | Prestix Studio, LLC',
     author_email='harold@prestix.studio',
