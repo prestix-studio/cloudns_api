@@ -3,6 +3,15 @@
 Release History
 ---------------
 
+0.5 (July 13, 2019)
++++++++++++++++++++
+
+* Beta Release.
+* Updates github address to Prestix Studio, LLC github account.
+* Corrects pypi reference.
+* Adds publish script to push next version to pypi automatically.
+* Minor code cleanup.
+
 
 0.4 (July 07, 2019)
 +++++++++++++++++++
