@@ -65,6 +65,13 @@ if [[ ! $? == 0 ]] ; then
     exit 1
 fi
 
+read -p "Last chance to back out. Are you sure you are ready to publish this version? ($CURRENT_BRANCH) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]] ; then
+    echo "Quitting."
+    exit 1
+fi
+
 twine upload dist/*
 
 echo "Publish complete."
