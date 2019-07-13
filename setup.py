@@ -17,7 +17,7 @@ with open('README.rst', 'r', 'utf-8') as f:
 
 HERE = path.abspath(path.dirname(__file__))
 
-version = '0.4'
+version = '0.5'
 url = 'https://github.com/prestix-studio/cloudns_api/archive/v' + version \
       + '.tar.gz'
 
