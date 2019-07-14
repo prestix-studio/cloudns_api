@@ -76,3 +76,4 @@ git push
 twine upload --skip-existing dist/*
 
 echo "Publish complete."
+echo "Don't forget to publish a release in github."
