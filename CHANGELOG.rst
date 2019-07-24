@@ -3,6 +3,13 @@
 Release History
 ---------------
 
+0.6 (upcoming)
++++++++++++++++++++
+
+* Second Beta Release.
+* Corrects wrong bash variable 'CLOUDNS_API_AUTH_USER' to 'CLOUDNS_API_AUTH_ID'
+  in README.rst
+
 0.5 (July 13, 2019)
 +++++++++++++++++++
 
