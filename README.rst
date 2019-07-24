@@ -40,7 +40,7 @@ In order to authenticate correctly, create the following environment variables
 
 .. code:: bash
 
-    export CLOUDNS_API_AUTH_USER=my_user
+    export CLOUDNS_API_AUTH_ID=my_user
     export CLOUDNS_API_AUTH_PASSWORD=my_password
 
     # When you are debugging:
