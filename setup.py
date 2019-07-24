@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 with open('README.rst', 'r', 'utf-8') as f:
     README = f.read()
 
-version = '0.5'
+version = '0.6'
 url = 'https://github.com/prestix-studio/cloudns_api/archive/v{}.tar.gz'\
         .format(version)
 
