@@ -45,7 +45,7 @@ setup(
     ],
     packages=find_packages(),
     install_requires=['requests'],
-    test_requires=['pytest>=2.8.0', 'mock'],
+    test_requires=['pytest>=3', 'mock'],
     package_data={'': ['LICENSE']},
     entry_points={},
 )
