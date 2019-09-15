@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+0.7 (Upcoming)
+++++++++++++++++++++++++
+
+* Third Beta Release.
+
 0.6 (September 14, 2019)
 ++++++++++++++++++++++++
 
