@@ -39,6 +39,14 @@ from .validation import ValidationError
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
+    if not CLOUDNS_API_AUTH_ID:  # pragma: no cover
+        raise EnvironmentError(
+            'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
+        )
+    if not CLOUDNS_API_AUTH_PASSWORD:  # pragma: no cover
+        raise EnvironmentError(
+            'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
+        )
     return {'auth-id': CLOUDNS_API_AUTH_ID,
             'auth-password': CLOUDNS_API_AUTH_PASSWORD}
 

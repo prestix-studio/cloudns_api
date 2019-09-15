@@ -9,6 +9,10 @@ Release History
 * Second Beta Release.
 * Corrects wrong bash variable 'CLOUDNS_API_AUTH_USER' to 'CLOUDNS_API_AUTH_ID'
   in README.rst
+* Changes the way errors are thrown when auth environment variables are not
+  set. This allows the library to be included without these variables without
+  immediately throwing an error. Now the error is only thrown when they are
+  needed to authenticate.
 
 0.5 (July 13, 2019)
 +++++++++++++++++++
