@@ -145,3 +145,43 @@ def test_zone_get_stats_function():
 
     payload = response.payload
     assert payload['url'] == 'https://api.cloudns.net/dns/get-zones-stats.json'
+
+
+@mock_get_request()
+def test_dnssec_available():
+    """Check if DNSSEC is available for the provided zone"""
+    response = zone.dnssec_available('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/is-dnssec-available.json'
+
+
+@mock_post_request()
+def test_dnssec_activate():
+    """Activate DNSSEC for a zone."""
+    response = zone.dnssec_activate('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/activate-dnssec.json'
+
+
+@mock_post_request()
+def test_dnssec_deactivate():
+    """Deactivate DNSSEC for a zone."""
+    response = zone.dnssec_deactivate('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/deactivate-dnssec.json'
+
+
+@mock_get_request()
+def test_dnssec_ds_records():
+    """Get DNSSEC DS records for a zone."""
+    response = zone.dnssec_ds_records('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/get-dnssec-ds-records.json'

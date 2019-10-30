@@ -200,3 +200,59 @@ def get_stats():
     params = Parameters({})
 
     return requests.get(url, params=params.to_dict())
+
+
+@api
+def dnssec_available(domain_name=None):
+    """Checks if DNSSEC is available for the domain name
+
+    :param domain_name: string, (required) the domain name to check the DNSSEC
+        availability for.
+    """
+    url = 'https://api.cloudns.net/dns/is-dnssec-available.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.get(url, params=params.to_dict())
+
+
+@api
+def dnssec_activate(domain_name=None):
+    """Activate DNSSEC for the domain's zone
+
+    :param domain_name: string, (required) the domain name to activate DNSSEC
+        for.
+    """
+    url = 'https://api.cloudns.net/dns/activate-dnssec.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.post(url, params=params.to_dict())
+
+
+@api
+def dnssec_deactivate(domain_name=None):
+    """Deactivate DNSSEC for the domain's zone
+
+    :param domain_name: string, (required) the domain name to deactivate DNSSEC
+        for.
+    """
+    url = 'https://api.cloudns.net/dns/deactivate-dnssec.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.post(url, params=params.to_dict())
+
+
+@api
+def dnssec_ds_records(domain_name=None):
+    """Get the DNSSEC DS records for the domain's zone
+
+    :param domain_name: string, (required) the domain name to retrieve the
+        DNSSEC DS records for.
+    """
+    url = 'https://api.cloudns.net/dns/get-dnssec-ds-records.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.get(url, params=params.to_dict())
