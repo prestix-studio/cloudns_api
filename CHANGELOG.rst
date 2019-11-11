@@ -7,6 +7,8 @@ Release History
 ++++++++++++++++++++++++
 
 * Third Beta Release.
+* Adds DNS Support for zones (Thanks to
+  `CloudNS.net <https://github.com/kristinn>`__).
 
 0.6 (September 14, 2019)
 ++++++++++++++++++++++++
