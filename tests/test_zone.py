@@ -154,7 +154,7 @@ def test_dnssec_available():
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/is-dnssec-available.json'
+    assert payload['url'] == 'https://api.cloudns.net/dns/is-dnssec-available.json'  # noqa: E501
 
 
 @mock_post_request()
@@ -174,7 +174,7 @@ def test_dnssec_deactivate():
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/deactivate-dnssec.json'
+    assert payload['url'] == 'https://api.cloudns.net/dns/deactivate-dnssec.json'  #noqa: E501
 
 
 @mock_get_request()
@@ -184,4 +184,4 @@ def test_dnssec_ds_records():
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/get-dnssec-ds-records.json'
+    assert payload['url'] == 'https://api.cloudns.net/dns/get-dnssec-ds-records.json'  #noqa: E501
