@@ -7,6 +7,8 @@ Release History
 ++++++++++++++++++++++++
 
 * Third Beta Release.
+* Allow authentication with sub-users through environment variables
+  'CLOUDNS_API_SUB_AUTH_ID' or 'CLOUDNS_API_SUB_AUTH_USER'.
 
 0.6 (September 14, 2019)
 ++++++++++++++++++++++++

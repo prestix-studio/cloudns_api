@@ -31,6 +31,8 @@ from requests.exceptions import (
 import cloudns_api
 from .config import (
     CLOUDNS_API_AUTH_ID,
+    CLOUDNS_API_SUB_AUTH_ID,
+    CLOUDNS_API_SUB_AUTH_USER,
     CLOUDNS_API_AUTH_PASSWORD,
     CLOUDNS_API_DEBUG,
 )
@@ -39,16 +41,25 @@ from .validation import ValidationError
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
-    if not CLOUDNS_API_AUTH_ID:  # pragma: no cover
-        raise EnvironmentError(
-            'Environment variable "CLOUDNS_API_AUTH_ID" not set.'
-        )
     if not CLOUDNS_API_AUTH_PASSWORD:  # pragma: no cover
         raise EnvironmentError(
             'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
         )
-    return {'auth-id': CLOUDNS_API_AUTH_ID,
-            'auth-password': CLOUDNS_API_AUTH_PASSWORD}
+    auth_params = {'auth-password': CLOUDNS_API_AUTH_PASSWORD}
+
+    if CLOUDNS_API_AUTH_ID:
+        auth_params['auth-id'] = CLOUDNS_API_AUTH_ID
+    elif CLOUDNS_API_SUB_AUTH_ID:
+        auth_params['sub-auth-id'] = CLOUDNS_API_SUB_AUTH_ID
+    elif CLOUDNS_API_SUB_AUTH_USER:
+        auth_params['sub-auth-user'] = CLOUDNS_API_SUB_AUTH_USER
+    else:  # pragma: no cover
+        raise EnvironmentError(
+            'No environment variable "CLOUDNS_API_AUTH_ID", '
+            '"CLOUDNS_API_SUB_AUTH_ID" or "CLOUDNS_API_SUB_AUTH_USER" is set.'
+        )
+
+    return auth_params
 
 
 _first_cap_re = re_compile('(.)([A-Z][a-z]+)')
