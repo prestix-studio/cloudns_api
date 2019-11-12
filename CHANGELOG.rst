@@ -8,9 +8,10 @@ Release History
 
 * Third Beta Release.
 * Adds DNS Support for zones (Thanks to
-  `CloudNS.net <https://github.com/kristinn>`__).
+  `kristinn <https://github.com/kristinn>`__).
 * Allows authentication with sub-users through environment variables
-  'CLOUDNS_API_SUB_AUTH_ID' or 'CLOUDNS_API_SUB_AUTH_USER'.
+  'CLOUDNS_API_SUB_AUTH_ID' or 'CLOUDNS_API_SUB_AUTH_USER'. (Thanks to
+  `sadimusi <https://github.com/sadimusi>`__).
 
 0.6 (September 14, 2019)
 ++++++++++++++++++++++++
