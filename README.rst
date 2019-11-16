@@ -41,6 +41,13 @@ In order to authenticate correctly, create the following environment variables
 .. code:: bash
 
     export CLOUDNS_API_AUTH_ID=my_user
+    #      - or -
+    export CLOUDNS_API_SUB_AUTH_ID=my_user
+    #      - or -
+    export CLOUDNS_API_SUB_AUTH_USER=my_user
+
+    # This should be the password that corresponds to the above user or sub
+    # user.
     export CLOUDNS_API_AUTH_PASSWORD=my_password
 
     # When you are debugging:
