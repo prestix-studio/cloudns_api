@@ -3,8 +3,8 @@
 Release History
 ---------------
 
-0.7 (Upcoming)
-++++++++++++++++++++++++
+0.7 (November 16, 2019)
++++++++++++++++++++++++
 
 * Third Beta Release.
 * Adds DNS Support for zones (Thanks to
