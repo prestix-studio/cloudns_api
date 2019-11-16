@@ -385,6 +385,79 @@ Getting ClouDNS Zone Stats
         }
 
 
+Check if DNSSEC is available for a zone
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.dnssec_available(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      1,
+        }
+
+
+Activating/Deactivating a DNSSEC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.dnssec_activate(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+            'payload':      {
+                'status': 'Success',
+                'status_description':
+                    'The DNSSEC is activated for your zone. The keys will be generated soon.'
+            }
+        }
+
+    >>> cloudns_api.zone.deactivate(domain_name='example.com')
+
+
+Getting DNSSEC DS Records
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.dnssec_ds_records(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            'success':      True,
+            'status_code':  200,
+             "payload": {
+                "status": "1",
+                "ds": [
+                    "example.com. 3600 IN DS 9813 13 2 613FDE9D90DB360EE4DDC1E18170D3306147A95E4F77177017C83E31057B9141"
+                ],
+                "ds_records": [
+                    {
+                        "digest": "613FDE9D90DB360EE4DDC1E18170D3306147A95E4F77177017C83E31057B9141",
+                        "key_tag": "9813",
+                        "algorithm": "13",
+                        "algorithm_name": "ECDSA SHA-256",
+                        "digest_type": "2",
+                        "digest_type_name": "SHA-256"
+                    }
+                ],
+                "dnskey": [
+                    "example.com. 3600 IN DNSKEY 257 3 13 tDYgHxnS3cbLb9B2B2l+SsawWiG4jOzoFmnjy7PVL0NK5qiil/254sZLxEhXs0LNiL6YxcRVzYdHLkWi074SuQ==",
+                    "example.com. 3600 IN DNSKEY 256 3 13 Nr9P1PdBNRCI7mpF7Nrx72rNZ7EQcHlVggUBJR0E9l+W0j37WlpluKM4qv/WVn/QsZxQOU1eSMPPyIXlT3sCvw=="
+                ]
+            }
+        }
+
+
 DNS SOA Record
 --------------
 
