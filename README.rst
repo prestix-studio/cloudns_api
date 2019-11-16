@@ -86,26 +86,26 @@ Importing and Basic Usage
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      [
+            "success":      True,
+            "status_code":  200,
+            "payload":      [
                 {
-                    'name':     'example.com',
-                    'type':     'master',
-                    'zone':     'domain',
-                    'status':   '1'
+                    "name":     "example.com",
+                    "type":     "master",
+                    "zone":     "domain",
+                    "status":   "1"
                 },
                 {
-                    'name':     'example.net',
-                    'type':     'master',
-                    'zone':     'domain',
-                    'status':   '1'
+                    "name":     "example.net",
+                    "type":     "master",
+                    "zone":     "domain",
+                    "status":   "1"
                 },
                 {
-                    'name':     'example.org',
-                    'type':     'master',
-                    'zone':     'domain',
-                    'status':   '1'
+                    "name":     "example.org",
+                    "type":     "master",
+                    "zone":     "domain",
+                    "status":   "1"
                 }
             ]
         }
@@ -143,11 +143,11 @@ credentials and retrieving your CloudNS nameservers:
     >>> print(cloudns_api.api.get_login())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status':             'Success',
-                'status_description': 'Success login.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status":             "Success",
+                "status_description": "Success login."
             }
         }
 
@@ -231,26 +231,26 @@ Listing DNS Zones
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      [
+            "success":      True,
+            "status_code":  200,
+            "payload":      [
                 {
-                    'name':     'example.com',
-                    'type':     'master',
-                    'zone':     'domain',
-                    'status':   '1'
+                    "name":     "example.com",
+                    "type":     "master",
+                    "zone":     "domain",
+                    "status":   "1"
                 },
                 {
-                    'name':     'example.net',
-                    'type':     'master',
-                    'zone':     'domain',
-                    'status':   '1'
+                    "name":     "example.net",
+                    "type":     "master",
+                    "zone":     "domain",
+                    "status":   "1"
                 },
                 {
-                    'name':     'example.org',
-                    'type':     'master',
-                    'zone':     'domain',
-                    'status':   '1'
+                    "name":     "example.org",
+                    "type":     "master",
+                    "zone":     "domain",
+                    "status":   "1"
                 }
             ]
         }
@@ -271,12 +271,12 @@ servers.
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'Domain zone example.com was created successfully.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "Domain zone example.com was created successfully."
             }
         }
 
@@ -291,13 +291,13 @@ Getting a DNS Zone
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'name':     'example.com',
-                'type':     'master',
-                'zone':     'domain',
-                'status':   '1'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "name":     "example.com",
+                "type":     "master",
+                "zone":     "domain",
+                "status":   "1"
             }
         }
 
@@ -312,12 +312,12 @@ Updating a DNS Zone Serial Number
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'Domain zone example.com was updated successfully.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "Domain zone example.com was updated successfully."
             }
         }
 
@@ -332,12 +332,12 @@ Activating/Deactivating a DNS Zone
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'The zone was activated!'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "The zone was activated!"
             }
         }
 
@@ -356,12 +356,12 @@ Deleting a DNS Zone
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'Domain zone example.com was deleted successfully.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "Domain zone example.com was deleted successfully."
             }
         }
 
@@ -376,11 +376,11 @@ Getting ClouDNS Zone Stats
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'count': '25',  # Number of zones used
-                'limit': '40'   # Number of zones allowed by your plan
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "count": "25",  # Number of zones used
+                "limit": "40"   # Number of zones allowed by your plan
             }
         }
 
@@ -395,9 +395,9 @@ Check if DNSSEC is available for a zone
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      1,
+            "success":      True,
+            "status_code":  200,
+            "payload":      1,
         }
 
 
@@ -411,12 +411,12 @@ Activating/Deactivating a DNSSEC
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'The DNSSEC is activated for your zone. The keys will be generated soon.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "The DNSSEC is activated for your zone. The keys will be generated soon."
             }
         }
 
@@ -433,8 +433,8 @@ Getting DNSSEC DS Records
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
+            "success":      True,
+            "status_code":  200,
              "payload": {
                 "status": "1",
                 "ds": [
@@ -502,16 +502,16 @@ Getting the SOA for a domain
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'admin_mail':     'admin@example.com',
-                'default_ttl':    '3600',
-                'expire':         '1209600',
-                'primary_ns':     'ns1.example.com',
-                'refresh':        '7200',
-                'retry':          '1800',
-                'serial_number':  '2019060601'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "admin_mail":     "admin@example.com",
+                "default_ttl":    "3600",
+                "expire":         "1209600",
+                "primary_ns":     "ns1.example.com",
+                "refresh":        "7200",
+                "retry":          "1800",
+                "serial_number":  "2019060601"
             }
         }
 
@@ -534,12 +534,12 @@ Updating the SOA for a domain
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'The SOA record was modified successfully.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "The SOA record was modified successfully."
             }
         }
 
@@ -560,12 +560,12 @@ A patch update allows you to specify only the parameters you wish to change.
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'The SOA record was modified successfully.'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "The SOA record was modified successfully."
             }
         }
 
@@ -782,9 +782,9 @@ Getting available record types for a zone
 
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      [
+            "success":      True,
+            "status_code":  200,
+            "payload":      [
                 "A", "AAAA", "MX", "CNAME", "TXT", "SPF", "NS", "SRV", "WR",
                 "ALIAS", "RP", "SSHFP", "NAPTR", "CAA"
             ]
@@ -801,9 +801,9 @@ Getting available TTLs for Records
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      [
+            "success":      True,
+            "status_code":  200,
+            "payload":      [
                 60, 300, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200,
                 604800, 1209600, 2592000
             ]
@@ -820,28 +820,28 @@ Listing DNS Records
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                '1234567': {
-                    'id':                '1234567',
-                    'type':              'A',
-                    'host':              'ns1',
-                    'record':            '10.0.0.1',
-                    'dynamicurl_status': 0,
-                    'failover':          '0',
-                    'ttl':               '86400',
-                    'status':            1
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "1234567": {
+                    "id":                "1234567",
+                    "type":              "A",
+                    "host":              "ns1",
+                    "record":            "10.0.0.1",
+                    "dynamicurl_status": 0,
+                    "failover":          "0",
+                    "ttl":               "86400",
+                    "status":            1
                 },
-                '2345678': {
-                    'id':                '2345678',
-                    'type':              'A',
-                    'host':              'ns1',
-                    'record':            '10.0.0.2',
-                    'dynamicurl_status': 0,
-                    'failover':          '0',
-                    'ttl':               '86400',
-                    'status':            1
+                "2345678": {
+                    "id":                "2345678",
+                    "type":              "A",
+                    "host":              "ns1",
+                    "record":            "10.0.0.2",
+                    "dynamicurl_status": 0,
+                    "failover":          "0",
+                    "ttl":               "86400",
+                    "status":            1
                 }
             }
         }
@@ -859,12 +859,12 @@ Creating DNS Records
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description': 'The record was added successfully.',
-                'data': {'id': 123456789}
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description": "The record was added successfully.",
+                "data": {"id": 123456789}
             }
         }
 
@@ -883,9 +883,9 @@ getting 'The zone transfers are not allowed from this server!'
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {}
+            "success":      True,
+            "status_code":  200,
+            "payload":      {}
         }
 
 
@@ -901,11 +901,11 @@ Copying DNS Records
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description': '8 records were copied',
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description": "8 records were copied",
             }
         }
 
@@ -921,17 +921,17 @@ Getting a specific DNS Record
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'id':                '1234567',
-                'type':              'A',
-                'host':              'ns1',
-                'record':            '10.0.0.1',
-                'dynamicurl_status': 0,
-                'failover':          '0',
-                'ttl':               '86400',
-                'status':            1
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "id":                "1234567",
+                "type":              "A",
+                "host":              "ns1",
+                "record":            "10.0.0.1",
+                "dynamicurl_status": 0,
+                "failover":          "0",
+                "ttl":               "86400",
+                "status":            1
             }
         }
 
@@ -946,11 +946,11 @@ Exporting a DNS Record to BIND
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'zone': '$ORIGIN example.com.\n@\t3600\tIN\tSOA\tns1.example.com. ....'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "zone": "$ORIGIN example.com.\n@\t3600\tIN\tSOA\tns1.example.com. ...."
             }
         }
 
@@ -966,11 +966,11 @@ Getting the Dynamic URL for a DNS Record
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'host':              'example.com',
-                'url':               'https://ipv4.cloudns.net/api/dynamicURL/?q=ABC123',
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "host":              "example.com",
+                "url":               "https://ipv4.cloudns.net/api/dynamicURL/?q=ABC123",
             }
         }
 
@@ -992,17 +992,17 @@ Updating a specific DNS Record
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload': {
-                'id':                '1234567',
-                'type':              'A',
-                'host':              '',
-                'record':            '10.0.0.1',
-                'dynamicurl_status': 0,
-                'failover':          '0',
-                'ttl':               '86400',
-                'status':            1
+            "success":      True,
+            "status_code":  200,
+            "payload": {
+                "id":                "1234567",
+                "type":              "A",
+                "host":              "",
+                "record":            "10.0.0.1",
+                "dynamicurl_status": 0,
+                "failover":          "0",
+                "ttl":               "86400",
+                "status":            1
             }
         }
 
@@ -1017,12 +1017,12 @@ Activating/Deactivating a DNS Record
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description':
-                    'Record activated'
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description":
+                    "Record activated"
             }
         }
 
@@ -1042,11 +1042,11 @@ Deleting a specific DNS Record
     >>> print(response.json())
 
         {
-            'success':      True,
-            'status_code':  200,
-            'payload':      {
-                'status': 'Success',
-                'status_description': 'The record was deleted successfully.',
+            "success":      True,
+            "status_code":  200,
+            "payload":      {
+                "status": "Success",
+                "status_description": "The record was deleted successfully.",
             }
         }
 
