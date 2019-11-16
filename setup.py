@@ -10,11 +10,12 @@ cloudns_api setup
 from codecs import open
 from setuptools import setup, find_packages
 
+from cloudns_api import __version__ as version
+
 
 with open('README.rst', 'r', 'utf-8') as f:
     README = f.read()
 
-version = '0.7'
 url = 'https://github.com/prestix-studio/cloudns_api/archive/v{}.tar.gz'\
         .format(version)
 

@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+0.8 (Upcoming)
+++++++++++++++
+
+* Fourth Beta Release.
+
+
 0.7 (November 16, 2019)
 +++++++++++++++++++++++
 
@@ -12,6 +18,7 @@ Release History
 * Allows authentication with sub-users through environment variables
   'CLOUDNS_API_SUB_AUTH_ID' or 'CLOUDNS_API_SUB_AUTH_USER'. (Thanks to
   `sadimusi <https://github.com/sadimusi>`__).
+
 
 0.6 (September 14, 2019)
 ++++++++++++++++++++++++
@@ -23,6 +30,7 @@ Release History
   set. This allows the library to be included without these variables without
   immediately throwing an error. Now the error is only thrown when they are
   needed to authenticate.
+
 
 0.5 (July 13, 2019)
 +++++++++++++++++++
