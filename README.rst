@@ -10,12 +10,12 @@ This project is an independent project not developed by
 `CloudNS.net <https://cloudns.net>`__.
 
 The interface is designed to be simple and intuitive. Entities are represented
-as modules and there is a simple list, create, update, and delete function
-(when appropriate, ie, you cannot delete an SOA record) for each entity. Some
-entities have functions specific to them, but whenever possible, the arguments
-are consistent. The code reads pretty clearly.
+as modules. Each has a list, create, update, and delete function (when
+appropriate, ie, you cannot delete an SOA record). Some entities have functions
+specific to them, but whenever possible, the arguments are consistent. One of
+the major goals of this project is code readability.
 
-For information on the `CloudNS.net <https://cloudns.net>`__ API see `here
+For documentation on the `CloudNS.net <https://cloudns.net>`__ API see `here
 <https://www.cloudns.net/wiki/article/41/>`__.
 
 Please submit any bug reports and bug fixes on github `here
@@ -35,29 +35,39 @@ Installing cloudns_api
     $ pip install cloudns_api
 
 
-In order to authenticate correctly, create the following environment variables
-(using your own credentials):
+In order to authenticate, you must first generate a CloudNS auth user or sub
+user and password combination. (See `here
+<https://www.cloudns.net/wiki/article/42/>`__ for instructions.) Then you must
+set the appropriate username and password values as environment variables as
+follows:
 
 .. code:: bash
 
+    # USERNAME:
     export CLOUDNS_API_AUTH_ID=my_user
     #      - or -
     export CLOUDNS_API_SUB_AUTH_ID=my_user
     #      - or -
     export CLOUDNS_API_SUB_AUTH_USER=my_user
 
+    # PASSWORD:
     # This should be the password that corresponds to the above user or sub
     # user.
     export CLOUDNS_API_AUTH_PASSWORD=my_password
 
-    # When you are debugging:
+
+When you are debugging, you can set the environment variable
+`CLOUDNS_API_DEBUG` to True:
+
+.. code:: bash
+
     export CLOUDNS_API_DEBUG=True
 
 
 To make things easier, you could put these in your python virtual environment
 or use a package like
 `python-dotenv <https://github.com/theskumar/python-dotenv>`__ to automatically
-load your environment variables. Be sure to not include your private username
+load your environment variables. Be sure to *not* include your private username
 and password in your public repositories.
 
 
@@ -124,16 +134,16 @@ they say. Arguments are passed in a consistent manner across all functions.
 When an argument accepts an integer, it can be passed as an integer or a string
 of that integer.
 
-The ClouDNS sometimes uses camel case and sometimes uses dashes in its
+The CloudNS API sometimes uses camel case and sometimes uses dashes in its
 parameters. In our API, we convert both of these to snake case for consistency
-and compatibility with python.
+and in order to be "pythonic".
 
-API update functions require all required parameters to be passed. This can be
-inconvenient at times, so cloudns_api includes an argument `patch` that when
-set to True allows you to only pass arguments you wish to change. Behind the
+API `update` functions require all required parameters to be passed. This can
+be inconvenient at times, so cloudns_api includes an argument `patch` that when
+set to `True` allows you to pass only arguments you wish to change. Behind the
 scenes, the API will get the existing data and merge it with the new data for
 the update call. We've also included the convenient `patch` function as a
-wrapper around `update` with the `patch` argument set to True.
+wrapper around `update` with the `patch` argument set to `True`.
 
 The cloudns_api includes these two helpful functions for checking your login
 credentials and retrieving your CloudNS nameservers:
@@ -157,10 +167,10 @@ credentials and retrieving your CloudNS nameservers:
 ApiResponse
 ^^^^^^^^^^^
 
-All API calls return an ApiResponse instance. The `ApiResponse` object is a
-wrapper object to add custom functionality and properties to a basic response
-object from the `requests <https://github.com/kennethreitz/requests>`__
-library.
+All API calls return an `ApiResponse` instance. The `ApiResponse` object is a
+wrapper around the basic response object from the `requests
+<https://github.com/kennethreitz/requests>`__ library. We've added a few
+properties and functions specific to our needs here.
 
 .. code:: python
 
@@ -180,7 +190,7 @@ library.
 ApiParameter
 ^^^^^^^^^^^^
 
-The ApiParameter object is responsible for describing the kinds of parameters
+The `ApiParameter` object is responsible for describing the kinds of parameters
 to pass to the api function and how these parameters should be validated.
 Understanding the ApiParameter object is not necessary for using the API, but
 can be helpful to see what is going on under the hood.
@@ -458,8 +468,8 @@ Getting DNSSEC DS Records
         }
 
 
-DNS SOA Record
---------------
+SOA Record
+----------
 
 Every domain zone contains one SOA record that contains the current version of
 the data in the zone, the administrator of the zone record, and TTL information
@@ -529,7 +539,7 @@ Updating the SOA for a domain
             primary_ns='ns1.example.com',
             refresh=7200,
             retry=1800,
-        })
+        )
 
     >>> print(response.json())
 
