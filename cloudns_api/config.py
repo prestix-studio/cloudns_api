@@ -17,7 +17,7 @@ from os import environ
 
 
 def _is_true(env_var):
-    if env_var is None:
+    if env_var is None:  # pragma: no cover
         return False
     return env_var.lower() in [1, 'true', 'yes']
 
