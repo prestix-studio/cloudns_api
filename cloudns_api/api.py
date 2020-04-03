@@ -28,32 +28,34 @@ from requests.exceptions import (
     ReadTimeout,
 )
 
-import cloudns_api
 from .config import (
     CLOUDNS_API_AUTH_ID,
-    CLOUDNS_API_SUB_AUTH_ID,
-    CLOUDNS_API_SUB_AUTH_USER,
     CLOUDNS_API_AUTH_PASSWORD,
     CLOUDNS_API_DEBUG,
+    CLOUDNS_API_SUB_AUTH_ID,
+    CLOUDNS_API_SUB_AUTH_USER,
+    CLOUDNS_API_TESTING,
 )
 from .validation import ValidationError
 
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
-    if not CLOUDNS_API_AUTH_PASSWORD:  # pragma: no cover
+    # Get password parameter
+    if not CLOUDNS_API_TESTING and not CLOUDNS_API_AUTH_PASSWORD:  # pragma: no cover
         raise EnvironmentError(
             'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
         )
     auth_params = {'auth-password': CLOUDNS_API_AUTH_PASSWORD}
 
+    # Get username parameter
     if CLOUDNS_API_AUTH_ID:
         auth_params['auth-id'] = CLOUDNS_API_AUTH_ID
     elif CLOUDNS_API_SUB_AUTH_ID:
         auth_params['sub-auth-id'] = CLOUDNS_API_SUB_AUTH_ID
     elif CLOUDNS_API_SUB_AUTH_USER:
         auth_params['sub-auth-user'] = CLOUDNS_API_SUB_AUTH_USER
-    else:  # pragma: no cover
+    elif not CLOUDNS_API_TESTING:  # pragma: no cover
         raise EnvironmentError(
             'No environment variable "CLOUDNS_API_AUTH_ID", '
             '"CLOUDNS_API_SUB_AUTH_ID" or "CLOUDNS_API_SUB_AUTH_USER" is set.'
@@ -269,7 +271,7 @@ def api(api_call):
             if CLOUDNS_API_DEBUG:
                 response.error = str(e)
 
-            if hasattr(cloudns_api, '_testing') and cloudns_api._testing:
+            if CLOUDNS_API_TESTING:
                 import traceback
                 print('\n' + traceback.format_exc())
 
