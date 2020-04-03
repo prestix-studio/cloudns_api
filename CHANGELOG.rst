@@ -4,7 +4,7 @@ Release History
 ---------------
 
 0.8 (April 2, 2020)
-++++++++++++++
++++++++++++++++++++
 
 * Fourth Beta Release.
 * Adds support for TLSA records.
