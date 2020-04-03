@@ -308,9 +308,12 @@ generators = {
 
 
 def generate_record_parameters(record_type=None, record_id=None, **kwargs):
-    """Creates and returns create or update DNS record Parameters object.
+    """Creates and returns DNS record Parameters object for create or update
+    operations.
 
-    This function and the generator functions helps to avoid code duplication.
+    This function (along with the generator functions) helps to avoid code
+    duplication and allows each record type to have only the specific
+    parameters necessary for that type.
 
     :param record_type: string, (required) the record type to retrieve (ie,
         'a', 'cname', etc..., See RECORD_TYPES)
