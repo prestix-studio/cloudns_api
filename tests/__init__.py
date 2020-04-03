@@ -13,6 +13,7 @@ Test module for cloudns_api unit tests.
 from os import environ
 
 
+environ['CLOUDNS_API_DEBUG'] = 'False'
 environ['CLOUDNS_API_TESTING'] = 'True'
 environ['CLOUDNS_API_AUTH_ID'] = 'test_auth_id'
 environ['CLOUDNS_API_AUTH_PASSWORD'] = 'test_auth_password'
