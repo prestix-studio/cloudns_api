@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+0.9 (Upcoming)
++++++++++++++++++++
+
+* Version 1 Release candidate.
+
+
 0.8 (April 2, 2020)
 +++++++++++++++++++
 
