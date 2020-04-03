@@ -134,6 +134,17 @@ they say. Arguments are passed in a consistent manner across all functions.
 When an argument accepts an integer, it can be passed as an integer or a string
 of that integer.
 
+All arguments are passed to the API functions as keyword arguments. Each API
+function turns these arguments into a `Parameters` instance. The construction
+of the `Parameters` instance can also include information for validating the
+arguments. This validation happens by default when the object is instantiated.
+If a validation error occurs, the exception is thrown and handled in the api
+decorator. A parameter is required unless the optional flag is set to `True`.
+The name of the parameter is matched to a validation function unless the
+`validate_as` option is set on that particular parameter. The `Parameters`
+object has a to_dict() method that returns the parameters as a key-value dict
+to be passed on to the CloudNS API using requests.
+
 The CloudNS API sometimes uses camel case and sometimes uses dashes in its
 parameters. In our API, we convert both of these to snake case for consistency
 and in order to be "pythonic".

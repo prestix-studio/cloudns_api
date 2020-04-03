@@ -34,9 +34,16 @@ class Parameters(object):
                 }
             Format with options:
                 {
+                    # Will be validated as 'fieldname'
                     'fieldname' : {
                         'value': value,
                         'optional': is_optional,
+                        ...
+                    },
+                    # Will be validated as 'valid'
+                    'fieldname_2' : {
+                        'value': value,
+                        'validate_as': 'valid',
                         ...
                     },
                     ...
