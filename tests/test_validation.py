@@ -27,6 +27,9 @@ from cloudns_api.validation import (
     is_redirect_type,
     is_required,
     is_rows_per_page,
+    is_tlsa_matching_type,
+    is_tlsa_selector,
+    is_tlsa_usage,
     is_ttl,
     is_valid,
     is_zone_type,
@@ -398,6 +401,57 @@ def test_is_rows_per_page_validates_correctly():
 
     with raises(ValidationError):
         is_rows_per_page(also_not_valid, 'rows-per-page')
+
+
+def test_is_tlsa_matching_type_validates_correctly():
+    """Function is_rows_per_page() validates correctly."""
+    valid = 1
+    also_valid = '2'
+    not_valid = 11
+    also_not_valid = '51'
+
+    assert is_tlsa_matching_type(valid, 'tlsa_matching_type')
+    assert is_tlsa_matching_type(also_valid, 'tlsa_matching_type')
+
+    with raises(ValidationError):
+        is_tlsa_matching_type(not_valid, 'tlsa_matching_type')
+
+    with raises(ValidationError):
+        is_tlsa_matching_type(also_not_valid, 'tlsa_matching_type')
+
+
+def test_is_tlsa_selector_validates_correctly():
+    """Function is_rows_per_page() validates correctly."""
+    valid = 1
+    also_valid = '0'
+    not_valid = 2
+    also_not_valid = '3'
+
+    assert is_tlsa_selector(valid, 'tlsa_selector')
+    assert is_tlsa_selector(also_valid, 'tlsa_selector')
+
+    with raises(ValidationError):
+        is_tlsa_selector(not_valid, 'tlsa_selector')
+
+    with raises(ValidationError):
+        is_tlsa_selector(also_not_valid, 'tlsa_selector')
+
+
+def test_is_tlsa_usage_validates_correctly():
+    """Function is_rows_per_page() validates correctly."""
+    valid = 1
+    also_valid = '3'
+    not_valid = 4
+    also_not_valid = '51'
+
+    assert is_tlsa_usage(valid, 'tlsa_usage')
+    assert is_tlsa_usage(also_valid, 'tlsa_usage')
+
+    with raises(ValidationError):
+        is_tlsa_usage(not_valid, 'tlsa_usage')
+
+    with raises(ValidationError):
+        is_tlsa_usage(also_not_valid, 'tlsa_usage')
 
 
 def test_is_ttl_validates_cloudns_ttls():
