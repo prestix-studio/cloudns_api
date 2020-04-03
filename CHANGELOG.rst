@@ -7,6 +7,8 @@ Release History
 ++++++++++++++
 
 * Fourth Beta Release.
+* Fixes a bug where tests required auth environment variables to be set in
+  order to run successfully.
 
 
 0.7 (November 16, 2019)
