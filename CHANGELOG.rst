@@ -3,7 +3,7 @@
 Release History
 ---------------
 
-0.8 (Upcoming)
+0.8 (April 2, 2020)
 ++++++++++++++
 
 * Fourth Beta Release.
