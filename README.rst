@@ -767,6 +767,40 @@ Besides the SOA record, a domain can have a number of other records.
   * caa-value - the record value
 
 
++ TLSA record - asociates a TLS certificate or public key with the domain name
+
+  * host - the RFC TLSA format: _port._protocol.host.domain.com. (example:
+    _80._tcp.host.example.com)
+
+  * tlsa_usage - an integer with one of the following values:
+
+    - 0 - PKIX-TA: Certificate Authority Constraint
+
+    - 1 - PKIX-EE: Service Certificate Constraint
+
+    - 2 - DANE-TA: Trust Anchor Assertion
+
+    - 3 - DANE-EE: Domain Issued Certificate
+
+  * tlsa_selector - an integer with one of the following values:
+
+    - 0 - Cert: Use full certificates
+
+    - 1 - SPKI: Use subject public key
+
+  * tlsa_matching_type - an integer with one of the following values:
+
+    - 0 - Full: No Hash
+
+    - 1 - SHA-256: SHA-256 Hash
+
+    - 2 - SHA-512: SHA-512 hash
+
+  * record - the certificate association data in hexedecimal format
+
+  * ttl - time to keep record in cache
+
+
 A wildcard ('*') can be added for domains and subdomains that do not exist in
 the DNS record for these types: A (or AAAA), MX, TXT, CNAME, ALIAS and Web
 Redirect.

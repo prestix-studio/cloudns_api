@@ -282,6 +282,33 @@ def is_rows_per_page(value, fieldname='rows-per-page', **kwargs):
     return True
 
 
+def is_tlsa_matching_type(value, fieldname='tlsa_matching_type', **kwargs):
+    """Validates and returns True if a proper tlsa_matching_type value is
+    provided (0, 1, 2). Otherwise, raises a valiadation error."""
+    if value not in [0, 1, 2, '0', '1', '2']:
+        raise ValidationError(fieldname,
+                              'This field must be one of: 0, 1, or 2')
+    return True
+
+
+def is_tlsa_selector(value, fieldname='tlsa_selector', **kwargs):
+    """Validates and returns True if a proper tlsa_selector value is provided
+    (0, 1). Otherwise, raises a valiadation error."""
+    if value not in [0, 1, '0', '1']:
+        raise ValidationError(fieldname,
+                              'This field must be one of: 0 or 1')
+    return True
+
+
+def is_tlsa_usage(value, fieldname='tlsa_usage', **kwargs):
+    """Validates and returns True if a proper tlsa_usage value is provided (0,
+    1, 2, 3). Otherwise, raises a valiadation error."""
+    if value not in [0, 1, 2, 3, '0', '1', '2', '3']:
+        raise ValidationError(fieldname,
+                              'This field must be one of: 0, 1, 2, or 3')
+    return True
+
+
 def is_ttl(value, fieldname='ttl', **kwargs):
     """Validates and returns True if the value is a valid ClouDNS ttl.
     Otherwise, raises a validation error."""
@@ -330,39 +357,42 @@ ZONE_TYPES = ['master', 'slave', 'parked', 'geodns', 'domain', 'reverse']
 
 # Set up validation functions dict
 validation_functions = {
-    'admin-mail':       is_email,
-    'algorithm':        is_algorithm,
-    'bool':             is_api_bool,
-    'caa_flag':         is_caa_flag,
-    'caa_type':         is_caa_type,
-    'caa_value':        is_valid,
-    'default-ttl':      is_ttl,
-    'domain-name':      is_domain_name,
-    'email':            is_email,
-    'fptype':           is_fptype,
-    'frame':            is_api_bool,
-    'frame-title':      is_valid,
-    'geodns-location':  is_int,
-    'integer':          is_int,
-    'ipv4':             is_ipv4,
-    'ipv6':             is_ipv6,
-    'mail':             is_email,
-    'page':             is_int,
-    'port':             is_int,
-    'primary-ns':       is_domain_name,
-    'priority':         is_int,
-    'record':           is_required,
-    'record-id':        is_int,
-    'record-type':      is_record_type,
-    'redirect-type':    is_redirect_type,
-    'refresh':          is_int,
-    'required':         is_required,
-    'rows-per-page':    is_rows_per_page,
-    'save-path':        is_api_bool,
-    'status':           is_api_bool,
-    'ttl':              is_ttl,
-    'txt':              is_domain_name,
-    'valid':            is_valid,
-    'weight':           is_int,
-    'zone-type':        is_zone_type,
+    'admin-mail':          is_email,
+    'algorithm':           is_algorithm,
+    'bool':                is_api_bool,
+    'caa_flag':            is_caa_flag,
+    'caa_type':            is_caa_type,
+    'caa_value':           is_valid,
+    'default-ttl':         is_ttl,
+    'domain-name':         is_domain_name,
+    'email':               is_email,
+    'fptype':              is_fptype,
+    'frame':               is_api_bool,
+    'frame-title':         is_valid,
+    'geodns-location':     is_int,
+    'integer':             is_int,
+    'ipv4':                is_ipv4,
+    'ipv6':                is_ipv6,
+    'mail':                is_email,
+    'page':                is_int,
+    'port':                is_int,
+    'primary-ns':          is_domain_name,
+    'priority':            is_int,
+    'record':              is_required,
+    'record-id':           is_int,
+    'record-type':         is_record_type,
+    'redirect-type':       is_redirect_type,
+    'refresh':             is_int,
+    'required':            is_required,
+    'rows-per-page':       is_rows_per_page,
+    'save-path':           is_api_bool,
+    'status':              is_api_bool,
+    'tlsa_matching_type':  is_tlsa_matching_type,
+    'tlsa_selector':       is_tlsa_selector,
+    'tlsa_usage':          is_tlsa_usage,
+    'ttl':                 is_ttl,
+    'txt':                 is_domain_name,
+    'valid':               is_valid,
+    'weight':              is_int,
+    'zone-type':           is_zone_type,
 }

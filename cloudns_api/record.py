@@ -99,6 +99,8 @@ def generate_dns_record_parameters(domain_name=None, record_type=None, host='',
         top-level domain
     :param record: string, (required) the record to be added or updated
     :param ttl: int, (required) the time-to-live for this record
+    :param validate_record_as: string, what to validate the record parameter
+        as
     """
     params = {
         'domain-name':     domain_name,
@@ -288,6 +290,35 @@ def generate_caa_record_parameters(caa_flag=None, caa_type='', caa_value='',
     return params
 
 
+def generate_tlsa_record_parameters(tlsa_usage=0, tlsa_selector=0,
+                                    tlsa_matching_type=0,
+                                    **kwargs):
+    """
+    :param tlsa_usage: int, can take one of the following values:
+        0 - PKIX-TA: Certificate Authority Constraint
+        1 - PKIX-EE: Service Certificate Constraint
+        2 - DANE-TA: Trust Anchor Assertion
+        3 - DANE-EE: Domain Issued Certificate
+    :param tlsa_selector: int, can take one of the following values:
+        0 - Cert: Use full certificates
+        1 - SPKI: Use subject public key
+    :param tlsa_matching_type: int, can take one of the following values:
+        0 - Full: No Hash
+        1 - SHA-256: SHA-256 Hash
+        2 - SHA-512: SHA-512 hash
+    """
+    params = generate_dns_record_parameters(record_type='TLSA',
+                                            validate_record_as='valid',
+                                            **kwargs)
+    params.pop('record')
+
+    params['tlsa_usage'] = caa_flag
+    params['tlsa_selector'] = caa_type
+    params['tlsa_matching_type'] = caa_value
+
+    return params
+
+
 generators = {
     'A':      generate_a_record_parameters,
     'AAAA':   generate_aaaa_record_parameters,
@@ -304,6 +335,7 @@ generators = {
     'PTR':    generate_ptr_record_parameters,
     'NAPTR':  generate_naptr_record_parameters,
     'CAA':    generate_caa_record_parameters,
+    'TLSA':   generate_tlsa_record_parameters,
 }
 
 

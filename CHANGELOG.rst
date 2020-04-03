@@ -7,6 +7,7 @@ Release History
 ++++++++++++++
 
 * Fourth Beta Release.
+* Adds support for TLSA records.
 * Minor fixes and tweaks to documentation for clarification.
 * Fixes a bug where tests required auth environment variables to be set in
   order to run successfully.
