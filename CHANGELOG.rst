@@ -4,7 +4,7 @@ Release History
 ---------------
 
 0.9 (Upcoming)
-+++++++++++++++++++
+++++++++++++++
 
 * Version 1 Release candidate.
 
