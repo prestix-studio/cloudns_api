@@ -256,3 +256,15 @@ def dnssec_ds_records(domain_name=None):
     params = Parameters({'domain-name': domain_name})
 
     return requests.get(url, params=params.to_dict())
+
+@api
+def isupdated(domain_name=None):
+    """Return True if dns zone is updatd on all servers and False if it is not
+
+    :param domain_name: string, (required) the domain name to verify.
+    """
+    url = 'https://api.cloudns.net/dns/is-updated.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.get(url, params=params.to_dict())
