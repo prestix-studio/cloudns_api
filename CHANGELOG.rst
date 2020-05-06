@@ -7,6 +7,8 @@ Release History
 ++++++++++++++
 
 * Version 1 Release candidate.
+* Adds support for checking if a DNS zone is updated (`is_updated`).
+* Updates error handling in `publish` script.
 
 
 0.8 (April 2, 2020)
