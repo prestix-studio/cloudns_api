@@ -15,6 +15,8 @@ appropriate, ie, you cannot delete an SOA record). Some entities have functions
 specific to them, but whenever possible, the arguments are consistent. One of
 the major goals of this project is code readability.
 
+Another major goal is for the code to have 90%+ test coverage.
+
 For documentation on the `CloudNS.net <https://cloudns.net>`__ API see `here
 <https://www.cloudns.net/wiki/article/41/>`__.
 
