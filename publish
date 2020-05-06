@@ -44,6 +44,10 @@ fi
 # Merge version branch with master
 
 git co master
+if [[ ! $? == 0 ]] ; then
+    echo "Could not check out master branch."
+    exit 1
+fi
 git merge -
 if [[ ! $? == 0 ]] ; then
     git merge - --no-ff
