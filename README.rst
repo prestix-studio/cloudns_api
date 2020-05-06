@@ -479,6 +479,22 @@ Getting DNSSEC DS Records
         }
 
 
+Checking if a DNS Zone Has Been Updated on all Servers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    >>> response = cloudns_api.zone.is_updated(domain_name='example.com')
+
+    >>> print(response.json())
+
+        {
+            "success":      True,
+            "status_code":  200,
+            "payload":      True
+        }
+
+
 SOA Record
 ----------
 
