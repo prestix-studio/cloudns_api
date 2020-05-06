@@ -185,3 +185,12 @@ def test_dnssec_ds_records():
 
     payload = response.payload
     assert payload['url'] == 'https://api.cloudns.net/dns/get-dnssec-ds-records.json'  #noqa: E501
+
+@mock_get_request()
+def test_zone_isupdated():
+    """Check if all DNS servers have been updated."""
+    response = zone.isupdated('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/is-updated.json'  #noqa: E501
