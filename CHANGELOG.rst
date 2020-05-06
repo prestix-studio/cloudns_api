@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+1.0 (Upcoming)
+++++++++++++++
+
+* First stable release.
+
+
 0.9 (May 5, 2020)
 +++++++++++++++++
 
