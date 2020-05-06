@@ -258,7 +258,7 @@ def dnssec_ds_records(domain_name=None):
     return requests.get(url, params=params.to_dict())
 
 @api
-def isupdated(domain_name=None):
+def is_updated(domain_name=None):
     """Return True if dns zone is updatd on all servers and False if it is not
 
     :param domain_name: string, (required) the domain name to verify.
