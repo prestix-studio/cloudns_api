@@ -21,6 +21,7 @@ url = 'https://github.com/prestix-studio/cloudns_api/archive/v{}.tar.gz'\
 
 setup(
     name='cloudns_api',
+    python_requires='>3.5',
     version=version,
     description='A python interface to the ClouDNS.net API',
     long_description=README,
@@ -37,10 +38,6 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
