@@ -3,8 +3,15 @@
 Release History
 ---------------
 
-0.9 (Upcoming)
-++++++++++++++
+
+0.9.1 (Jun 6, 2020)
++++++++++++++++++++
+
+* Adds notice that this library must be run with Python 3.
+
+
+0.9 (May 5, 2020)
++++++++++++++++++
 
 * Version 1 Release candidate.
 * Adds support for checking if a DNS zone is updated (`is_updated`).
