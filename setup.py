@@ -10,7 +10,7 @@ cloudns_api setup
 import sys
 
 
-if sys.version_info < (3):
+if sys.version_info.major == 2:
     sys.exit('Sorry, Python 2 is not supported.')
 
 
