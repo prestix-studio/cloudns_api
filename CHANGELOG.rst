@@ -6,6 +6,16 @@ Release History
 1.0 (Upcoming)
 ++++++++++++++
 
+
+0.9.1 (Jun 6, 2020)
++++++++++++++++++++
+
+* Adds notice that this library must be run with Python 3.
+
+
+0.9 (May 5, 2020)
++++++++++++++++++
+
 * First stable release.
 
 
