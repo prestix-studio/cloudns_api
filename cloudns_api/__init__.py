@@ -22,7 +22,7 @@ from . import zone    # noqa: F401
 
 
 __title__ = 'cloudns_api'
-__version__ = '0.9.1'
+__version__ = '0.9.2'
 __author__ = 'Harold Bradley III | Prestix Studio, LLC'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2018-2020 Harold Bradley III | Prestix Studio, LLC'
