@@ -1,8 +1,8 @@
 cloudns_api
 ###########
 
-A python interface to the ClouDNS.net API
-=========================================
+A Python 3 interface to the ClouDNS.net API
+===========================================
 
 This project is an independent project not developed by
 `CloudNS.net <https://cloudns.net>`__.
