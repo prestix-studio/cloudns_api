@@ -7,13 +7,6 @@
 cloudns_api setup
 """
 
-import sys
-
-
-if sys.version_info.major == 2:
-    sys.exit('Sorry, Python 2 is not supported.')
-
-
 from codecs import open
 from setuptools import setup, find_packages
 
@@ -28,6 +21,7 @@ url = 'https://github.com/prestix-studio/cloudns_api/archive/v{}.tar.gz'\
 
 setup(
     name='cloudns_api',
+    python_requires='>3.5',
     version=version,
     description='A python interface to the ClouDNS.net API',
     long_description=README,
