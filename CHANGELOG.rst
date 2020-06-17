@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+0.9.2 (Jun 6, 2020)
++++++++++++++++++++
+
+* Released with a better way to warn Python 2 users that this library only
+  works in Python 3.
 
 0.9.1 (Jun 6, 2020)
 +++++++++++++++++++
