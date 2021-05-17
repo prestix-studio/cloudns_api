@@ -3,11 +3,18 @@
 Release History
 ---------------
 
+0.9.4 (May 17, 2021)
+++++++++++++++++++++
+
+* Updates copyright date.
+
+
 0.9.3 (Jun 6, 2020)
 +++++++++++++++++++
 
 * Increments version after the previous version to revert back to preventing
   installation on Python 2.
+
 
 0.9.2 (Jun 6, 2020)
 +++++++++++++++++++
@@ -15,6 +22,7 @@ Release History
 * Released with a better way to warn Python 2 users that this library only
   works in Python 3. The previous version failed with a confusing error
   message.
+
 
 0.9.1 (Jun 6, 2020)
 +++++++++++++++++++
