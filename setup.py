@@ -31,6 +31,7 @@ setup(
     author='Harold Bradley III | Prestix Studio, LLC',
     author_email='harold@prestix.studio',
     license='MIT License',
+    license_files = ('LICENSE',),
     keywords=['dns', 'dns api', 'domain name system', 'cloudns',
               'server development'],
     classifiers=[

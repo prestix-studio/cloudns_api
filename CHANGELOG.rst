@@ -7,6 +7,7 @@ Release History
 ++++++++++++++++++++
 
 * Updates copyright date.
+* Adds LICENSE to binary and source distributions.
 
 
 0.9.3 (Jun 6, 2020)
