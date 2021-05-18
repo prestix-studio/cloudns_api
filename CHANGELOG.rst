@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+0.9.5 (May 17, 2021)
+++++++++++++++++++++
+
+* Fixes: Adds LICENSE to binary and source distributions.
+
+
 0.9.4 (May 17, 2021)
 ++++++++++++++++++++
 
