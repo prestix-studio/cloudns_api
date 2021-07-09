@@ -21,13 +21,8 @@ def _is_true(env_var):
         return False
     return env_var.lower() in [1, 'true', 'yes']
 
-
-CLOUDNS_API_TESTING = _is_true(environ.get('CLOUDNS_API_TESTING'))
-
-CLOUDNS_API_AUTH_ID = environ.get('CLOUDNS_API_AUTH_ID')
-CLOUDNS_API_SUB_AUTH_ID = environ.get('CLOUDNS_API_SUB_AUTH_ID')
-CLOUDNS_API_SUB_AUTH_USER = environ.get('CLOUDNS_API_SUB_AUTH_USER')
-
-CLOUDNS_API_AUTH_PASSWORD = environ.get('CLOUDNS_API_AUTH_PASSWORD')
-
-CLOUDNS_API_DEBUG = _is_true(environ.get('CLOUDNS_API_DEBUG'))
+def get_config(env_var):
+    if env_var in ['CLOUDNS_API_TESTING', 'CLOUDNS_API_DEBUG']:
+        return _is_true(environ.get(env_var))
+    else:
+        return environ.get(env_var)
