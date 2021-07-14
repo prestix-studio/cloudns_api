@@ -6,6 +6,8 @@ Release History
 0.9.6 (Jul 14, 2021)
 ++++++++++++++++++++
 
+* Fixes: Fixes issue where python-dotenv was ignoring `.env` config.
+
 
 0.9.5 (May 17, 2021)
 ++++++++++++++++++++
