@@ -10,6 +10,7 @@
 Functional tests for cloudns_api's api utilities module.
 """
 
+from os import environ
 from mock import patch
 from requests import exceptions as request_exceptions
 
@@ -46,17 +47,17 @@ def test_get_auth_params_returns_auth_params(test_id, test_password):
     assert auth_params['auth-password'] == test_password
 
 
-@patch('cloudns_api.api.CLOUDNS_API_SUB_AUTH_ID', new=123)
-@patch('cloudns_api.api.CLOUDNS_API_AUTH_ID', new=None)
+@patch.dict(environ, {'CLOUDNS_API_SUB_AUTH_ID': '123'})
+@patch.dict(environ, {'CLOUDNS_API_AUTH_ID': ''})
 def test_get_auth_params_returns_sub_auth_id():
     """Function get_auth_params() returns sub auth params."""
     auth_params = get_auth_params()
-    assert auth_params['sub-auth-id'] == 123
+    assert auth_params['sub-auth-id'] == '123'
     assert 'auth-id' not in auth_params
 
 
-@patch('cloudns_api.api.CLOUDNS_API_SUB_AUTH_USER', new='sub-user')
-@patch('cloudns_api.api.CLOUDNS_API_AUTH_ID', new=None)
+@patch.dict(environ, {'CLOUDNS_API_SUB_AUTH_USER': 'sub-user'})
+@patch.dict(environ, {'CLOUDNS_API_AUTH_ID': ''})
 def test_get_auth_params_returns_sub_auth_user():
     """Function get_auth_params() returns sub auth params."""
     auth_params = get_auth_params()

@@ -28,34 +28,27 @@ from requests.exceptions import (
     ReadTimeout,
 )
 
-from .config import (
-    CLOUDNS_API_AUTH_ID,
-    CLOUDNS_API_AUTH_PASSWORD,
-    CLOUDNS_API_DEBUG,
-    CLOUDNS_API_SUB_AUTH_ID,
-    CLOUDNS_API_SUB_AUTH_USER,
-    CLOUDNS_API_TESTING,
-)
+from .config import get_config
 from .validation import ValidationError
 
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
     # Get password parameter
-    if not CLOUDNS_API_TESTING and not CLOUDNS_API_AUTH_PASSWORD:  # pragma: no cover
+    if not get_config('CLOUDNS_API_TESTING') and not get_config('CLOUDNS_API_AUTH_PASSWORD'):  # pragma: no cover
         raise EnvironmentError(
             'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
         )
-    auth_params = {'auth-password': CLOUDNS_API_AUTH_PASSWORD}
+    auth_params = {'auth-password': get_config('CLOUDNS_API_AUTH_PASSWORD')}
 
     # Get username parameter
-    if CLOUDNS_API_AUTH_ID:
-        auth_params['auth-id'] = CLOUDNS_API_AUTH_ID
-    elif CLOUDNS_API_SUB_AUTH_ID:
-        auth_params['sub-auth-id'] = CLOUDNS_API_SUB_AUTH_ID
-    elif CLOUDNS_API_SUB_AUTH_USER:
-        auth_params['sub-auth-user'] = CLOUDNS_API_SUB_AUTH_USER
-    elif not CLOUDNS_API_TESTING:  # pragma: no cover
+    if get_config('CLOUDNS_API_AUTH_ID'):
+        auth_params['auth-id'] = get_config('CLOUDNS_API_AUTH_ID')
+    elif get_config('CLOUDNS_API_SUB_AUTH_ID'):
+        auth_params['sub-auth-id'] = get_config('CLOUDNS_API_SUB_AUTH_ID')
+    elif get_config('CLOUDNS_API_SUB_AUTH_USER'):
+        auth_params['sub-auth-user'] = get_config('CLOUDNS_API_SUB_AUTH_USER')
+    elif not get_config('CLOUDNS_API_TESTING'):  # pragma: no cover
         raise EnvironmentError(
             'No environment variable "CLOUDNS_API_AUTH_ID", '
             '"CLOUDNS_API_SUB_AUTH_ID" or "CLOUDNS_API_SUB_AUTH_USER" is set.'
@@ -175,7 +168,7 @@ class ApiResponse(object):
         if self.validation_errors:
             json['validation_errors'] = self.validation_errors
 
-        if CLOUDNS_API_DEBUG and not self.success and not self.error:
+        if get_config('CLOUDNS_API_DEBUG') and not self.success and not self.error:
             json['error'] = \
                 'Response has not yet been created with a requests.response.'
 
@@ -240,7 +233,7 @@ def api(api_call):
             response.error = 'API Connection timed out.'
             response.status_code = code.GATEWAY_TIMEOUT
 
-            if CLOUDNS_API_DEBUG:  # pragma: no cover
+            if get_config('CLOUDNS_API_DEBUG'):  # pragma: no cover
                 response.error = str(e)
 
         # Catch Connection errors
@@ -249,7 +242,7 @@ def api(api_call):
             response.error = 'API Network Connection error.'
             response.status_code = code.SERVER_ERROR
 
-            if CLOUDNS_API_DEBUG:  # pragma: no cover
+            if get_config('CLOUDNS_API_DEBUG'):  # pragma: no cover
                 response.error = str(e)
 
         # Catch API reported exceptions
@@ -268,10 +261,10 @@ def api(api_call):
             response.error = 'Something went wrong.'
             response.status_code = code.SERVER_ERROR
 
-            if CLOUDNS_API_DEBUG:
+            if get_config('CLOUDNS_API_DEBUG'):
                 response.error = str(e)
 
-            if CLOUDNS_API_TESTING:
+            if get_config('CLOUDNS_API_TESTING'):
                 import traceback
                 print('\n' + traceback.format_exc())
 

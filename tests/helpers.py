@@ -10,6 +10,7 @@
 Mock helpers for cloudns_api unit tests.
 """
 
+from os import environ
 from mock import patch
 
 from cloudns_api.api import RequestResponseStub
@@ -23,22 +24,22 @@ TEST_PASSWORD = 'test-auth-password'
 
 
 def use_test_auth(test_fn):
-    @patch('cloudns_api.api.CLOUDNS_API_AUTH_ID', new=TEST_ID)
-    @patch('cloudns_api.api.CLOUDNS_API_AUTH_PASSWORD', new=TEST_PASSWORD)
+    @patch.dict(environ, {'CLOUDNS_API_AUTH_ID': TEST_ID})
+    @patch.dict(environ, {'CLOUDNS_API_AUTH_PASSWORD': TEST_PASSWORD})
     def test_wrapper(*args, **kwargs):
         test_fn(*args, test_id=TEST_ID, test_password=TEST_PASSWORD, **kwargs)
     return test_wrapper
 
 
 def set_debug(test_fn):
-    @patch('cloudns_api.api.CLOUDNS_API_DEBUG', new=True)
+    @patch.dict(environ, {'CLOUDNS_API_DEBUG': 'true'})
     def test_wrapper(*args, **kwargs):
         test_fn(*args, **kwargs)
     return test_wrapper
 
 
 def set_no_debug(test_fn):
-    @patch('cloudns_api.api.CLOUDNS_API_DEBUG', new=False)
+    @patch.dict(environ, {'CLOUDNS_API_DEBUG': 'false'})
     def test_wrapper(*args, **kwargs):
         test_fn(*args, **kwargs)
     return test_wrapper
