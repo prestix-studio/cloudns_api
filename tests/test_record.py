@@ -45,15 +45,33 @@ def test_record_get_available_record_types_catches_validation_errors():
 
 
 @mock_get_request()
-def test_record_get_available_ttls_function():
+def test_record_get_available_ttls_request():
     """Record get_available_ttls function sends properly formated request."""
-    response = record.list('example.com', host='ns1')
+    response = record.get_available_ttls()
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/records.json'
-    assert payload['params']['domain-name'] == 'example.com'
-    assert payload['params']['host'] == 'ns1'
+    assert payload['url'] == \
+        'https://api.cloudns.net/dns/get-available-ttl.json'
+
+
+@mock_get_request(payload={
+    'url': 'https://api.cloudns.net/dns/get-available-ttl.json',
+    'params': [
+        60, 300, 600, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200,
+        604800, 1209600, 2592000
+    ]
+})
+def test_record_get_available_ttls_response():
+    """Record get_available_ttls function sends properly formated request."""
+    response = record.get_available_ttls()
+    assert response.success
+
+    payload = response.payload
+    assert payload['params'] == [
+        60, 300, 600, 900, 1800, 3600, 21600, 43200, 86400, 172800, 259200,
+        604800, 1209600, 2592000
+    ]
 
 
 @mock_get_request()
@@ -66,6 +84,15 @@ def test_record_list_function():
     assert payload['url'] == 'https://api.cloudns.net/dns/records.json'
     assert payload['params']['domain-name'] == 'example.com'
     assert payload['params']['host'] == 'ns1'
+
+
+def test_generate_record_parameters_rejects_unsupported_type():
+    """The generate_record_parameters function catches unsupported
+    type errors."""
+    with raises(ValidationError):
+        record.generate_record_parameters(record_type='ZONK')
+    with raises(ValidationError):
+        record.generate_record_parameters(record_type=[])
 
 
 def test_generate_record_parameters_works_for_a_records():
@@ -90,6 +117,14 @@ def test_generate_record_parameters_catches_a_record_errors():
         record.generate_record_parameters(
             domain_name='example.com', host='', record_type='A', ttl=3600,
             record='not an ip address')
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', host='', record_type='A', ttl=3600,
+            record='1000.1000.2000.3000')
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', host='', record_type='A', ttl=3600,
+            record=[])
 
 
 def test_generate_record_parameters_works_for_aaaa_records():
@@ -114,6 +149,14 @@ def test_generate_record_parameters_catches_aaaa_record_errors():
         record.generate_record_parameters(
             domain_name='example.com', host='', record_type='AAAA', ttl=3600,
             record='not an ip address')
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', host='', record_type='AAAA', ttl=3600,
+            record='fffff:aaaaa:0:0:0:0:1:0')
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', host='', record_type='AAAA', ttl=3600,
+            record=[])
 
 
 def test_generate_record_parameters_works_for_mx_records():
@@ -225,7 +268,7 @@ def test_generate_record_parameters_works_for_srv_records():
     parameters."""
     parameters = record.generate_record_parameters(
         domain_name='example.com', host='srv1', record_type='SRV',
-        record='srv.example.org', priority=10, weight=10, ttl=3600)
+        record='srv.example.org', port=0, priority=10, weight=10, ttl=3600)
 
     payload = parameters.to_dict()
 
@@ -241,7 +284,13 @@ def test_generate_record_parameters_catches_srv_record_errors():
     with raises(ValidationError):
         record.generate_record_parameters(
             domain_name='example.com', host='srv', record_type='SRV',
+            port=0,
             priority=10, weight=10, ttl=3600, record='not an hostname')
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', host='srv', record_type='SRV',
+            port=0,
+            priority=-1, weight=10, ttl=3600, record='srv.example.org')
 
 
 def test_generate_record_parameters_works_for_wr_records():
@@ -331,6 +380,115 @@ def test_generate_record_parameters_checks_for_invalid_type():
     with raises(ValidationError):
         record.generate_record_parameters(
             domain_name='example.com', record_type='bad-type')
+
+
+def test_generate_record_parameters_works_for_ptr_records_v4():
+    """The generate_record_parameters function generates PTR record
+    parameters for IPv4."""
+    parameters = record.generate_record_parameters(
+        domain_name='42.2.0.192.in-addr.arpa', record_type='PTR',
+        record='the.target.example.com', ttl=3600)
+
+    payload = parameters.to_dict()
+
+    assert payload['record-type'] == 'PTR'
+    assert payload['domain-name'] == '42.2.0.192.in-addr.arpa'
+    assert payload['host'] == '@'
+    assert payload['record'] == 'the.target.example.com'
+    assert payload['ttl'] == 3600
+
+
+def test_generate_record_parameters_works_for_naptr_records():
+    """The generate_record_parameters function generates NAPTR record
+    parameters."""
+
+    parameters = record.generate_record_parameters(
+        domain_name='example.com', record_type='NAPTR',
+        host='some.service',
+        order=100, pref=10, flag=0, params='http',
+        regexp='!^.*$!prodserver.example.com!',
+        replace='.', ttl=3600)
+
+    payload = parameters.to_dict()
+
+    assert payload['record-type'] == 'NAPTR'
+    assert payload['domain-name'] == 'example.com'
+    assert payload['host'] == 'some.service'
+    assert payload['ttl'] == 3600
+    assert payload['order'] == 100
+    assert payload['pref'] == 10
+    assert payload['flag'] == 0
+    assert payload['params'] == 'http'
+    assert payload['regexp'] == '!^.*$!prodserver.example.com!'
+    assert payload['replace'] == '.'
+
+
+def test_generate_record_parameters_works_for_caa_records():
+    """The generate_record_parameters function generates CAA record
+    parameters."""
+
+    for val in [
+        {'typ': 'issue', 'val': 'ca.example.net'},
+        {'typ': 'issuewild', 'val': ';'},
+        {'typ': 'iodef', 'val': 'mailto:sec@example.com'},
+        {'typ': 'iodef', 'val': 'https://sec.example.com'},
+    ]:
+        for flag in [0, 128]:
+            parameters = record.generate_record_parameters(
+                domain_name='example.com', record_type='CAA',
+                caa_flag=flag, caa_type=val['typ'], caa_value=val['val'],
+                ttl=3600)
+
+            payload = parameters.to_dict()
+            assert payload['record-type'] == 'CAA'
+            assert payload['domain-name'] == 'example.com'
+            assert payload['ttl'] == 3600
+            assert payload['caa_flag'] == flag
+            assert payload['caa_type'] == val['typ']
+            assert payload['caa_value'] == val['val']
+
+
+def test_generate_record_parameters_catches_caa_errors():
+    """The generate_record_parameters function catches invalid CAA record
+    parameters."""
+
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', record_type='CAA',
+            caa_flag=0, caa_type='issuwill', caa_value=';',
+            ttl=3600)
+    with raises(ValidationError):
+        record.generate_record_parameters(
+            domain_name='example.com', record_type='CAA',
+            caa_flag=0, caa_type=[], caa_value=';',
+            ttl=3600)
+
+
+def test_generate_record_parameters_works_for_tlsa_records():
+    """The generate_record_parameters function generates TLSA record
+    parameters."""
+
+    rec = '7af68c0fbebf2ed0224c1d86afcd8b122c3e9179bcb6df8cb5ad3e9960b6a8d4'
+    for usage in [0, 1, 2, 3]:
+        for selector in [0, 1]:
+            for match in [0, 1, 2]:
+                parameters = record.generate_record_parameters(
+                    domain_name='example.com', record_type='TLSA',
+                    tlsa_usage=usage, tlsa_selector=selector,
+                    tlsa_matching_type=match,
+                    record=rec,
+                    host='_443._tcp',
+                    ttl=3600)
+
+                payload = parameters.to_dict()
+                assert payload['record-type'] == 'TLSA'
+                assert payload['domain-name'] == 'example.com'
+                assert payload['host'] == '_443._tcp'
+                assert payload['ttl'] == 3600
+                assert payload['tlsa_usage'] == usage
+                assert payload['tlsa_selector'] == selector
+                assert payload['tlsa_matching_type'] == match
+                assert payload['record'] == rec
 
 
 @mock_post_request()
@@ -512,8 +670,8 @@ def test_record_update_function_can_figure_out_record_type():
     }
 })
 def test_record_update_function_with_bad_record_id():
-    """Record update function sends properly formated error message when record_id
-    does not exist."""
+    """Record update function sends properly formated error message
+    when record_id does not exist."""
     response = record.update('example.com', record_id=5678, host='ns1',
                              ttl=3600, record='10.0.0.10')
 
@@ -535,8 +693,8 @@ def test_record_update_function_with_bad_record_id():
 })
 @mock_post_request()
 def test_record_update_function_using_patch():
-    """Record update function sends properly formated update request when doing a
-    patch update."""
+    """Record update function sends properly formated update request
+    when doing a patch update."""
     response = record.update('example.com', record_id=1234,
                              record='10.10.10.10', patch=True)
 
@@ -563,8 +721,8 @@ def test_record_update_function_using_patch():
 })
 @mock_post_request()
 def test_record_update_function_using_patch_helper():
-    """Record update function sends properly formated update request when doing a
-    patch update using the patch helper function."""
+    """Record update function sends properly formated update request
+    when doing a patch update using the patch helper function."""
     response = record.patch('example.com', record_id=1234,
                             record='10.10.10.10')
 
@@ -590,8 +748,8 @@ def test_record_update_function_using_patch_helper():
     }
 })
 def test_record_patch_function_with_bad_record_id():
-    """Record update function sends properly formated error message when record_id
-    does not exist."""
+    """Record update function sends properly formated error message
+    when record_id does not exist."""
     response = record.patch('example.com', record_id=5678, host='ns1',
                             ttl=3600, record='10.0.0.10')
 

@@ -73,21 +73,21 @@ def list(domain_name=None, host=None, record_type=''):
     url = 'https://api.cloudns.net/dns/records.json'
 
     params = Parameters({
-            'domain-name':  domain_name,
-            'host': {
-                'value':    host,
-                'optional': True
-            },
-            'type': {
-                'value':    record_type,
-                'optional': True
-            },
-        })
+        'domain-name':  domain_name,
+        'host': {
+            'value':    host,
+            'optional': True
+        },
+        'type': {
+            'value':    record_type,
+            'optional': True
+        },
+    })
 
     return requests.get(url, params=params.to_dict())
 
 
-def generate_dns_record_parameters(domain_name=None, record_type=None, host='',
+def generate_dns_record_parameters(record_type, domain_name=None, host='',
                                    record=None, ttl=None,
                                    validate_record_as='valid', **kwargs):
     """Generates parameters for a generic DNS record.
@@ -112,11 +112,9 @@ def generate_dns_record_parameters(domain_name=None, record_type=None, host='',
         'record': {
             'value':       record,
             'validate_as': validate_record_as
-        }
+        },
+        'record-type': record_type
     }
-
-    if record_type:
-        params['record-type'] = record_type
 
     return params
 
@@ -176,22 +174,32 @@ def generate_ns_record_parameters(**kwargs):
                                           **kwargs)
 
 
-def generate_srv_record_parameters(port=None, priority=None, weight=None,
+def generate_srv_record_parameters(port, priority, weight,
                                    **kwargs):
     """Generates parameters for 'SRV' records.
 
-    :param port: (optional) int, port for SRV record
+    :param port: int, mandatory port for SRV record
     :param priority:  int, priority index, prioritize the lowest indexed server
     :param weight: int, a relative weight for services with the same index
     """
     params = generate_dns_record_parameters(record_type='SRV',
                                             validate_record_as='domain-name',
                                             **kwargs)
-    if port:
-        params['port'] = port
-
-    params['priority'] = priority
-    params['weight'] = weight
+    params['port'] = {
+        'value': port,
+        'min_value': 0,
+        'max_value': 65535
+    }
+    params['priority'] = {
+        'value': priority,
+        'min_value': 0,
+        'max_value': 65535
+    }
+    params['weight'] = {
+        'value': weight,
+        'min_value': 0,
+        'max_value': 65535
+    }
 
     return params
 
@@ -255,19 +263,31 @@ def generate_sshfp_record_parameters(algorithm=None, fptype=None, **kwargs):
 
 def generate_ptr_record_parameters(**kwargs):
     """Generates parameters for 'PTR' records."""
-    return generate_dns_record_parameters(record_type='PTR',
-                                          validate_record_as='valid',
-                                          **kwargs)
+    params = generate_dns_record_parameters(record_type='PTR',
+                                            validate_record_as='domain-name',
+                                            **kwargs)
+    params['host'] = '@'
+    return params
 
 
-def generate_naptr_record_parameters(**kwargs):
+def generate_naptr_record_parameters(order, pref, flag, params, regexp,
+                                     replace, **kwargs):
     """Generates parameters for 'NAPTR' records."""
-    return generate_dns_record_parameters(record_type='NAPTR',
-                                          validate_record_as='valid',
-                                          **kwargs)
+    par = generate_dns_record_parameters(record_type='NAPTR',
+                                         validate_record_as='valid',
+                                         **kwargs)
+    par.pop('record')
+
+    par['order'] = order
+    par['pref'] = pref
+    par['flag'] = flag
+    par['params'] = params
+    par['regexp'] = regexp
+    par['replace'] = replace
+    return par
 
 
-def generate_caa_record_parameters(caa_flag=None, caa_type='', caa_value='',
+def generate_caa_record_parameters(caa_flag, caa_type, caa_value,
                                    **kwargs):
     """
     :param caa_flag: int, 0 - Non critical or 128 - Critical
@@ -278,19 +298,19 @@ def generate_caa_record_parameters(caa_flag=None, caa_type='', caa_value='',
         iodef, it can be "mailto:someemail@address.tld, http://example.tld or
         http://example.tld.
     """
-    params = generate_dns_record_parameters(record_type='SSHFP',
+    params = generate_dns_record_parameters(record_type='CAA',
                                             validate_record_as='valid',
                                             **kwargs)
     params.pop('record')
 
-    params['caa-flag'] = caa_flag
-    params['caa-type'] = caa_type
-    params['caa-value'] = caa_value
+    params['caa_flag'] = caa_flag
+    params['caa_type'] = caa_type
+    params['caa_value'] = caa_value
 
     return params
 
 
-def generate_tlsa_record_parameters(tlsa_usage=0, tlsa_selector=0,
+def generate_tlsa_record_parameters(record, tlsa_usage=0, tlsa_selector=0,
                                     tlsa_matching_type=0,
                                     **kwargs):
     """
@@ -310,11 +330,13 @@ def generate_tlsa_record_parameters(tlsa_usage=0, tlsa_selector=0,
     params = generate_dns_record_parameters(record_type='TLSA',
                                             validate_record_as='valid',
                                             **kwargs)
-    params.pop('record')
-
-    params['tlsa_usage'] = caa_flag
-    params['tlsa_selector'] = caa_type
-    params['tlsa_matching_type'] = caa_value
+    params['tlsa_usage'] = tlsa_usage
+    params['tlsa_selector'] = tlsa_selector
+    params['tlsa_matching_type'] = tlsa_matching_type
+    params['record'] = {
+        'value': record,
+        'validate_as': 'hexstring'
+    }
 
     return params
 
@@ -351,8 +373,9 @@ def generate_record_parameters(record_type=None, record_id=None, **kwargs):
         'a', 'cname', etc..., See RECORD_TYPES)
     :param record_id: int, (required for updates) the record id
     """
-    if not is_record_type(record_type):
-        raise ValidationError('Not a valid domain record type')
+
+    # is_record_type raises a ValidationError if necessary
+    is_record_type(record_type)
 
     record_parameters = generators[record_type.upper()](**kwargs)
 
