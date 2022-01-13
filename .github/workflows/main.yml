@@ -1,4 +1,4 @@
-name: octoDNS ConstellixProvider
+name: cloudns_api
 on: [pull_request]
 
 jobs:

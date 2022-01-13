@@ -9,7 +9,7 @@ fi
 
 SHA=$(git rev-parse HEAD)
 python setup.py sdist
-TARBALL="dist/octodns-*-$SHA.tar.gz"
-mv dist/octodns-*-0.*.tar.gz "$TARBALL"
+TARBALL="dist/cloudns_api-*-$SHA.tar.gz"
+mv dist/cloudns_api-*-0.*.tar.gz "$TARBALL"
 
 echo "Created $TARBALL"
