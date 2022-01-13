@@ -29,7 +29,7 @@ from .api import (
     patch_update,
 )
 from .parameters import Parameters
-from .validation import is_record_type, ValidationError
+from .validation import is_record_type
 
 
 class RecordNotFound(ApiException):
