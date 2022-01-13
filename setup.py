@@ -59,7 +59,7 @@ setup(
     ],
     packages=find_packages(),
     install_requires=['requests'],
-    test_requires=['pytest>=3', 'mock'],
+    tests_require=('pytest>=3', 'mock'),
     package_data={'': ['LICENSE']},
     entry_points={},
     cmdclass={'egg_info': egg_info_with_license},
