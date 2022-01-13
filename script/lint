@@ -18,4 +18,4 @@ fi
 SOURCES="cloudns_*/*.py setup.py tests/*.py"
 
 pycodestyle --ignore=E221,E241,E251,E722,E741,W504 $SOURCES
-flake8 $SOURCES
+pyflakes $SOURCES
