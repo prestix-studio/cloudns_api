@@ -402,7 +402,7 @@ def test_api_decorator_responds_to_bad_python_code():
     @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
-        return uninitialized_variable  # noqa: F821
+        return [].join()
 
     response = test_api_call()
     assert not response.success
@@ -418,11 +418,11 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
     @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
-        return uninitialized_variable  # noqa: F821
+        return [].join()
 
     response = test_api_call()
     assert not response.success
-    assert response.error == "name 'uninitialized_variable' is not defined"
+    assert response.error == "'list' object has no attribute 'join'"
 
 
 @set_no_debug
@@ -431,7 +431,7 @@ def test_api_decorator_responds_to_missing_required_args():
 
     @api
     def test_api_call(required_arg, *args, **kwargs):
-        return uninitialized_variable  # noqa: F821
+        return required_arg
 
     response = test_api_call()
     assert not response.success
