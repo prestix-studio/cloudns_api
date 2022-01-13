@@ -11,7 +11,6 @@ Mock helpers for cloudns_api unit tests.
 """
 
 from os import environ
-import requests  # noqa: F401
 from mock import patch
 
 from cloudns_api.api import RequestResponseStub
