@@ -39,6 +39,7 @@ grep -r -I --line-number "# pragma: +no.*cover" $SOURCE_DIR && {
 }
 
 pytest \
+	--disable-network \
         --cov-reset \
         --cov=$SOURCE_DIR \
         --cov-fail-under=100 \
