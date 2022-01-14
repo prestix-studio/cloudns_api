@@ -24,9 +24,6 @@ TEST_PASSWORD = 'test-auth-password'
 
 
 def use_test_auth(test_fn=None):
-    # Need this to prevent import failure when using with nose test framework.
-    if test_fn is None:
-        return
 
     @patch.dict(environ, {'CLOUDNS_API_AUTH_ID': TEST_ID})
     @patch.dict(environ, {'CLOUDNS_API_AUTH_PASSWORD': TEST_PASSWORD})

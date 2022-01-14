@@ -34,4 +34,6 @@ export CLOUDNS_API_AUTH_PASSWORD=
 export CLOUDNS_API_SUB_AUTH_ID=
 export CLOUDNS_API_SUB_AUTH_USER=
 
-nosetests --with-no-network "$@"
+export PYTHONPATH=.:$PYTHONPATH
+
+pytest --disable-network tests/test_*.py
