@@ -491,6 +491,16 @@ def test_generate_record_parameters_works_for_tlsa_records():
                 assert payload['record'] == rec
 
 
+def test_generate_record_parameters_includes_geo_id():
+    """The generate_dns_record_parameters function includes the optional
+    geo dns information"""
+
+    parameters = record.generate_dns_record_parameters(
+        domain_name='example.com', record_type='A',
+        record='10.10.10.10', ttl=3600, geo_location=1)
+    assert parameters['geodns-location'] == 1
+
+
 @mock_post_request()
 def test_record_create_function():
     """Record create function sends properly formated update request."""

@@ -115,6 +115,9 @@ def generate_dns_record_parameters(record_type, domain_name=None, host='',
         },
         'record-type': record_type
     }
+    geo_location = kwargs.get('geo_location', None)
+    if geo_location:
+        params['geodns-location'] = geo_location
 
     return params
 
