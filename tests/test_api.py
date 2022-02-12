@@ -24,6 +24,7 @@ from cloudns_api.api import (
     get_login,
     get_my_ip,
     get_nameservers,
+    is_geodns_available,
     patch_update,
     use_snake_case_keys,
 )
@@ -577,8 +578,8 @@ def test_api_patch_update_fails_when_get_first_fails():
 @use_test_auth
 @mock_get_request()
 def test_simple_api_functions(test_id, test_password):
-    """Tests that get_login, get_nameservers, and get_my_ip send properly
-    formated requests."""
+    """Tests that get_login, get_nameservers, get_my_ip, and
+    is_geodns_available send properly formated requests."""
     expected_payload = {
         'auth-id': test_id,
         'auth-password': test_password,
@@ -591,4 +592,7 @@ def test_simple_api_functions(test_id, test_password):
     assert response.payload['params'] == expected_payload
 
     response = get_my_ip()
+    assert response.payload['params'] == expected_payload
+
+    response = is_geodns_available()
     assert response.payload['params'] == expected_payload

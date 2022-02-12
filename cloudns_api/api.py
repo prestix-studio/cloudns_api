@@ -334,3 +334,11 @@ def get_my_ip():
     """
     return requests.get('https://api.cloudns.net/dns/get-my-ip.json',
                         params=get_auth_params())
+
+
+@api
+def is_geodns_available():
+    """Returns True (1) if your ClouDNS plan provides geo support."""
+
+    return requests.get('https://api.cloudns.net/dns/is-geodns-available.json',
+                        params=get_auth_params())
