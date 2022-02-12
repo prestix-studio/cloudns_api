@@ -212,3 +212,14 @@ def test_zone_is_updated():
     payload = response.payload
     assert payload['url'] == \
         'https://api.cloudns.net/dns/is-updated.json'
+
+
+@mock_get_request()
+def test_zone_geodns_locations():
+    """Check if the zone provides geodns locations."""
+    response = zone.geodns_locations('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == \
+        'https://api.cloudns.net/dns/get-geodns-locations.json'

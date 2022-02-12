@@ -269,3 +269,18 @@ def is_updated(domain_name=None):
     params = Parameters({'domain-name': domain_name})
 
     return requests.get(url, params=params.to_dict())
+
+
+@api
+def geodns_locations(domain_name):
+    """Return a list of geo locations for this zone.
+
+    :param domain_name: string, (required) the domain name to retrieve the
+        geo locations for.
+    """
+
+    url = 'https://api.cloudns.net/dns/get-geodns-locations.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.get(url, params=params.to_dict())
