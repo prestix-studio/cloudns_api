@@ -28,14 +28,14 @@ from requests.exceptions import (
     ReadTimeout,
 )
 
-from .config import get_config
+from .config import get_config, is_debug
 from .validation import ValidationError
 
 
 def get_auth_params():
     """Returns a dict pre-populated with auth parameters."""
     # Get password parameter
-    if not get_config('CLOUDNS_API_TESTING') and not get_config('CLOUDNS_API_AUTH_PASSWORD'):  # pragma: no cover
+    if not get_config('CLOUDNS_API_AUTH_PASSWORD'):
         raise EnvironmentError(
             'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.'
         )
@@ -48,7 +48,7 @@ def get_auth_params():
         auth_params['sub-auth-id'] = get_config('CLOUDNS_API_SUB_AUTH_ID')
     elif get_config('CLOUDNS_API_SUB_AUTH_USER'):
         auth_params['sub-auth-user'] = get_config('CLOUDNS_API_SUB_AUTH_USER')
-    elif not get_config('CLOUDNS_API_TESTING'):  # pragma: no cover
+    else:
         raise EnvironmentError(
             'No environment variable "CLOUDNS_API_AUTH_ID", '
             '"CLOUDNS_API_SUB_AUTH_ID" or "CLOUDNS_API_SUB_AUTH_USER" is set.'
@@ -90,7 +90,6 @@ class ApiResponse(object):
         """
         self.error = None
         self.validation_errors = None
-
         if response:
             self.create(response)
         else:
@@ -133,7 +132,7 @@ class ApiResponse(object):
         """Wraps the request response's status code."""
         if hasattr(self, '_status_code'):
             return self._status_code
-        return self.response.status_code if self.response else None
+        return self.response.status_code if self.response is not None else None
 
     @status_code.setter
     def status_code(self, status_code):
@@ -168,7 +167,8 @@ class ApiResponse(object):
         if self.validation_errors:
             json['validation_errors'] = self.validation_errors
 
-        if get_config('CLOUDNS_API_DEBUG') and not self.success and not self.error:
+        if is_debug() \
+                and not self.success and not self.error:
             json['error'] = \
                 'Response has not yet been created with a requests.response.'
 
@@ -233,7 +233,7 @@ def api(api_call):
             response.error = 'API Connection timed out.'
             response.status_code = code.GATEWAY_TIMEOUT
 
-            if get_config('CLOUDNS_API_DEBUG'):  # pragma: no cover
+            if is_debug():  # pragma: no cover
                 response.error = str(e)
 
         # Catch Connection errors
@@ -242,7 +242,7 @@ def api(api_call):
             response.error = 'API Network Connection error.'
             response.status_code = code.SERVER_ERROR
 
-            if get_config('CLOUDNS_API_DEBUG'):  # pragma: no cover
+            if is_debug():  # pragma: no cover
                 response.error = str(e)
 
         # Catch API reported exceptions
@@ -261,12 +261,8 @@ def api(api_call):
             response.error = 'Something went wrong.'
             response.status_code = code.SERVER_ERROR
 
-            if get_config('CLOUDNS_API_DEBUG'):
+            if is_debug():
                 response.error = str(e)
-
-            if get_config('CLOUDNS_API_TESTING'):
-                import traceback
-                print('\n' + traceback.format_exc())
 
         # Whew! Made it past the errors, so return the response
         return response
@@ -285,8 +281,8 @@ def patch_update(get, keys):
     """
 
     def decorated_patch_update(api_call):
-        """Decorates an api call to allow 'patch' updating with only parameters to
-        be updated.
+        """Decorates an api call to allow 'patch' updating with only parameters
+        to be updated.
 
         :param api_call: function, the function to be decorated
         """
@@ -337,4 +333,12 @@ def get_my_ip():
     NOTE: This doesn't seem to be working on ClouDNS's servers.
     """
     return requests.get('https://api.cloudns.net/dns/get-my-ip.json',
+                        params=get_auth_params())
+
+
+@api
+def is_geodns_available():
+    """Returns True (1) if your ClouDNS plan provides geo support."""
+
+    return requests.get('https://api.cloudns.net/dns/is-geodns-available.json',
                         params=get_auth_params())

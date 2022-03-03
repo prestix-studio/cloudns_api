@@ -33,17 +33,17 @@ def list(page=1, rows_per_page=10, search='', group_id=''):
     url = 'https://api.cloudns.net/dns/list-zones.json'
 
     params = Parameters({
-            'page':           page,
-            'rows-per-page':  rows_per_page,
-            'search': {
-                'value':      search,
-                'optional':   True,
-            },
-            'group-id': {
-                'value':      group_id,
-                'optional':   True,
-            },
-        })
+        'page':           page,
+        'rows-per-page':  rows_per_page,
+        'search': {
+            'value':      search,
+            'optional':   True,
+        },
+        'group-id': {
+            'value':      group_id,
+            'optional':   True,
+        },
+    })
 
     return requests.get(url, params=params.to_dict())
 
@@ -60,27 +60,27 @@ def get_page_count(rows_per_page=10, search='', group_id=''):
     url = 'https://api.cloudns.net/dns/get-pages-count.json'
 
     params = Parameters({
-            'rows-per-page': rows_per_page,
-            'search': {
-                'value':     search,
-                'optional':  True,
-            },
-            'group-id': {
-                'value':      group_id,
-                'optional':   True,
-            },
-        })
+        'rows-per-page': rows_per_page,
+        'search': {
+            'value':     search,
+            'optional':  True,
+        },
+        'group-id': {
+            'value':      group_id,
+            'optional':   True,
+        },
+    })
 
     return requests.get(url, params=params.to_dict())
 
 
 @api
-def create(domain_name=None, zone_type='master', ns=[], master_ip=None):
+def create(domain_name, zone_type, ns=[], master_ip=None):
     """Creates a new DNS zone.
 
     :param domain_name: string, (required) the domain name for which to
         create the zone
-    :param zone_type: string, (required) mastor, slave, parked, or geodns
+    :param zone_type: string, (required) master, slave, parked, or geodns
     :param ns: list (optional) list of nameservers used for starting ns
         record; only for master domains
     :param master_ip: string (optional, required for slave domains) master
@@ -90,16 +90,16 @@ def create(domain_name=None, zone_type='master', ns=[], master_ip=None):
 
     param_args = {
         'domain-name': domain_name,
-        'zone-type':   zone_type,
+        'zone-type':   zone_type.lower(),
     }
 
-    if hasattr(zone_type, 'lower') and zone_type.lower() == 'slave':
+    if zone_type.lower() == 'slave':
         param_args['master-ip'] = {
             'value': master_ip,
             'optional': False,
         }
 
-    if hasattr(zone_type, 'lower') and zone_type.lower() == 'master':
+    if zone_type.lower() == 'master':
         param_args['ns'] = {
             'value':    ns,
             'optional': True,
@@ -257,6 +257,7 @@ def dnssec_ds_records(domain_name=None):
 
     return requests.get(url, params=params.to_dict())
 
+
 @api
 def is_updated(domain_name=None):
     """Return True if dns zone is updatd on all servers and False if it is not
@@ -264,6 +265,21 @@ def is_updated(domain_name=None):
     :param domain_name: string, (required) the domain name to verify.
     """
     url = 'https://api.cloudns.net/dns/is-updated.json'
+
+    params = Parameters({'domain-name': domain_name})
+
+    return requests.get(url, params=params.to_dict())
+
+
+@api
+def geodns_locations(domain_name):
+    """Return a list of geo locations for this zone.
+
+    :param domain_name: string, (required) the domain name to retrieve the
+        geo locations for.
+    """
+
+    url = 'https://api.cloudns.net/dns/get-geodns-locations.json'
 
     params = Parameters({'domain-name': domain_name})
 

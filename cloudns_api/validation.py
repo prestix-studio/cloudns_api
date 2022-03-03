@@ -188,11 +188,11 @@ def is_int(value, fieldname='int', min_value=None, max_value=None, **kwargs):
         if re.findall('[^0-9]', value):
             raise ValidationError(fieldname, 'This field must be an integer.')
 
-    if min_value and int(value) < min_value:
+    if min_value is not None and int(value) < min_value:
         raise ValidationError(fieldname,
                               'This field must be greater than ' +
                               str(min_value) + '.')
-    if max_value and int(value) > max_value:
+    if max_value is not None and int(value) > max_value:
         raise ValidationError(fieldname,
                               'This field must be less than ' +
                               str(max_value) + '.')
@@ -204,9 +204,11 @@ def is_ipv4(value, fieldname='ipv4', **kwargs):
     raises a validation error. Note that this is just a rudimentary check."""
     octets = []
 
-    if hasattr(value, 'split'):
+    try:
         octets = [o for o in value.split('.') if o.isdigit() and
                   0 <= int(o) and int(o) <= 255]
+    except AttributeError:
+        octets = []
 
     if len(octets) != 4:
         raise ValidationError(fieldname,
@@ -220,12 +222,13 @@ def is_ipv6(value, fieldname='ipv6', **kwargs):
     raises a validation error. Note that this is just a rudimentary check."""
     hextet = []
 
-    if hasattr(value, 'split'):
-        try:
-            hextet = [h for h in value.split(':')
-                      if 0 <= int(h, 16) and int(h, 16) <= 65535]
-        except ValueError:
-            hextet = []
+    try:
+        hextet = [h for h in value.split(':')
+                  if 0 <= int(h, 16) and int(h, 16) <= 65535]
+    except ValueError:
+        hextet = []
+    except AttributeError:
+        hextet = []
 
     if len(hextet) != 8:
         raise ValidationError(fieldname,
@@ -250,7 +253,7 @@ def is_record_type(value, fieldname='record-type', **kwargs):
 
 
 RECORD_TYPES = ['A', 'AAAA', 'MX', 'CNAME', 'TXT', 'SPF', 'NS', 'SRV', 'WR',
-                'RP', 'SSHFP', 'ALIAS', 'CAA', 'NAPTR', 'PTR']
+                'RP', 'SSHFP', 'ALIAS', 'CAA', 'NAPTR', 'PTR', 'TLSA']
 
 
 def is_redirect_type(value, fieldname='redirect-type', **kwargs):
@@ -307,6 +310,10 @@ def is_tlsa_usage(value, fieldname='tlsa_usage', **kwargs):
         raise ValidationError(fieldname,
                               'This field must be one of: 0, 1, 2, or 3')
     return True
+
+
+def is_hexstring(value, fieldname='sha-hash', **kwargs):
+    return re.match(r'(^[a-fA-F0-9]+$)', value)
 
 
 def is_ttl(value, fieldname='ttl', **kwargs):
@@ -370,6 +377,7 @@ validation_functions = {
     'frame':               is_api_bool,
     'frame-title':         is_valid,
     'geodns-location':     is_int,
+    'hexstring':           is_hexstring,
     'integer':             is_int,
     'ipv4':                is_ipv4,
     'ipv6':                is_ipv6,

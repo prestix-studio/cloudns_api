@@ -23,7 +23,8 @@ TEST_ID = 'test-auth-id'
 TEST_PASSWORD = 'test-auth-password'
 
 
-def use_test_auth(test_fn):
+def use_test_auth(test_fn=None):
+
     @patch.dict(environ, {'CLOUDNS_API_AUTH_ID': TEST_ID})
     @patch.dict(environ, {'CLOUDNS_API_AUTH_PASSWORD': TEST_PASSWORD})
     def test_wrapper(*args, **kwargs):
@@ -66,7 +67,7 @@ def mock_get_request(payload=None):
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
         decorator is where the function is passed."""
-        @patch('cloudns_api.requests.get', new=get_mock)
+        @patch('requests.get', new=get_mock)
         def test_wrapper(*args, **kwargs):
             test_fn(*args, **kwargs)
         return test_wrapper
@@ -91,7 +92,7 @@ def mock_post_request(payload=None):
     def decorator(test_fn):
         """Having the outer decorator allows passing arguments. This inner
         decorator is where the function is passed."""
-        @patch('cloudns_api.requests.post', new=post_mock)
+        @patch('requests.post', new=post_mock)
         def test_wrapper(*args, **kwargs):
             test_fn(*args, **kwargs)
         return test_wrapper

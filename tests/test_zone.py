@@ -46,7 +46,7 @@ def test_zone_get_page_count_function():
 
 
 @mock_post_request()
-def test_zone_create_function():
+def test_zone_create_function_master():
     """Zone create function sends properly formated request."""
     response = zone.create(domain_name='example.com', zone_type='Master',
                            ns=[])
@@ -55,8 +55,22 @@ def test_zone_create_function():
     payload = response.payload
     assert payload['url'] == 'https://api.cloudns.net/dns/register.json'
     assert payload['params']['domain-name'] == 'example.com'
-    assert payload['params']['zone-type'] == 'Master'
+    assert payload['params']['zone-type'] == 'master'
     assert payload['params']['ns'] == []
+
+
+@mock_post_request()
+def test_zone_create_function_slave():
+    """Zone create function sends properly formated request."""
+    response = zone.create(domain_name='example.com', zone_type='SlaVe',
+                           master_ip='1.2.3.4')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == 'https://api.cloudns.net/dns/register.json'
+    assert payload['params']['domain-name'] == 'example.com'
+    assert payload['params']['zone-type'] == 'slave'
+    assert payload['params']['master-ip'] == '1.2.3.4'
 
 
 @mock_post_request()
@@ -174,7 +188,8 @@ def test_dnssec_deactivate():
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/deactivate-dnssec.json'  #noqa: E501
+    assert payload['url'] == \
+        'https://api.cloudns.net/dns/deactivate-dnssec.json'
 
 
 @mock_get_request()
@@ -184,7 +199,9 @@ def test_dnssec_ds_records():
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/get-dnssec-ds-records.json'  #noqa: E501
+    assert payload['url'] == \
+        'https://api.cloudns.net/dns/get-dnssec-ds-records.json'
+
 
 @mock_get_request()
 def test_zone_is_updated():
@@ -193,4 +210,16 @@ def test_zone_is_updated():
     assert response.success
 
     payload = response.payload
-    assert payload['url'] == 'https://api.cloudns.net/dns/is-updated.json'  #noqa: E501
+    assert payload['url'] == \
+        'https://api.cloudns.net/dns/is-updated.json'
+
+
+@mock_get_request()
+def test_zone_geodns_locations():
+    """Check if the zone provides geodns locations."""
+    response = zone.geodns_locations('example.com')
+    assert response.success
+
+    payload = response.payload
+    assert payload['url'] == \
+        'https://api.cloudns.net/dns/get-geodns-locations.json'

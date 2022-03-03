@@ -13,6 +13,7 @@ Functional tests for cloudns_api's api utilities module.
 from os import environ
 from mock import patch
 from requests import exceptions as request_exceptions
+from pytest import raises
 
 from cloudns_api.api import (
     ApiResponse,
@@ -23,10 +24,12 @@ from cloudns_api.api import (
     get_login,
     get_my_ip,
     get_nameservers,
+    is_geodns_available,
     patch_update,
     use_snake_case_keys,
 )
 from cloudns_api.validation import ValidationError
+from cloudns_api.config import is_debug, get_config
 
 from .helpers import (
     mock_get_request,
@@ -34,6 +37,35 @@ from .helpers import (
     set_no_debug,
     use_test_auth,
 )
+
+
+##
+# Config Tests
+
+@patch.dict(environ, {'SOME_VALUE': 'foo'})
+def test_get_config():
+    result = get_config('SOME_VALUE')
+    assert 'foo' == result
+
+
+def test_is_debug_true():
+    for val in ['1', 'true', 'True', 'TRUE', 'tRuE']:
+        @patch.dict(environ, {'CLOUDNS_API_DEBUG': val})
+        def check():
+            return is_debug()
+        assert check()
+
+
+def test_is_debug_false():
+    for val in ['0', 'False', 'FALSE', 'fAlSe', '']:
+        @patch.dict(environ, {'CLOUDNS_API_DEBUG': val})
+        def check():
+            return is_debug()
+        assert not check()
+    val = environ.pop('CLOUDNS_API_DEBUG')
+    assert not is_debug()
+    if val:
+        environ['CLOUDNS_API_DEBUG'] = val
 
 
 ##
@@ -76,6 +108,30 @@ def test_get_auth_params_returns_different_dict_every_time():
     assert 'a-param' not in new_params
 
 
+@patch.dict(environ, {'CLOUDNS_API_AUTH_PASSWORD': ''})
+def test_missing_password_raises_error():
+    """Function get_auth_params raises EnvironmentError
+    if no password is set."""
+    with raises(EnvironmentError) as ex:
+        get_auth_params()
+        assert 'Environment variable "CLOUDNS_API_AUTH_PASSWORD" not set.' \
+            == str(ex)
+
+
+@patch.dict(environ, {'CLOUDNS_API_AUTH_ID': ''})
+@patch.dict(environ, {'CLOUDNS_API_SUB_AUTH_ID': ''})
+@patch.dict(environ, {'CLOUDNS_API_SUB_AUTH_USER': ''})
+def test_missing_auth_param_raises_error():
+    """Function get_auth_params raises EnvironmentError
+    if no auth params are set."""
+    with raises(EnvironmentError) as ex:
+        get_auth_params()
+        assert ('No environment variable "CLOUDNS_API_AUTH_ID", '
+                '"CLOUDNS_API_SUB_AUTH_ID" or '
+                '"CLOUDNS_API_SUB_AUTH_USER" is set.') \
+            == str(ex)
+
+
 ##
 #  SnakeCase Tests
 
@@ -113,10 +169,10 @@ def test_api_response_can_be_initialized_with_request_response():
     assert str(response.status_code) == '200'
     assert response.payload == {'test': 123}
     assert response.json() == {
-            'status_code':   200,
-            'success':      True,
-            'payload':      {'test': 123}
-        }
+        'status_code':   200,
+        'success':      True,
+        'payload':      {'test': 123}
+    }
 
 
 def test_api_response_works_with_request_response_list():
@@ -154,10 +210,10 @@ def test_api_response_can_be_initialized_without_request_response():
     assert not response.status_code
     assert response.payload == {}
     assert response.json() == {
-            'status_code':  None,
-            'success':      False,
-            'payload':      {}
-        }
+        'status_code':  None,
+        'success':      False,
+        'payload':      {}
+    }
 
 
 @set_debug
@@ -202,10 +258,29 @@ def test_api_response_can_be_created_with_request_response_after_init():
     assert str(response.status_code) == '200'
     assert response.payload == {'test': 123}
     assert response.json() == {
-            'status_code':  200,
-            'success':      True,
-            'payload':      {'test': 123}
-        }
+        'status_code':  200,
+        'success':      True,
+        'payload':      {'test': 123}
+    }
+
+
+def test_api_response_is_sane_with_error_from_request_after_init():
+    """ApiResponse returns the error code from upstream request
+    when initializied after init."""
+    request_response = RequestResponseStub(payload={},
+                                           status_code=400)
+    response = ApiResponse()
+    response.create(request_response)
+    assert response.response == request_response
+    assert not response.success
+    assert str(response.status_code) == '400'
+    assert response.payload == {}
+    assert response.json() == {
+        'status_code': 400,
+        'success':     False,
+        'payload':     {},
+        'error':       'HTTP response 400'
+    }
 
 
 def test_api_response_can_be_converted_to_string():
@@ -290,6 +365,7 @@ def test_api_decorator_responds_to_network_errors():
 
     response = test_api_call()
     assert response.success is False
+    print(response)
     assert response.error == 'API Network Connection error.'
     assert str(response.status_code) == '500'
 
@@ -327,7 +403,7 @@ def test_api_decorator_responds_to_bad_python_code():
     @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
-        return uninitialized_variable  # noqa: F821
+        return [].join()
 
     response = test_api_call()
     assert not response.success
@@ -343,11 +419,11 @@ def test_api_decorator_responds_specifically_to_bad_code_when_debugging():
     @api
     def test_api_call(*args, **kwargs):
         # Bad python code:
-        return uninitialized_variable  # noqa: F821
+        return [].join()
 
     response = test_api_call()
     assert not response.success
-    assert response.error == "name 'uninitialized_variable' is not defined"
+    assert response.error == "'list' object has no attribute 'join'"
 
 
 @set_no_debug
@@ -356,7 +432,7 @@ def test_api_decorator_responds_to_missing_required_args():
 
     @api
     def test_api_call(required_arg, *args, **kwargs):
-        return uninitialized_variable  # noqa: F821
+        return required_arg
 
     response = test_api_call()
     assert not response.success
@@ -502,8 +578,8 @@ def test_api_patch_update_fails_when_get_first_fails():
 @use_test_auth
 @mock_get_request()
 def test_simple_api_functions(test_id, test_password):
-    """Tests that get_login, get_nameservers, and get_my_ip send properly
-    formated requests."""
+    """Tests that get_login, get_nameservers, get_my_ip, and
+    is_geodns_available send properly formated requests."""
     expected_payload = {
         'auth-id': test_id,
         'auth-password': test_password,
@@ -516,4 +592,7 @@ def test_simple_api_functions(test_id, test_password):
     assert response.payload['params'] == expected_payload
 
     response = get_my_ip()
+    assert response.payload['params'] == expected_payload
+
+    response = is_geodns_available()
     assert response.payload['params'] == expected_payload

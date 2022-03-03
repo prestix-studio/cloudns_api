@@ -16,13 +16,12 @@ This module contains the API config constants.
 from os import environ
 
 
-def _is_true(env_var):
-    if env_var is None:  # pragma: no cover
+def is_debug():
+    env_var = environ.get('CLOUDNS_API_DEBUG')
+    if env_var is None:
         return False
-    return env_var.lower() in [1, 'true', 'yes']
+    return env_var.lower() in ['1', 'true', 'yes']
+
 
 def get_config(env_var):
-    if env_var in ['CLOUDNS_API_TESTING', 'CLOUDNS_API_DEBUG']:
-        return _is_true(environ.get(env_var))
-    else:
-        return environ.get(env_var)
+    return environ.get(env_var)
